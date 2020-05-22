@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <link rel="icon" href="images/icon.png" type="image/x-icon"/>
+    <meta charset="utf-8">
+    <title>Dragon's Twilight 龙之暮</title>
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <style type="text/css">
+        .menu-wrap ul li a {
+            cursor: pointer;
+        }
+
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,.6);
+            /*Opacity: 50%;*/
+        }
+    </style>
+</head>
+
+<body>
+<nav class="menu-wrap" id="menu-nav">
+    <div class="menu">
+        <ul>
+            <li>
+                <a href="">
+                    <i class="fa fa-home fa-lg"></i>
+                    <span class="nav-text">首页</span>
+                </a>
+            </li>
+            <li>
+                <a onclick="changeSrc('?goUrl=https://web.goblincwl.cn:35073/user/closet/')">
+                    <i class="fa fa-user fa-lg"></i>
+                    <span class="nav-text">衣柜</span>
+                </a>
+            </li>
+            <li>
+                <a onclick="changeSrc('?goUrl=https://web.goblincwl.cn:35073/skinlib')">
+                    <i class="fa fa-envelope-o fa-lg"></i>
+                    <span class="nav-text">皮肤库</span>
+                </a>
+            </li>
+            <li>
+                <a onclick="changeSrc('?goUrl=http://web.goblincwl.cn:35074')">
+                    <i class="fa fa-heart-o fa-lg"></i>
+                    <span class="nav-text">管理</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<iframe th:src="${goUrl}" width="100%" height="100%" id="mainFrame" onreadystatechange="stateChangeIE(this)"
+        style="border: 0;display: none" onload="stateChangeFirefox(this)">
+</iframe>
+<div id="LoadDiv" class="mask" style="align:center;width: 100%;height:100%;text-align: center">
+    <div id="loadDivInner" class="container animation-1" style="text-align: center;align:center;margin-left: 50%;margin-top: 20%">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function changeSrc(url) {
+        const iframe = document.getElementById("mainFrame");
+        iframe.src = url;
+    }
+
+    function stateChangeFirefox(_frame) {
+        var loader = document.getElementById("LoadDiv");
+        loader.style.display = "none";
+        _frame.style.visibility = "visible";
+        _frame.style.display = "block";
+    }
+</script>
+</html>
