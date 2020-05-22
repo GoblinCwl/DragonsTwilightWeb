@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.goblincwl</groupId>
-	<artifactId>dragontwilight</artifactId>
+	<artifactId>dragons-twilight-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>dragontwilight</name>
+	<name>dragons-twilight-web</name>
 	<description>MinecraftServer-DragonTwilight-DataInteract</description>
 
 	<properties>

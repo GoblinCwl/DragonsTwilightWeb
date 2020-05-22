@@ -19,13 +19,8 @@
             padding: 0;
         }
 
-        #bgDiv {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background: url('images/bg.png');
-            margin-top: -4%;
-            padding: 0;
+        body {
+            background: url('images/bg2.png')  50% / cover no-repeat;
 
         }
 
@@ -41,12 +36,12 @@
     </a>
     <nobr>
         <span class="serverInfoSpan">服务器状态：</span>
-        <span class="serverInfoSpan" th:if="${status==true}" style="color: #34bb2b"><b>启动</b></span>
-        <span class="serverInfoSpan" th:if="${status==false}" style="color: #ab3a35"><b>关闭</b></span>
-        <span class="serverInfoSpan" th:if="${status==null}" style="color: #5c5c5c"><b>未知</b></span>
+        <span class="serverInfoSpan" th:if="${status==true}" style="color: #3ddc33"><b>启动</b></span>
+        <span class="serverInfoSpan" th:if="${status==false}" style="color: #cb433d"><b>关闭</b></span>
+        <span class="serverInfoSpan" th:if="${status==null}" style="color: #949494"><b>未知</b></span>
         <span class="serverInfoSpan">|||</span>
         <span class="serverInfoSpan">在线人数：</span>
-        <span class="serverInfoSpan"><b th:text="${online==null?0:online}" style="color:#537af7;"></b></span>
+        <span class="serverInfoSpan"><b th:text="${online==null?0:online}" style="color:#274876;"></b></span>
 
     </nobr>
 
