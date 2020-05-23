@@ -1,5 +1,9 @@
 package com.goblincwl.dragontwilight.service.base;
 
+import com.goblincwl.dragontwilight.entity.base.WebNavIframe;
+
+import java.util.List;
+
 /**
  * @author ☪wl
  * @program dragons-twilight-web
@@ -7,4 +11,5 @@ package com.goblincwl.dragontwilight.service.base;
  * @create 2020-05-22 15:45
  */
 public interface BaseService {
+    List<WebNavIframe> findNavList(WebNavIframe webNavIframe);
 }

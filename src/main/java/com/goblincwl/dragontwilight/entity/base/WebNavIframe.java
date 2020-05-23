@@ -1,5 +1,9 @@
 package com.goblincwl.dragontwilight.entity.base;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -7,16 +11,20 @@ import java.util.Objects;
  * @author ☪wl
  * @program dragons-twilight-web
  * @description
- * @create 2020-05-22 16:22
+ * @create 2020-05-24 0:34
  */
 @Entity
-@Table(name = "web_nav_iframe", schema = "mc_base", catalog = "")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "web_nav_iframe", schema = "mc_base")
 public class WebNavIframe {
     private Integer id;
     private String title;
     private String name;
     private String uri;
     private String icon;
+    private Integer slot;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -49,7 +57,7 @@ public class WebNavIframe {
     }
 
     @Basic
-    @Column(name = "uri", nullable = false, length = 255)
+    @Column(name = "uri", nullable = false)
     public String getUri() {
         return uri;
     }
@@ -59,13 +67,23 @@ public class WebNavIframe {
     }
 
     @Basic
-    @Column(name = "icon", nullable = false, length = 255)
+    @Column(name = "icon", nullable = false)
     public String getIcon() {
         return icon;
     }
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    @Basic
+    @Column(name = "slot", nullable = false)
+    public Integer getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Integer slot) {
+        this.slot = slot;
     }
 
     @Override
@@ -77,11 +95,12 @@ public class WebNavIframe {
                 Objects.equals(title, that.title) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(uri, that.uri) &&
-                Objects.equals(icon, that.icon);
+                Objects.equals(icon, that.icon) &&
+                Objects.equals(slot, that.slot);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, name, uri, icon);
+        return Objects.hash(id, title, name, uri, icon, slot);
     }
 }
