@@ -71,7 +71,10 @@
 </div>
 
 <!--隐藏域-->
-<p th:text="${actionId}" type="hidden" id="actionId">123</p>
+<div style="display: none">
+    <p th:text="${actionId}" id="actionId">123</p>
+</div>
+
 </body>
 <script src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
