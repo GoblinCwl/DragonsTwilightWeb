@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="css/font-awesome.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="/live2d/css/live2d.css"/>
     <style type="text/css">
+        body {
+            background: url('images/bg.jpg') 50% / cover no-repeat;
+        }
+
         .menu-wrap ul li a {
             cursor: pointer;
         }
@@ -19,7 +24,7 @@
             left: 0;
             bottom: 0;
             right: 0;
-            background: rgba(0,0,0,.6);
+            background: rgba(0, 0, 0, .6);
             /*Opacity: 50%;*/
         }
     </style>
@@ -62,11 +67,17 @@
         </ul>
     </div>
 </nav>
-<iframe th:src="${goUrl}" width="100%" height="100%" id="mainFrame" onreadystatechange="stateChangeIE(this)"
+<div id="landlord" style="left: 80%">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+<!--    <div class="hide-button">隐藏</div>-->
+</div>
+<iframe th:src="${goUrl}" width="100%" height="100%" id="mainFrame"
         style="border: 0;display: none" onload="stateChangeFirefox(this)">
 </iframe>
 <div id="LoadDiv" class="mask" style="align:center;width: 100%;height:100%;text-align: center">
-    <div id="loadDivInner" class="container animation-1" style="text-align: center;align:center;margin-left: 50%;margin-top: 20%">
+    <div id="loadDivInner" class="container animation-1"
+         style="text-align: center;align:center;margin-left: 50%;margin-top: 20%">
         <div class="shape shape1"></div>
         <div class="shape shape2"></div>
         <div class="shape shape3"></div>
@@ -74,8 +85,10 @@
     </div>
 </div>
 </body>
+<script src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
 <script type="text/javascript">
     function changeSrc(url) {
+        $('#landlord').css('display', 'none');
         const iframe = document.getElementById("mainFrame");
         iframe.src = url;
     }
@@ -86,5 +99,14 @@
         _frame.style.visibility = "visible";
         _frame.style.display = "block";
     }
+</script>
+<script type="text/javascript">
+    const message_Path = '/live2d/';
+    const home_Path = 'https://mc.goblincwl.cn/';  //此处修改为你的域名，必须带斜杠
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/13.json");
 </script>
 </html>

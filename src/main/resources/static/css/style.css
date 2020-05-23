@@ -12,10 +12,6 @@ body {
     height: 100%;
 }
 
-body {
-    background: url('../images/bg.jpg') 50% / cover no-repeat;
-}
-
 .menu-wrap {
     position: fixed;
     left: 0;
