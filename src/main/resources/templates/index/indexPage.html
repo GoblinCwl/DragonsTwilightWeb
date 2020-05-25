@@ -20,7 +20,7 @@
         }
 
         body {
-            background: url('images/bg3.jpg')  50% / cover no-repeat;
+            background: url('images/bg3.jpg') 50% / cover no-repeat;
 
         }
 
@@ -31,20 +31,24 @@
 <body>
 <div id="bgDiv">
     <img src="images/title.png" style="margin-top: -20%;position: relative" alt="龙之暮">
-    <a class="transparent" href="https://dragonstwilight.oss-cn-beijing.aliyuncs.com/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE.zip" style="position: relative">
+
+    <a class="transparent"
+       href="https://dragonstwilight.oss-cn-beijing.aliyuncs.com/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE.zip"
+       style="position: relative">
         <p><span class="bg"></span><span class="base"></span><span class="text">下载客户端</span></p>
     </a>
-    <div style="position:fixed;margin-top: 20%">
-        <nobr>
-            <span class="serverInfoSpan" style="color: #f0ffe5;"><b>服务器状态：</b></span>
-            <span class="serverInfoSpan" th:if="${status==true}" style="color: #3ddc33"><b>启动</b></span>
-            <span class="serverInfoSpan" th:if="${status==false}" style="color: #cb433d"><b>关闭</b></span>
-            <span class="serverInfoSpan" th:if="${status==null}" style="color: #949494"><b>未知</b></span>
-            <span class="serverInfoSpan" style="color: white"><b>|||</b></span>
-            <span class="serverInfoSpan" style="color: #f0ffe5;"><b>在线人数：</b></span>
-            <span class="serverInfoSpan"><b th:text="${online==null?0:online}" style="color:#4fa5ff;"></b></span>
-        </nobr>
-    </div>
+    <!--    <div style="position:fixed;margin-top: 20%">-->
+    <!--        <nobr>-->
+    <!--            <span class="serverInfoSpan" style="color: #f0ffe5;"><b>服务器状态：</b></span>-->
+    <!--            <span class="serverInfoSpan" th:if="${status==true}" style="color: #3ddc33"><b>启动</b></span>-->
+    <!--            <span class="serverInfoSpan" th:if="${status==false}" style="color: #cb433d"><b>关闭</b></span>-->
+    <!--            <span class="serverInfoSpan" th:if="${status==null}" style="color: #949494"><b>未知</b></span>-->
+    <!--            <span class="serverInfoSpan" style="color: white"><b>|||</b></span>-->
+    <!--            <span class="serverInfoSpan" style="color: #f0ffe5;"><b>在线人数：</b></span>-->
+    <!--            <span class="serverInfoSpan"><b th:text="${online==null?0:online}" style="color:#4fa5ff;"></b></span>-->
+    <!--        </nobr>-->
+    <!--    </div>-->
+
 
 </div>
 

@@ -39,7 +39,12 @@ public class BaseController {
             goUrl = "/indexPage";
         }
         List<WebNavIframe> webNavIframeList = this.baseService.findNavList(new WebNavIframe());
-
+        //获取MCSManager接口的在线人数和服务器状态
+        JSONObject jsonObject = CommonUtils.httpGet(commonConfig.mcsManagerApi, "");
+        if (jsonObject != null) {
+            model.addAttribute("status", jsonObject.getBoolean("status"));
+            model.addAttribute("online", StringUtils.isEmpty(jsonObject.getString("current_players")) ? "0" : jsonObject.getString("current_players"));
+        }
         model.addAttribute("goUrl", goUrl);
         model.addAttribute("clientDownloadUrl", commonConfig.clientDownloadUrl);
         model.addAttribute("webNavIframeList", webNavIframeList);
@@ -49,12 +54,7 @@ public class BaseController {
 
     @GetMapping("/indexPage")
     public String indexPage(Model model) {
-        //获取MCSManager接口的在线人数和服务器状态
-        JSONObject jsonObject = CommonUtils.httpGet(commonConfig.mcsManagerApi, "");
-        if (jsonObject != null) {
-            model.addAttribute("status", jsonObject.getBoolean("status"));
-            model.addAttribute("online", jsonObject.getString("current_players"));
-        }
+
         return "index/indexPage";
     }
 
