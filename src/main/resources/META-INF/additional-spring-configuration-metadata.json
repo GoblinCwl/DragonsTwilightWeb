@@ -9,5 +9,10 @@
       "name": "spring.datasource.initialSize",
       "type": "java.lang.String",
       "description": "Description for spring.datasource.initialSize."
+    },
+    {
+      "name": "server.http.port",
+      "type": "java.lang.String",
+      "description": "Description for server.http.port."
     }
   ] }

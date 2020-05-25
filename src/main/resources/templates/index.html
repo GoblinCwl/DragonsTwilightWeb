@@ -134,6 +134,8 @@
     if (live2dStats.text() === '0') {
         loadlive2d("live2d", "/live2d/model/tia/13.json");
         live2dStats.text('1');
+        text = '<span style="color:#f9fffb;font-weight: bold">欢迎来到</span><span style="color:#0099cc;font-weight: bold">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+        showMessage(text, 3600);
     }
     let live2dHiddenStats = $("#live2dHiddenStats", parent.document);
     if (live2dHiddenStats.text() === '1') {

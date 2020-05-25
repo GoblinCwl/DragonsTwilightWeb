@@ -24,32 +24,45 @@
 
         }
 
-        .serverInfoSpan {
+        @-webkit-keyframes fadeInLeft {
+            0% {
+                opacity: 0;
+                -webkit-transform: translateY(-120px);
+            }
+            100% {
+                opacity: 1;
+                -webkit-transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            0% {
+                opacity: 0;
+                transform: translateY(-120px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /*调用animation属性，从而让按钮在载入页面时就具有动画效果 以-webkit为例，请为不同的浏览器添加前缀 */
+        .indexTitle {
+            -webkit-animation-name: "fadeInLeft"; /*动画名称，需要跟@keyframes定义的名称一致*/
+            -webkit-animation-duration: 1.0s; /*动画持续的时间长*/
+            -webkit-animation-iteration-count: 1; /*动画循环播放的次数为1 infinite为无限次*/
         }
     </style>
 </head>
 <body>
 <div id="bgDiv">
-    <img src="images/title.png" style="margin-top: -20%;position: relative" alt="龙之暮">
+    <img class="indexTitle" src="images/title.png" style="margin-top: -20%;position: relative" alt="龙之暮">
 
-    <a class="transparent"
+    <a class="transparent "
        href="https://dragonstwilight.oss-cn-beijing.aliyuncs.com/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE.zip"
-       style="position: relative">
+       style="position: fixed;bottom: 0;">
         <p><span class="bg"></span><span class="base"></span><span class="text">下载客户端</span></p>
     </a>
-    <!--    <div style="position:fixed;margin-top: 20%">-->
-    <!--        <nobr>-->
-    <!--            <span class="serverInfoSpan" style="color: #f0ffe5;"><b>服务器状态：</b></span>-->
-    <!--            <span class="serverInfoSpan" th:if="${status==true}" style="color: #3ddc33"><b>启动</b></span>-->
-    <!--            <span class="serverInfoSpan" th:if="${status==false}" style="color: #cb433d"><b>关闭</b></span>-->
-    <!--            <span class="serverInfoSpan" th:if="${status==null}" style="color: #949494"><b>未知</b></span>-->
-    <!--            <span class="serverInfoSpan" style="color: white"><b>|||</b></span>-->
-    <!--            <span class="serverInfoSpan" style="color: #f0ffe5;"><b>在线人数：</b></span>-->
-    <!--            <span class="serverInfoSpan"><b th:text="${online==null?0:online}" style="color:#4fa5ff;"></b></span>-->
-    <!--        </nobr>-->
-    <!--    </div>-->
-
-
 </div>
 
 
