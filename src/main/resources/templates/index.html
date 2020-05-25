@@ -42,18 +42,14 @@
 <nav class="menu-wrap" id="menu-nav">
     <div style="width:250px;height:30px;background: url('images/serverStatsBg.png');position:fixed;bottom: 0;">
 
-        <img th:src="${status==true?'images/serverEnabled.png':'images/serverClose.png'}"
-             style="position:relative;margin-top: 2%">
-        <span th:style="'color: '+${status==true?'#a1ffc1':'#ff8a84'}+';position:relative;top: -25%;left: -1%'">
-            <b th:if="${online.length()==1}" th:text="'&nbsp;'+${online}"></b>
-            <b th:if="${online.length()>1}" th:text="${online}"></b>
-        </span>
+        <img id="serverImg" style="position:relative;margin-top: 2%" alt="服务器状态">
+        <span id="serverSpan" style="position:relative;top: -25%;left: -1%;font-weight: bold"></span>
     </div>
     <div class="menu">
         <ul th:each="webNavIframe:${webNavIframeList}">
             <li th:id="'navLi'+${webNavIframe.id}">
                 <a th:id="'navA'+${webNavIframe.id}"
-                   th:onclick="changeSrc('?goUrl='+[[${webNavIframe.uri}]]+'&actionId='+[[${webNavIframe.id}]])">
+                   th:onclick="changeSrc('?goUrl='+[[${webNavIframe.uri}]]+'&actionId='+[[${webNavIframe.id}]]+'&isIframe=1')">
                     <i th:class="'fa fa-lg ' + ${webNavIframe.icon}"></i>
                     <span class="nav-text" th:text="${webNavIframe.title}"></span>
                 </a>
@@ -62,7 +58,7 @@
     </div>
 </nav>
 <div id="landlord" style="left: 80%">
-    <div id="liveMessage" class="message" style="opacity:0"></div>
+    <!--    <div id="liveMessage" class="message" style="opacity:0"></div>-->
     <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
     <div id="hiddenButton" class="hide-button">隐藏</div>
 </div>
@@ -91,7 +87,42 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+        updateCss();
+        pullServerSts();
+        setInterval(pullServerSts, 10000);
+    });
 
+    //填充服务器状态
+    function pullServerSts() {
+        let url = window.location.href;
+        if (url.indexOf("?goUrl=") === -1) {
+            $.ajax({
+                type: 'GET',
+                url: window.location.href + 'serverStatus',
+                success: function (res) {
+                    res = JSON.parse(res);
+                    const data = res.data;
+
+                    let serverSpan = $("#serverSpan");
+                    if (data.status === true) {
+                        $("#serverImg").attr("src", "images/serverEnabled.png");
+                        serverSpan.css("color", "#a1ffc1");
+                    } else {
+                        $("#serverImg").attr("src", "images/serverClose.png");
+                        serverSpan.css("color", "#ff8a84");
+                    }
+                    if (data.current_players > 9) {
+                        serverSpan.text(data.current_players);
+                    } else {
+                        serverSpan.text("\xa0" + data.current_players);
+                    }
+                }
+            })
+        }
+    }
+
+    //更新导航栏CSS样式
+    function updateCss() {
         let activeId = $("#actionId").text();
         if (activeId === 'none') {
             //初始化样式
@@ -105,17 +136,18 @@
             $("#navLi" + activeId, parent.document).addClass('liCheck');
             $("#navA" + activeId, parent.document).addClass('aCheck');
         }
+    }
 
-    });
-
+    //改变iframe内容
     function changeSrc(url) {
         if (url === "#") {
             return;
         }
         const iframe = document.getElementById("mainFrame");
-        iframe.src = url;
+        iframe.src = encodeURI(url);
     }
 
+    //加载iframe时动画
     function stateChangeFirefox(_frame) {
         const loader = document.getElementById("LoadDiv");
         loader.style.display = "none";
@@ -125,43 +157,40 @@
 </script>
 <script type="text/javascript">
     const message_Path = '/live2d/';
-    const home_Path = 'https://mc.goblincwl.cn/';
 </script>
 <script type="text/javascript" src="/live2d/js/live2d.js"></script>
 <script type="text/javascript" src="/live2d/js/message.js"></script>
 <script type="text/javascript">
+    //检测父页面是否已经开启live2D，若已经开启则不在开启
     let live2dStats = $("#live2dStats", parent.document);
     if (live2dStats.text() === '0') {
         loadlive2d("live2d", "/live2d/model/tia/13.json");
         live2dStats.text('1');
-        text = '<span style="color:#f9fffb;font-weight: bold">欢迎来到</span><span style="color:#0099cc;font-weight: bold">「 ' + document.title.split(' - ')[0] + ' 」</span>';
-        showMessage(text, 3600);
     }
+    //检测父页面是否已经隐藏live2D，若已经隐藏则子页面执行隐藏代码
     let live2dHiddenStats = $("#live2dHiddenStats", parent.document);
     if (live2dHiddenStats.text() === '1') {
         hiddenLive();
     }
 
+    //隐藏live2D组件
     function hiddenLive() {
         $('#landlord').css('display', 'none');
         $("#live2dHiddenStats").text('1');
         $("#live2dHiddenStats", parent.document).text('1');
 
         $("#hiddenButton").css('visibility', 'hidden');
-        $("#liveMessage").css('visibility', 'hidden');
         $("#hiddenButton", parent.document).css('visibility', 'hidden');
-        $("#liveMessage", parent.document).css('visibility', 'hidden');
         let childIframe = $("#mainFrame");
         var childButton = childIframe.contents().find("#hiddenButton");
-        if (typeof childButton === 'undefined' || childButton === null || childButton === ""){
+        if (typeof childButton === 'undefined' || childButton === null || childButton === "") {
             return;
-        }else{
+        } else {
             console.log(childButton);
             childButton.css('visibility', 'hidden');
             childButton.css('visibility', 'hidden');
             ($("#mainFrame").contents().find("#live2dHiddenStats")).text('1');
         }
-        console.log(childSts);
     }
 </script>
 </html>

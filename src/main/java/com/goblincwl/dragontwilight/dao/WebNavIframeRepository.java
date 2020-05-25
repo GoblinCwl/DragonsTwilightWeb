@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.dao;
 
-import com.goblincwl.dragontwilight.entity.base.WebNavIframe;
+import com.goblincwl.dragontwilight.entity.WebNavIframe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @create 2020-05-22 15:49
  */
 @Repository
-public interface BaseRepository extends JpaRepository<WebNavIframe, Integer> {
+public interface WebNavIframeRepository extends JpaRepository<WebNavIframe, Integer> {
 
 }

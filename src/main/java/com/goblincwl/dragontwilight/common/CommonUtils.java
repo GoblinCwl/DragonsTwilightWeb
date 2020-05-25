@@ -9,9 +9,30 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+@Component
 public class CommonUtils {
+
+    TomcatServletWebServerFactory tomcatServletWebServerFactory;
+
+    public CommonUtils(TomcatServletWebServerFactory tomcatServletWebServerFactory) {
+        this.tomcatServletWebServerFactory = tomcatServletWebServerFactory;
+    }
+
+    public static CommonUtils commonUtils;
+
+    @PostConstruct
+    public void init() {
+        commonUtils = this;
+    }
 
     public static String convertUUId(String uuId) {
         String sub1 = uuId.substring(0, 8);
@@ -78,6 +99,13 @@ public class CommonUtils {
             }
         }
         return resultJson;
+    }
+
+    public String getSpringBootUrl() throws UnknownHostException {
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+        int port = tomcatServletWebServerFactory.getPort();
+        String contextPath = tomcatServletWebServerFactory.getContextPath();
+        return hostAddress + ":" + port + contextPath;
     }
 
 }

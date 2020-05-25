@@ -1,6 +1,6 @@
-package com.goblincwl.dragontwilight.service.base;
+package com.goblincwl.dragontwilight.service;
 
-import com.goblincwl.dragontwilight.entity.base.WebNavIframe;
+import com.goblincwl.dragontwilight.entity.WebNavIframe;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
  * @description 基础 Service
  * @create 2020-05-22 15:45
  */
-public interface BaseService {
+public interface WebNavIframeService {
     List<WebNavIframe> findNavList(WebNavIframe webNavIframe);
 }

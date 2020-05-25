@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.entity.base;
+package com.goblincwl.dragontwilight.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
