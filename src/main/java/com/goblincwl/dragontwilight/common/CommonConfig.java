@@ -14,10 +14,4 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = "classpath:dragonsTwilight.properties")
 public class CommonConfig {
 
-    @Value("${mcsManagerApi}")
-    public String mcsManagerApi;
-
-    @Value("${clientDownloadUrl}")
-    public String clientDownloadUrl;
-
 }

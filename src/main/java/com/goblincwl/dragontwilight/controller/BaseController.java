@@ -5,7 +5,9 @@ import com.goblincwl.dragontwilight.common.CommonConfig;
 import com.goblincwl.dragontwilight.common.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.WebNavIframe;
+import com.goblincwl.dragontwilight.entity.WebOptions;
 import com.goblincwl.dragontwilight.service.WebNavIframeService;
+import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -29,12 +31,12 @@ import java.util.Map;
 @RequestMapping("/")
 public class BaseController {
 
-    private final CommonConfig commonConfig;
     private final WebNavIframeService webNavIframeService;
+    private final WebOptionsService webOptionsService;
 
-    public BaseController(WebNavIframeService webNavIframeService, CommonConfig commonConfig) {
+    public BaseController(WebNavIframeService webNavIframeService, WebOptionsService webOptionsService) {
         this.webNavIframeService = webNavIframeService;
-        this.commonConfig = commonConfig;
+        this.webOptionsService = webOptionsService;
     }
 
     @GetMapping("/")
@@ -63,15 +65,19 @@ public class BaseController {
 
     @GetMapping("/indexPage")
     public String indexPage(Model model) {
-        model.addAttribute("clientDownloadUrl", commonConfig.clientDownloadUrl);
+        //获取下载地址
+        WebOptions webOptions = this.webOptionsService.findByKey("clientDownloadUrl");
+        model.addAttribute("clientDownloadUrl", webOptions.getOptValue());
         return "index/indexPage";
     }
 
     @ResponseBody
     @GetMapping("/serverStatus")
     public String serverStatus() {
+        //获取API地址
+        WebOptions webOptions = this.webOptionsService.findByKey("mcsMangerApiUrl");
         //获取MCSManager接口的在线人数和服务器状态
-        JSONObject jsonObject = CommonUtils.httpGet(commonConfig.mcsManagerApi, "");
+        JSONObject jsonObject = CommonUtils.httpGet(webOptions.getOptValue(), "");
         return ResultGenerator.genSuccessResult(jsonObject).toString();
     }
 

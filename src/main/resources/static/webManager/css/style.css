@@ -40,11 +40,11 @@ p {
  * Selection color
  */
 ::-moz-selection {
-  background-color: #FA6862;
+  background-color: #509dff;
   color: #fff; }
 
 ::selection {
-  background-color: #FA6862;
+  background-color: #509dff;
   color: #fff; }
 
 /*
@@ -85,7 +85,7 @@ textarea, label {
     outline: 0 none; }
 
 .btn-primary {
-  background-color: #FA6862;
+  background-color: #60ccff;
   border: 0;
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
@@ -94,7 +94,7 @@ textarea, label {
   padding: 0 42px;
   text-transform: uppercase; }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:active:focus {
-    background-color: #f9423a; }
+    background-color: #509dff; }
 
 .btn-border {
   border: 1px solid #d7d8db;
@@ -134,7 +134,7 @@ textarea, label {
 
 .primary,
 .link:hover {
-  color: #FA6862; }
+  color: #509dff; }
 
 .no-gutter {
   margin-left: 0;
@@ -165,7 +165,7 @@ textarea, label {
   justify-content: space-between; }
 
 .nicescroll-cursors {
-  background: #FA6862 !important; }
+  background: #509dff !important; }
 
 .preloader {
   bottom: 0;
@@ -183,7 +183,7 @@ textarea, label {
     display: none; }
 
 .loading-mask {
-  background-color: #FA6862;
+  background-color: #509dff;
   height: 100%;
   left: 0;
   position: absolute;
@@ -229,7 +229,7 @@ textarea, label {
 -------------------------------------------------*/
 .mt20{margin-top:20px;}
 .site-wrapper {
-  border-top: 4px solid #ff0037; }
+  border-top: 4px solid #509dff; }
 
 .page-close {
   font-size: 30px;
@@ -285,7 +285,7 @@ textarea, label {
       width: 96px;
       bottom: 14px; }
     .section-title h3::after {
-      background-color: #FA6862;
+      background-color: #509dff;
       width: 73px; }
   .section-title.light h3 {
     color: #fff; }
@@ -318,7 +318,7 @@ textarea, label {
   background-size: cover;
   vertical-align: middle; }
   .page-home .overlay {
-    background-color: rgba(14, 17, 24, 0.97);
+    background-color: rgba(14, 17, 24, 0.5);
 }
 
 /* End of container */
@@ -358,7 +358,7 @@ textarea, label {
         height: 5px; }
     .hexagon-item:hover .hex-item div::before,
     .hexagon-item:hover .hex-item div::after {
-      background-color: #ff0037; }
+      background-color: #3da4ff; }
     .hexagon-item:hover .hex-content svg {
       -webkit-transform: scale(0.97);
       -moz-transform: scale(0.97);
@@ -407,7 +407,7 @@ textarea, label {
     -o-transform-origin: center center;
     transform-origin: center center; }
     .hex-item div::before, .hex-item div::after {
-      background-color: #1e2530;
+      background-color: #f9fff9;
       content: "";
       position: absolute;
       width: 100%;
@@ -530,7 +530,7 @@ textarea, label {
 
 .hexagon-item:hover .icon i
 {
-  color:#ff0037;
+  color: #3269ff;
   transition:0.6s;
   
 }

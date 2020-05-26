@@ -9,5 +9,5 @@ import com.goblincwl.dragontwilight.entity.WebOptions;
  * @create 2020-05-26 15:32
  */
 public interface WebOptionsService {
-    WebOptions findByKey(String password);
+    WebOptions findByKey(String key);
 }
