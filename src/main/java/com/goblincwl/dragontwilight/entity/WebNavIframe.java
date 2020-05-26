@@ -10,11 +10,10 @@ import java.util.Objects;
 /**
  * @author ☪wl
  * @program dragons-twilight-web
- * @description
+ * @description 首页导航栏实体类
  * @create 2020-05-24 0:34
  */
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "web_nav_iframe", schema = "mc_base")
@@ -25,6 +24,7 @@ public class WebNavIframe {
     private String uri;
     private String icon;
     private Integer slot;
+    private String liClass;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -86,21 +86,13 @@ public class WebNavIframe {
         this.slot = slot;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WebNavIframe that = (WebNavIframe) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(uri, that.uri) &&
-                Objects.equals(icon, that.icon) &&
-                Objects.equals(slot, that.slot);
+    @Basic
+    @Column(name = "li_class", length = 30)
+    public String getLiClass() {
+        return liClass;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, name, uri, icon, slot);
+    public void setLiClass(String liClass) {
+        this.liClass = liClass;
     }
 }

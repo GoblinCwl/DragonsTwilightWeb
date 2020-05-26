@@ -3,7 +3,7 @@ package com.goblincwl.dragontwilight.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.goblincwl.dragontwilight.common.CommonConfig;
 import com.goblincwl.dragontwilight.common.CommonUtils;
-import com.goblincwl.dragontwilight.common.ResultGenerator;
+import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.WebNavIframe;
 import com.goblincwl.dragontwilight.service.WebNavIframeService;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.net.UnknownHostException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class BaseController {
     }
 
     @GetMapping("/")
-    public String index(@RequestParam Map<String, Object> param, Model model) {
+    public String index(@RequestParam Map<String, Object> param, Model model, HttpServletRequest request) {
         //如果为空跳转到首页
         try {
             String goUrl = (String) param.get("goUrl");
@@ -51,7 +51,7 @@ public class BaseController {
             if (StringUtils.isEmpty(goUrl)) {
                 goUrl = "/indexPage";
             } else {
-                goUrl = goUrl.replace("${webPath}", CommonUtils.commonUtils.getSpringBootUrl());
+                goUrl = goUrl.replace("${webPath}", CommonUtils.getServerUrl(request));
             }
             model.addAttribute("actionId", StringUtils.isEmpty(actionId) ? "none" : actionId);
             model.addAttribute("goUrl", goUrl);

@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.common;
+package com.goblincwl.dragontwilight.common.result;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class ResultGenerator {
      * 成功类型的返回
      *
      * @param data 返回时携带的数据
-     * @return com.goblincwl.dragontwilight.common.Result
+     * @return com.goblincwl.dragontwilight.common.result.Result
      * @create 2020/5/25 21:52
      * @author ☪wl
      */
@@ -36,7 +36,7 @@ public class ResultGenerator {
      * 失败类型的返回
      *
      * @param message 返回时携带的提示
-     * @return com.goblincwl.dragontwilight.common.Result
+     * @return com.goblincwl.dragontwilight.common.result.Result
      * @create 2020/5/25 21:53
      * @author ☪wl
      */

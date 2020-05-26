@@ -29,7 +29,7 @@
         }
 
         .liCheck {
-            background-color: #285e9d;
+            background-color: #285e9d !important;
         }
 
         .aCheck {
@@ -47,7 +47,8 @@
     </div>
     <div class="menu">
         <ul th:each="webNavIframe:${webNavIframeList}">
-            <li th:id="'navLi'+${webNavIframe.id}">
+            <li th:id="'navLi'+${webNavIframe.id}"
+                th:class="${webNavIframe.liClass}">
                 <a th:id="'navA'+${webNavIframe.id}"
                    th:onclick="changeSrc('?goUrl='+[[${webNavIframe.uri}]]+'&actionId='+[[${webNavIframe.id}]]+'&isIframe=1')">
                     <i th:class="'fa fa-lg ' + ${webNavIframe.icon}"></i>
@@ -90,6 +91,8 @@
         updateCss();
         pullServerSts();
         setInterval(pullServerSts, 10000);
+
+
     });
 
     //填充服务器状态
@@ -153,6 +156,10 @@
         loader.style.display = "none";
         _frame.style.visibility = "visible";
         _frame.style.display = "block";
+    }
+
+    function test(test) {
+        console.log(test)
     }
 </script>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.common;
+package com.goblincwl.dragontwilight.common.result;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeConfig;

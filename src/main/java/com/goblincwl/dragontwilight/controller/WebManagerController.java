@@ -1,12 +1,17 @@
 package com.goblincwl.dragontwilight.controller;
 
-import com.goblincwl.dragontwilight.common.CommonUtils;
+import com.goblincwl.dragontwilight.common.result.Result;
+import com.goblincwl.dragontwilight.common.result.ResultGenerator;
+import com.goblincwl.dragontwilight.entity.WebNavIframe;
+import com.goblincwl.dragontwilight.entity.WebOptions;
+import com.goblincwl.dragontwilight.service.WebNavIframeService;
+import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import java.net.UnknownHostException;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author ☪wl
@@ -18,15 +23,51 @@ import java.net.UnknownHostException;
 @RequestMapping("/webManager")
 public class WebManagerController {
 
-    @ResponseBody
+    private final WebOptionsService webOptionsService;
+    private final WebNavIframeService webNavIframeService;
+
+    public WebManagerController(WebOptionsService webOptionsService, WebNavIframeService webNavIframeService) {
+        this.webOptionsService = webOptionsService;
+        this.webNavIframeService = webNavIframeService;
+    }
+
     @GetMapping("/index")
-    public String index() {
+    public String index(Model model) {
+//        String webManagerIndexUri = "${webPath}/webManager/index";
+//        WebNavIframe webNavIframe = this.webNavIframeService.findNavByUri(webManagerIndexUri);
+//        model.addAttribute("webNavId", webNavIframe.getId());
+        return "webManager/index";
+    }
+
+    @GetMapping("/loginPage")
+    public String loginPage() {
+        return "webManager/login";
+    }
+
+    @ResponseBody
+    @PostMapping("/login")
+    public String login(@RequestParam String password, HttpSession session) {
+        Result result;
         try {
-            System.out.println(CommonUtils.commonUtils.getSpringBootUrl());
-        } catch (UnknownHostException e) {
+            WebOptions webOptions = this.webOptionsService.findByKey("password");
+            if (password.equals(webOptions.getOptValue())) {
+                result = ResultGenerator.genSuccessResult("登陆成功");
+                session.setAttribute("isLogin", "true");
+            } else {
+                result = ResultGenerator.genFailResult("密码错误");
+            }
+        } catch (Exception e) {
+            result = ResultGenerator.genFailResult(e.getMessage());
             e.printStackTrace();
         }
-        return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还没写呢";
+        return result.toString();
+    }
+
+    @ResponseBody
+    @PostMapping("/loginCheck")
+    public String loginCheck(@RequestParam Map<String, Object> param) {
+        System.out.println(param.toString());
+        return "webManager/login";
     }
 
 }

@@ -14,24 +14,17 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-@Component
 public class CommonUtils {
 
     TomcatServletWebServerFactory tomcatServletWebServerFactory;
 
     public CommonUtils(TomcatServletWebServerFactory tomcatServletWebServerFactory) {
         this.tomcatServletWebServerFactory = tomcatServletWebServerFactory;
-    }
-
-    public static CommonUtils commonUtils;
-
-    @PostConstruct
-    public void init() {
-        commonUtils = this;
     }
 
     public static String convertUUId(String uuId) {
@@ -101,11 +94,7 @@ public class CommonUtils {
         return resultJson;
     }
 
-    public String getSpringBootUrl() throws UnknownHostException {
-        String hostAddress = InetAddress.getLocalHost().getHostAddress();
-        int port = tomcatServletWebServerFactory.getPort();
-        String contextPath = tomcatServletWebServerFactory.getContextPath();
-        return hostAddress + ":" + port + contextPath;
+    public static String getServerUrl(HttpServletRequest request) {
+        return "https://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
-
 }

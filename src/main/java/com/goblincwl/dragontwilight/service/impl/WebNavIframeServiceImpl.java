@@ -31,4 +31,11 @@ public class WebNavIframeServiceImpl implements WebNavIframeService {
         //根据slot字段正序排序
         return this.webNavIframeRepository.findAll(Example.of(webNavIframe), Sort.by(Sort.Direction.ASC, "slot"));
     }
+
+    @Override
+    public WebNavIframe findNavByUri(String webManagerIndexUri) {
+        WebNavIframe webNavIframe = new WebNavIframe();
+        webNavIframe.setUri(webManagerIndexUri);
+        return this.webNavIframeRepository.findOne(Example.of(webNavIframe)).orElse(null);
+    }
 }

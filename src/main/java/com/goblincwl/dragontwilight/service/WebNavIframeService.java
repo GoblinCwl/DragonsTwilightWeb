@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface WebNavIframeService {
     List<WebNavIframe> findNavList(WebNavIframe webNavIframe);
+
+    WebNavIframe findNavByUri(String webManagerIndeUri);
 }
