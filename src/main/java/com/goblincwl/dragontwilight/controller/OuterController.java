@@ -58,9 +58,9 @@ public class OuterController {
     @GetMapping("/coolQHttp")
     public String coolQHttp(@RequestParam Map<String, Object> param) {
         String key = ((String) param.get("key"));
-        if (key.startsWith("#功能")) {
+        if (key.startsWith("#功能 ")) {
             //符号后的内容
-            String value = key.substring(3);
+            String value = key.substring(4);
             //发送人QQ
             String sendQq = (String) param.get("fq");
 
