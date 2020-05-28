@@ -38,21 +38,14 @@ public class OuterController {
     @GetMapping("/coolQHttp")
     public String coolQHttp(@RequestParam Map<String, Object> param) {
         String key = ((String) param.get("key"));
-        if (key.startsWith("$")) {
+        if (key.startsWith("#功能")) {
             //符号后的内容
-            String value = key.substring(1);
+            String value = key.substring(3);
             //发送人QQ
             String sendQq = (String) param.get("fq");
-            //来源群号
-            String fromGroup = (String) param.get("fg");
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("return_code", 0);
-            jsonObject.put("resutn_message", "发送人：" + sendQq + ",发送内容：" + value);
-            jsonObject.put("appver", 0);
-            jsonObject.put("update_url", "");
-            jsonObject.put("return_type", 104);
-//            return "    " + jsonObject.toJSONString();
-            return " {\"return_code\":0,\"return_message\":\"aaa\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
+
+            String resultMsg = "发送人：" + sendQq + ",发送内容：";
+            return " {\"return_code\":0,\"return_message\":" + resultMsg + ",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
         }
         return null;
     }
