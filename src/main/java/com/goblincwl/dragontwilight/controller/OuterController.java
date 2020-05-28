@@ -51,7 +51,8 @@ public class OuterController {
             jsonObject.put("appver", 0);
             jsonObject.put("update_url", "");
             jsonObject.put("return_type", 104);
-            return "    " + jsonObject.toJSONString();
+//            return "    " + jsonObject.toJSONString();
+            return " {\"return_code\":0,\"return_message\":\"aaa\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
         }
         return null;
     }
