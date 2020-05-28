@@ -25,6 +25,14 @@ public class OuterController {
         this.minecraftQqPlayerService = minecraftQqPlayerService;
     }
 
+    /**
+     * 获取玩家QQ号
+     *
+     * @param playerName 玩家名称
+     * @return java.lang.String
+     * @create 2020/5/28 15:02
+     * @author ☪wl
+     */
     @GetMapping("/getPlayerQq")
     public String getPlayerQq(@RequestParam String playerName) {
         String qq = this.minecraftQqPlayerService.findQqByPlayerName(playerName);
@@ -35,6 +43,18 @@ public class OuterController {
         }
     }
 
+    /**
+     * 酷Q Http接口插件 调用地址
+     *
+     * @param param:{ fg: 来源群号
+     *                fq: 来源QQ号
+     *                key: 包括关键字的内容
+     *                }
+     * @return java.lang.String
+     * @create 2020/5/28 15:03
+     * @author ☪wl
+     * @document
+     */
     @GetMapping("/coolQHttp")
     public String coolQHttp(@RequestParam Map<String, Object> param) {
         String key = ((String) param.get("key"));
@@ -44,8 +64,8 @@ public class OuterController {
             //发送人QQ
             String sendQq = (String) param.get("fq");
 
-            String resultMsg = "发送人：" + sendQq + ",发送内容：";
-            return " {\"return_code\":0,\"return_message\":" + resultMsg + ",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
+            String resultMsg = "发送人：" + sendQq + ",发送内容：" + value;
+            return " {\"return_code\":0,\"return_message\":\"" + resultMsg + "\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
         }
         return null;
     }
