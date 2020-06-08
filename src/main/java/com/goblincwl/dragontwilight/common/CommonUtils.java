@@ -241,15 +241,11 @@ public class CommonUtils {
             };
             client.connect();
             //logger.info(client.getDraft());
-            int num = 0;
             while (!client.getReadyState().equals(ReadyState.OPEN)) {
-                if (num > 10000) {
-                    throw new RuntimeException("连接失败");
-                }
-                num++;
                 logger.info("正在连接...");
             }
             //连接成功,发送信息
+            logger.info("发送消息==========" + message);
             client.send(message);
             client.close();
         } catch (URISyntaxException e) {
