@@ -63,29 +63,27 @@ public class OuterController {
      */
     @GetMapping("/coolQHttp")
     public String coolQHttp(@RequestParam Map<String, Object> param) {
+        //发送人QQ
+        String sendQq = (String) param.get("fq");
+        //返回内容
+        String resultMsg;
+        //关键字
         String key = ((String) param.get("key"));
         if (key.startsWith("#功能 ")) {
-            //符号后的内容
-            String value = key.substring(4);
-            //发送人QQ
-            String sendQq = (String) param.get("fq");
-            //返回内容
-            String resultMsg;
-            if (value.startsWith("执行指令 ")) {
-                if ("2395025802".equals(sendQq)) {
-                    String commond = value.substring(5);
-                    WebOptions webOptions = this.webOptionsService.findByKey("lodeWebSocketApiUri");
-                    CommonUtils.webSocketSend(webOptions.getOptValue(), "{\"action\": \"executeCmd\", \"params\": {\"command\": \"" + commond + "\"}}");
-                    resultMsg = "执行指令 /" + commond + " 成功！";
-                } else {
-                    resultMsg = "你没有权限！";
-                }
+            resultMsg = "发送人：" + sendQq + ",发送内容：" + key;
+        } else if (key.startsWith("#指令 ")) {
+            if ("2395025802".equals(sendQq)) {
+                //符号后的内容
+                String commond = key.substring(4);
+                WebOptions webOptions = this.webOptionsService.findByKey("lodeWebSocketApiUri");
+                CommonUtils.webSocketSend(webOptions.getOptValue(), "{\"action\": \"executeCmd\", \"params\": {\"command\": \"" + commond + "\"}}");
+                resultMsg = "执行指令 /" + commond + " 成功！";
             } else {
-                resultMsg = "发送人：" + sendQq + ",发送内容：" + value;
+                resultMsg = "没有权限";
             }
-
-            return " {\"return_code\":0,\"return_message\":\"" + resultMsg + "\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
+        } else {
+            resultMsg = "none";
         }
-        return null;
+        return " {\"return_code\":0,\"return_message\":\"" + resultMsg + "\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
     }
 }
