@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -13,19 +12,22 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.enums.ReadyState;
+import org.java_websocket.handshake.ServerHandshake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public class CommonUtils {
+
+    private static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
+    public static WebSocketClient client;
 
     TomcatServletWebServerFactory tomcatServletWebServerFactory;
 
@@ -111,7 +113,7 @@ public class CommonUtils {
      * @author ☪wl
      * @document
      */
-    public JSONObject doPostTestFour(String url, String params) {
+    public JSONObject httpPost(String url, String params) {
         JSONObject resultJson = null;
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -149,7 +151,7 @@ public class CommonUtils {
         return resultJson;
     }
 
-    public JSONObject doPostTestTwo(String url, Object object) {
+    public JSONObject httpPost(String url, Object object) {
         JSONObject resultJson = null;
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -200,5 +202,58 @@ public class CommonUtils {
      */
     public static String getServerUrl(HttpServletRequest request) {
         return "https://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    }
+
+    /**
+     * 发送websocket消息
+     *
+     * @param uri     请求地址
+     * @param message 发送消息
+     * @create 2020/6/8 18:24
+     * @author ☪wl
+     */
+    public static void webSocketSend(String uri, String message) {
+        try {
+            client = new WebSocketClient(new URI(uri), new Draft_6455()) {
+                @Override
+                public void onOpen(ServerHandshake serverHandshake) {
+                    logger.info("握手成功");
+                }
+
+                @Override
+                public void onMessage(String msg) {
+                    logger.info("收到消息==========" + msg);
+                    if (msg.equals("over")) {
+                        client.close();
+                    }
+                }
+
+                @Override
+                public void onClose(int i, String s, boolean b) {
+                    logger.info("链接已关闭");
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    e.printStackTrace();
+                    logger.info("发生错误已关闭");
+                }
+            };
+            client.connect();
+            //logger.info(client.getDraft());
+            int num = 0;
+            while (!client.getReadyState().equals(ReadyState.OPEN)) {
+                if (num > 10000) {
+                    throw new RuntimeException("连接失败");
+                }
+                num++;
+                logger.info("正在连接...");
+            }
+            //连接成功,发送信息
+            client.send(message);
+            client.close();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }
