@@ -2,234 +2,38 @@
 <html lang="zh-CN" xmlns:th="https://www.thymeleaf.org/">
 
 <head>
-    <meta charset="UTF-8">
-    <title>wow big menu</title>
-
-    <!--响应式框架-->
-    <link rel='stylesheet' href='/webManager/css/bootstrap.min.css'>
-
-    <!--图标库-->
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css'>
-
-    <!--主要样式-->
-    <link rel="stylesheet" href="/webManager/css/style.css">
+    <link rel="icon" th:href="@{/images/icon.png}" type="image/x-icon"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dragon's Twilight 龙之暮</title>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/loading.css}">
 
 </head>
+
 <body>
+<h1>敬请期待</h1>
 
-<main class="site-wrapper">
-
-    <div class="pt-table desktop-768">
-
-        <div class="pt-tablecell page-home relative"
-             style="background-image: url(/images/bgManager.jpg);background-position:center;background-size: cover;">
-
-            <div class="overlay"></div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
-                        <div class="page-title  home text-center">
-						  <span class="heading-page" style="font-weight: bold;font-family: 'Microsoft YaHei'"> Dragon's Twilight 龙之暮
-						  </span>
-                            <p class="mt20">后台管理</p>
-                        </div>
-
-                        <div class="hexagon-menu clear">
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a onclick="changeSrc('https://mc.goblincwl.cn:8082/')" class="hex-content" href="#">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-server"></i>
-										</span>
-										<span class="title">Minecraft<br>服务器后台</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#548B54"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a href="#" class="hex-content" onclick="changeSrc('https://mc.goblincwl.cn:8081/')">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-code"></i>
-										</span>
-										<span class="title">Jenkins<br>项目部署</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#D2691E"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a href="#/" class="hex-content">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-link"></i>
-										</span>
-										<span class="title">WEBAPP<br>站点配置</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#AAAAAA"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a href="#" class="hex-content">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-id-badge"></i>
-										</span>
-										<span class="title">?</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#1e2530"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a href="#/" class="hex-content">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-life-ring"></i>
-										</span>
-										<span class="title">?</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#1e2530"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a href="#/" class="hex-content">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-clipboard"></i>
-										</span>
-										<span class="title">?</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#1e2530"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hexagon-item">
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="hex-item">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <a href="#/" class="hex-content">
-									<span class="hex-content-inner">
-										<span class="icon">
-											<i class="fa fa-map-signs"></i>
-										</span>
-										<span class="title">?</span>
-									</span>
-                                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z"
-                                              fill="#1e2530"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</main>
-<!--<div style="display: none">-->
-<!--    <span id="webInvId" th:text="${webInvId}"></span>-->
-<!--</div>-->
 </body>
-<script src="/webjars/jquery/3.5.1/dist/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/dist/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/custom/js/keyButtonCancled.js}"></script>
+<script type="text/javascript" th:src="@{/custom/js/commons.js}"></script>
 <script>
-    function changeSrc(url) {
-        window.parent.window.parent.changeSrc("?goUrl=" + url + "&actionId=6&isIframe=1");
-    }
+    $(function () {
+        $.ajax({
+            type: 'GET',
+            url: getRootPath() + '/webManager/getSideNavList',
+            success: function (res) {
+                $("#sideNav", parent.parent.document).html(res);
+                //添加首页选中样式
+                var activeId = 6;
+                $("#navLi" + activeId, parent.parent.document).addClass('liCheck');
+                $("#navA" + activeId, parent.parent.document).addClass('aCheck');
+                //更新服务器状态
+                parent.parent.pullServerSts();
+            }
+        })
+    })
 </script>
-<script src="/custom/js.js"></script>
 </html>

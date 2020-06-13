@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>CodePen - Valorant Button</title>
+</head>
+<body>
+<nav class="menu-wrap" id="menu-nav" th:fragment="sideNav(webNavIframeList)">
+    <div style="width:250px;height:30px;background: url('images/serverStatsBg.png');position:fixed;bottom: 0;">
+
+        <img id="serverImg" style="position:relative;margin-top: 2%" alt="服务器状态" src="">
+        <span id="serverSpan" style="position:relative;top: -25%;left: -1%;font-weight: bold"></span>
+    </div>
+    <div class="menu">
+        <ul th:each="webNavIframe:${webNavIframeList}">
+            <li th:id="'navLi'+${webNavIframe.id}"
+                th:class="${webNavIframe.liClass}">
+                <a th:id="'navA'+${webNavIframe.id}"
+                   th:onclick="changeSrc('?goUrl='+[[${webNavIframe.uri}]]+'&actionId='+[[${webNavIframe.id}]])">
+                    <i th:class="'fa fa-lg ' + ${webNavIframe.icon}"></i>
+                    <span class="nav-text" th:text="${webNavIframe.title}"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

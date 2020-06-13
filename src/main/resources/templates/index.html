@@ -2,63 +2,19 @@
 <html lang="zh-CN" xmlns:th="https://www.thymeleaf.org/">
 
 <head>
-    <link rel="icon" href="images/icon.png" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/images/icon.png}" type="image/x-icon"/>
     <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="Uwd1bTRQsC" />
+    <meta name="baidu-site-verification" content="Uwd1bTRQsC"/>
     <title>Dragon's Twilight 龙之暮</title>
-    <link rel="stylesheet" href="css/font-awesome.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/loading.css">
-    <link rel="stylesheet" href="/live2d/css/live2d.css"/>
-    <style type="text/css">
-        body {
-            background: url('/images/bgBack.jpg') 50% / cover no-repeat;
-        }
-
-        .menu-wrap ul li a {
-            cursor: pointer;
-        }
-
-        .mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: rgba(0, 0, 0, .6);
-            /*Opacity: 50%;*/
-        }
-
-        .liCheck {
-            background-color: #285e9d !important;
-        }
-
-        .aCheck {
-            color: #fff !important;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/loading.css}">
+    <link rel="stylesheet" th:href="@{/live2d/css/live2d.css}"/>
+    <link rel="stylesheet" th:href="@{/custom/css/indexNav.css}"/>
 </head>
 
-<body>
-<nav class="menu-wrap" id="menu-nav">
-    <div style="width:250px;height:30px;background: url('images/serverStatsBg.png');position:fixed;bottom: 0;">
-
-        <img id="serverImg" style="position:relative;margin-top: 2%" alt="服务器状态">
-        <span id="serverSpan" style="position:relative;top: -25%;left: -1%;font-weight: bold"></span>
-    </div>
-    <div class="menu">
-        <ul th:each="webNavIframe:${webNavIframeList}">
-            <li th:id="'navLi'+${webNavIframe.id}"
-                th:class="${webNavIframe.liClass}">
-                <a th:id="'navA'+${webNavIframe.id}"
-                   th:onclick="changeSrc('?goUrl='+[[${webNavIframe.uri}]]+'&actionId='+[[${webNavIframe.id}]]+'&isIframe=1')">
-                    <i th:class="'fa fa-lg ' + ${webNavIframe.icon}"></i>
-                    <span class="nav-text" th:text="${webNavIframe.title}"></span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<body style="background:url('/images/bgBack.jpg') 50% / cover no-repeat ">
+<nav id="sideNav"></nav>
 <div id="landlord" style="left: 80%">
     <!--    <div id="liveMessage" class="message" style="opacity:0"></div>-->
     <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
@@ -79,95 +35,21 @@
 
 <!--隐藏域-->
 <div style="display: none">
-    <p th:text="${actionId}" id="actionId">123</p>
+    <p th:text="${actionId}" id="actionId">actionId</p>
+    <p th:text="${loadSideNav}" id="loadSideNav">isIframe</p>
     <p id="live2dStats">0</p>
     <p id="live2dHiddenStats">0</p>
 </div>
 
 </body>
-<script src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
-<script type="text/javascript" th:inline="javascript">
-
-    $(function () {
-        updateCss();
-        pullServerSts();
-        setInterval(pullServerSts, 10000);
-
-
-    });
-
-    //填充服务器状态
-    function pullServerSts() {
-        let url = window.location.href;
-        if (url.indexOf("?goUrl=") === -1) {
-            $.ajax({
-                type: 'GET',
-                url: window.location.href + 'serverStatus',
-                success: function (res) {
-                    res = JSON.parse(res);
-                    const data = res.data;
-
-                    let serverSpan = $("#serverSpan");
-                    if (data.status === true) {
-                        $("#serverImg").attr("src", "images/serverEnabled.png");
-                        serverSpan.css("color", "#a1ffc1");
-                    } else {
-                        $("#serverImg").attr("src", "images/serverClose.png");
-                        serverSpan.css("color", "#ff8a84");
-                    }
-                    if (data.current_players > 9) {
-                        serverSpan.text(data.current_players);
-                    } else {
-                        serverSpan.text("\xa0" + data.current_players);
-                    }
-                }
-            })
-        }
-    }
-
-    //更新导航栏CSS样式
-    function updateCss() {
-        let activeId = $("#actionId").text();
-        if (activeId === 'none') {
-            //初始化样式
-            $("#navLi7").addClass("liCheck");
-            $("#navA7").addClass('aCheck');
-        } else {
-            //删除旧样式
-            $(".liCheck", parent.document).removeClass('liCheck');
-            $(".aCheck", parent.document).removeClass('aCheck');
-            //添加选中样式
-            $("#navLi" + activeId, parent.document).addClass('liCheck');
-            $("#navA" + activeId, parent.document).addClass('aCheck');
-        }
-    }
-
-    //改变iframe内容
-    function changeSrc(url) {
-        if (url === "#") {
-            return;
-        }
-        const iframe = document.getElementById("mainFrame");
-        iframe.src = encodeURI(url);
-    }
-
-    //加载iframe时动画
-    function stateChangeFirefox(_frame) {
-        const loader = document.getElementById("LoadDiv");
-        loader.style.display = "none";
-        _frame.style.visibility = "visible";
-        _frame.style.display = "block";
-    }
-
-    function test(test) {
-        console.log(test)
-    }
-</script>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/dist/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/custom/js/keyButtonCancled.js}"></script>
+<script type="text/javascript" th:src="@{/custom/js/commons.js}"></script>
 <script type="text/javascript">
     const message_Path = '/live2d/';
 </script>
-<script type="text/javascript" src="/live2d/js/live2d.js"></script>
-<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript" th:src="@{/live2d/js/live2d.js}"></script>
+<script type="text/javascript" th:src="@{/live2d/js/message.js}"></script>
 <script type="text/javascript">
     //检测父页面是否已经开启live2D，若已经开启则不在开启
     let live2dStats = $("#live2dStats", parent.document);
@@ -190,16 +72,16 @@
         $("#hiddenButton").css('visibility', 'hidden');
         $("#hiddenButton", parent.document).css('visibility', 'hidden');
         let childIframe = $("#mainFrame");
-        var childButton = childIframe.contents().find("#hiddenButton");
+        const childButton = childIframe.contents().find("#hiddenButton");
         if (typeof childButton === 'undefined' || childButton === null || childButton === "") {
-            return;
+
         } else {
             console.log(childButton);
             childButton.css('visibility', 'hidden');
             childButton.css('visibility', 'hidden');
-            ($("#mainFrame").contents().find("#live2dHiddenStats")).text('1');
+            (childIframe.contents().find("#live2dHiddenStats")).text('1');
         }
     }
 </script>
-<script src="/custom/js.js"></script>
+<script type="text/javascript" th:src="@{/custom/js/indexNav.js}"></script>
 </html>

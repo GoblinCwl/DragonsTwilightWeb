@@ -1,5 +1,6 @@
 package com.goblincwl.dragontwilight.controller;
 
+import com.goblincwl.dragontwilight.common.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.Result;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.WebNavIframe;
@@ -8,9 +9,12 @@ import com.goblincwl.dragontwilight.service.WebNavIframeService;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +36,15 @@ public class WebManagerController {
     }
 
     @GetMapping("/index")
-    public String index(Model model) {
-//        String webManagerIndexUri = "${webPath}/webManager/index";
-//        WebNavIframe webNavIframe = this.webNavIframeService.findNavByUri(webManagerIndexUri);
-//        model.addAttribute("webNavId", webNavIframe.getId());
+    public String index(@RequestParam Map<String, Object> param, Model model, HttpServletRequest request) {
+        //如果为空跳转到首页
+        try {
+            String actionId = (String) param.get("actionId");
+            //供页面上updateCss()进行样式渲染为本次选择的侧边栏
+            model.addAttribute("actionId", StringUtils.isEmpty(actionId) ? "none" : actionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "webManager/index";
     }
 
@@ -63,11 +72,12 @@ public class WebManagerController {
         return result.toString();
     }
 
-    @ResponseBody
-    @PostMapping("/loginCheck")
-    public String loginCheck(@RequestParam Map<String, Object> param) {
-        System.out.println(param.toString());
-        return "webManager/login";
+    @RequestMapping("/getSideNavList")
+    public String getSideNavList(Model model) {
+        //查询侧边栏列表
+        List<WebNavIframe> webNavIframeList = this.webNavIframeService.findNavList(new WebNavIframe());
+        model.addAttribute("webNavIframeList", webNavIframeList);
+        return "fragment/sideNav :: sideNav";
     }
 
 }

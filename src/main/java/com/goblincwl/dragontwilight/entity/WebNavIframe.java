@@ -25,6 +25,7 @@ public class WebNavIframe {
     private String icon;
     private Integer slot;
     private String liClass;
+    private Integer isAdmin;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -94,5 +95,15 @@ public class WebNavIframe {
 
     public void setLiClass(String liClass) {
         this.liClass = liClass;
+    }
+
+    public void setIsAdmin(Integer isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    @Basic
+    @Column(name = "is_admin")
+    public Integer getIsAdmin() {
+        return isAdmin;
     }
 }
