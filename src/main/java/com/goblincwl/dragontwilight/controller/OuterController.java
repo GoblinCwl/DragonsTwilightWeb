@@ -2,12 +2,14 @@ package com.goblincwl.dragontwilight.controller;
 
 import com.goblincwl.dragontwilight.common.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
+import com.goblincwl.dragontwilight.common.systemInfo.Linux;
 import com.goblincwl.dragontwilight.entity.WebOptions;
 import com.goblincwl.dragontwilight.service.MinecraftQqPlayerService;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,15 +40,22 @@ public class OuterController {
      */
     @GetMapping("/getPlayerQq")
     public String getPlayerQq(@RequestParam String playerName) {
-        CommonUtils.webSocketSend("ws://web.goblincwl.cn:35078", "{\"action\": \"executeCmd\", \"params\": {\"command\": \"say webSocket连接测试\"}}");
-
-
         String qq = this.minecraftQqPlayerService.findQqByPlayerName(playerName);
         if (StringUtils.isEmpty(qq)) {
             return ResultGenerator.genFailResult("未绑定QQ").toString();
         } else {
             return ResultGenerator.genSuccessResult(qq).toString();
         }
+    }
+
+
+    @GetMapping("/systemInfo")
+    public String systemInfo() {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("cpuUse", Linux.cpuUsage());
+        resultMap.put("diskUse", Linux.disk());
+        resultMap.put("memoryUse", Linux.memoryUsage());
+        return ResultGenerator.genSuccessResult(resultMap).toString();
     }
 
     /**

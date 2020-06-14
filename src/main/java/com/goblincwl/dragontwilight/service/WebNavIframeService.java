@@ -1,8 +1,11 @@
 package com.goblincwl.dragontwilight.service;
 
+import com.goblincwl.dragontwilight.common.EntityMap;
 import com.goblincwl.dragontwilight.entity.WebNavIframe;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ☪wl
@@ -14,4 +17,6 @@ public interface WebNavIframeService {
     List<WebNavIframe> findNavList(WebNavIframe webNavIframe);
 
     WebNavIframe findNavByUri(String webManagerIndeUri);
+
+    Map<String, Object> getDashboardDate(EntityMap<String, Object> entityMap) throws ParseException;
 }

@@ -24,7 +24,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         if (isLogin == null) {
             //放入错误消息
             request.setAttribute("msg", "请先登录");
-            request.getRequestDispatcher("/webManager/loginPage").forward(request, response);
+            request.getRequestDispatcher("/static/webManager/loginPage").forward(request, response);
             return false;
         } else {
             return true;

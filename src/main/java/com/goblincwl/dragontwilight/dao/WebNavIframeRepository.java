@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
-
 /**
  * @author ☪wl
  * @program dragons-twilight-web
@@ -14,5 +13,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface WebNavIframeRepository extends JpaRepository<WebNavIframe, Integer> {
-
 }

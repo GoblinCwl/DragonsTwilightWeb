@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.controller;
 
-import com.goblincwl.dragontwilight.common.CommonUtils;
+import com.goblincwl.dragontwilight.common.EntityMap;
 import com.goblincwl.dragontwilight.common.result.Result;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.WebNavIframe;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +80,14 @@ public class WebManagerController {
         List<WebNavIframe> webNavIframeList = this.webNavIframeService.findNavList(new WebNavIframe());
         model.addAttribute("webNavIframeList", webNavIframeList);
         return "fragment/sideNav :: sideNav";
+    }
+
+    @ResponseBody
+    @PostMapping("/getDashboardData")
+    public String getDashboardData(@RequestParam Map<String, Object> param, Model model) throws ParseException {
+        EntityMap<String, Object> entityMap = new EntityMap<>(param);
+        Map<String, Object> dashboardDate = this.webNavIframeService.getDashboardDate(entityMap);
+        return ResultGenerator.genSuccessResult(dashboardDate).toString();
     }
 
 }

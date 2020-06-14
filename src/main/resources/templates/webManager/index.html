@@ -3,24 +3,709 @@
 
 <head>
     <link rel="icon" th:href="@{/images/icon.png}" type="image/x-icon"/>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap-grid.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap-reboot.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/card/css/demo.css">
+    <link rel="stylesheet" href="/card/css/advanced-bootstrap4-cards.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dragon's Twilight 龙之暮</title>
     <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/loading.css}">
+    <link rel="stylesheet" th:href="@{/custom/css/myCard.css}">
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/chart/css/normalize.css}"/>-->
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/chart/css/default.css}">-->
 
 </head>
 
 <body>
-<h1>敬请期待</h1>
+
+<!--
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4">
+            <div class="card card-style-6 row">
+                <div class="img-container">
+                    <figure>
+                        <img class="rounded-circle" src="images/400.svg">
+                    </figure>
+                </div>
+                <div class="card-body no-author">
+                    <h5 class="card-title">Cheese 2018</h5>
+                    <p class="album-details">14 Boards / 136 Images</p>
+                </div>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4">
+            <div class="card card-style-6 row">
+                <div class="d-flex card-body meta">
+                    <div class="item">
+                        <i class="fe fe-clock"></i>
+                    </div>
+                    <div class="item ml-auto">
+                        <i class="fe fe-heart"></i>
+                    </div>
+                </div>
+                <div class="img-container has-meta">
+                    <figure>
+                        <img class="rounded-circle" src="images/400-2.svg">
+                    </figure>
+                </div>
+                <div class="card-body no-author">
+                    <h5 class="card-title">Gift 2002-2018</h5>
+                    <p class="album-details">14 Boards / 136 Images</p>
+                </div>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4">
+            <div class="card card-style-6 row">
+                <div class="img-container">
+                    <figure>
+                        <img class="rounded-circle" src="images/400-3.svg">
+                    </figure>
+                </div>
+                <div class="card-body has-author">
+                    <h5 class="card-title">Layers</h5>
+                    <div class="album-details">14 Boards / 136 Images</div>
+                </div>
+                <div class="author">
+                    <div class="d-inline"><img class="rounded-circle mr-2" src="images/avatar.png"></div>
+                    <div class="d-inline">Valeria</div>
+                </div>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4">
+            <div class="card card-style-6 row">
+                <div class="d-flex card-body meta">
+                    <div class="item">
+                        <i class="fe fe-clock"></i>
+                    </div>
+                    <div class="item ml-auto">
+                        <i class="fe fe-heart"></i>
+                    </div>
+                </div>
+                <div class="img-container has-meta">
+                    <figure>
+                        <img class="rounded-circle" src="images/400-4.svg">
+                    </figure>
+                </div>
+                <div class="card-body has-author">
+                    <h5 class="card-title">Nike Co 2018</h5>
+                    <div class="album-details">14 Boards / 136 Images</div>
+                </div>
+                <div class="author">
+                    <div class="d-inline"><img class="rounded-circle mr-2" src="images/avatar.png"></div>
+                    <div class="d-inline">Valeria</div>
+                </div>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+    </div> &lt;!&ndash;End Row&ndash;&gt;
+</div> &lt;!&ndash;End Container&ndash;&gt;
+
+-->
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-lg-3 px-4">
+            <div class="card card-style-8 row">
+                <div class="myDataCard" style="background-color: #17a2b8;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <span class="myDataNumber" id="userCount">--</span><br>
+                            <span>总玩家</span>
+                        </div>
+                        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-4">
+                            <figure>
+                                <i class="fa fa-4x fa-user" style="color: #148a9d"></i>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-style-8 row">
+                <div class="myDataCard" style="background-color: #6f42c1;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <span class="myDataNumber" id="textureCount">--</span><br>
+                            <span>总材质</span>
+                        </div>
+                        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-4">
+                            <figure>
+                                <i class="fa fa-4x fa-file-image-o" style="color: #5e38a4"></i>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-style-8 row">
+                <div class="myDataCard" style="background-color: #3fab6b;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <span class="myDataNumber" id="loginCount">--</span><br>
+                            <span>上线数</span>
+                        </div>
+                        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-4">
+                            <figure>
+                                <i class="fa fa-4x fa-signal" style="color: #2a7348;margin-left: -10%"></i>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-style-8 row">
+                <div class="myDataCard" style="background-color: #000000;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <span class="myDataNumber">0</span><br>
+                            <span>待定</span>
+                        </div>
+                        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-4">
+                            <figure>
+                                <i class="fa fa-4x fa-jpy" style="color: #f9fff9"></i>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 px-4">
+            <div class="card card-style-8 row">
+                <div class="htmleaf-content">
+                    <div style="margin:0 auto;">
+                        <div>
+                            <canvas id="canvas" width="200px" height="100px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!--End Row-->
+</div> <!--End Container-->
+
+
+<!--<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-7 row">
+                <div class="card-content">
+                    <div class="card-title">
+                        <div class="title">My Personal Card</div>
+                        <div class="card-icon ml-auto"><img src="images/mastercard.png"></div>
+                    </div>
+                    <div class="row-holder">
+                        <div class="">
+                            <span class="detail">Card Number</span>
+                            <span class="holder">xxxx-xxxx-xxxx-9867</span>
+                            <span class="detail">Card holder name</span>
+                            <span class="holder">Alex Parkinson</span>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="detail">Exp.</span>
+                            <span class="holder">12 / 29</span>
+                            <span class="detail">CVV / CVC</span>
+                            <span class="holder">765</span>
+                        </div>
+                    </div>
+                </div>
+                <a class="action-btn" href="">Edit details</a>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-7 row">
+                <div class="card-content">
+                    <div class="card-title">
+                        <div class="title">My Personal Card</div>
+                        <div class="card-icon ml-auto"><img src="images/visa.png"></div>
+                    </div>
+                    <div class="row-holder">
+                        <div class="">
+                            <span class="detail">Card Number</span>
+                            <span class="holder">xxxx-xxxx-xxxx-9867</span>
+                            <span class="detail">Card holder name</span>
+                            <span class="holder">Alex Parkinson</span>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="detail">Exp.</span>
+                            <span class="holder">12 / 29</span>
+                            <span class="detail">CVV / CVC</span>
+                            <span class="holder">765</span>
+                        </div>
+                    </div>
+                </div>
+                <a class="action-btn" href="">Edit details</a>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-7 row">
+                <div class="card-content">
+                    <div class="card-title">
+                        <div class="title">My Personal Card</div>
+                        <div class="card-icon ml-auto"><img src="images/mastercard.png"></div>
+                    </div>
+                    <div class="row-holder">
+                        <div class="">
+                            <span class="detail">Card Number</span>
+                            <span class="holder">xxxx-xxxx-xxxx-9867</span>
+                            <span class="detail">Card holder name</span>
+                            <span class="holder">Alex Parkinson</span>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="detail">Exp.</span>
+                            <span class="holder">12 / 29</span>
+                            <span class="detail">CVV / CVC</span>
+                            <span class="holder">765</span>
+                        </div>
+                    </div>
+                </div>
+                <a class="action-btn" href="">Edit details</a>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-3&ndash;&gt;
+    </div> &lt;!&ndash;End Row&ndash;&gt;
+</div> &lt;!&ndash;End Container&ndash;&gt;
+
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-4">
+                <span class="card-title py-2 px-4 ml-4">My stuffs</span>
+
+                <div class="card-body">
+                    <div class="d-flex pt-3 pb-2">
+                        <div class="p-2 last-modified">Last edit 2d ago</div>
+                        <div class="ml-auto p-2 post-actions">
+                            <i class="fe fe-star mr-3"></i>
+                            <i class="fe fe-edit-3"></i>
+                        </div>
+                    </div>
+                    <div class="styled-input-container styled-input&#45;&#45;square mb-4">
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-1" id="checkbox2-example-1"/>
+                            <label for="checkbox2-example-1">Sit at the bottom of apple tree</label>
+                        </div>
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-1" id="checkbox2-example-2"/>
+                            <label for="checkbox2-example-2">Avoid getting hit by falling apple</label>
+                        </div>
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-1" id="checkbox2-example-3"/>
+                            <label for="checkbox2-example-3">Explore gravity</label>
+                        </div>
+                        <span>View all tasks</span>
+                        <button type="button" class="btn btn-primary btn-sm btn-block mt-3">Add to do</button>
+                    </div>
+                    <div class="d-flex flex-row-reverse card-meta">
+                        <div>
+                            <div class="view d-inline">
+                                <i class="fe fe-mic pr-1 mr-3"></i>
+                            </div>
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-trash-2 pr-1"></i>
+                            </div>
+                            <div class="heart d-inline">
+                                <i class="fe fe-paperclip pr-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-4">
+                <span class="card-title py-2 px-4 ml-4">My stuffs</span>
+                <div class="card-body">
+                    <div class="d-flex pt-3 pb-2">
+                        <div class="p-2 last-modified">Last edit 2d ago</div>
+                        <div class="ml-auto p-2 post-actions">
+                            <i class="fe fe-star mr-3"></i>
+                            <i class="fe fe-edit-3"></i>
+                        </div>
+                    </div>
+                    <div class="styled-input-container styled-input&#45;&#45;square mb-4">
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-2" id="checkbox2-example-4"/>
+                            <label for="checkbox2-example-4">Sit at the bottom of apple tree</label>
+                        </div>
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-2" id="checkbox2-example-5"/>
+                            <label for="checkbox2-example-5">Avoid getting hit by falling apple</label>
+                        </div>
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-2" id="checkbox2-example-6"/>
+                            <label for="checkbox2-example-6">Explore gravity</label>
+                        </div>
+                        <span>View all tasks</span>
+                        <button type="button" class="btn btn-primary btn-sm btn-block mt-3">Add to do</button>
+                    </div>
+                    <div class="d-flex flex-row-reverse card-meta">
+                        <div>
+                            <div class="view d-inline">
+                                <i class="fe fe-mic pr-1 mr-3"></i>
+                            </div>
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-trash-2 pr-1"></i>
+                            </div>
+                            <div class="heart d-inline">
+                                <i class="fe fe-paperclip pr-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-4">
+                <span class="card-title py-2 px-4 ml-4">My stuffs</span>
+                <div class="card-body">
+                    <div class="d-flex pt-3 pb-2">
+                        <div class="p-2 last-modified">Last edit 2d ago</div>
+                        <div class="ml-auto p-2 post-actions">
+                            <i class="fe fe-star mr-3"></i>
+                            <i class="fe fe-edit-3"></i>
+                        </div>
+                    </div>
+                    <div class="styled-input-container styled-input&#45;&#45;square mb-4">
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-3" id="checkbox2-example-one"/>
+                            <label for="checkbox2-example-one">Sit at the bottom of apple tree</label>
+                        </div>
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-3" id="checkbox2-example-two"/>
+                            <label for="checkbox2-example-two">Avoid getting hit by falling apple</label>
+                        </div>
+                        <div class="styled-input-single">
+                            <input type="checkbox" name="fieldset-3" id="checkbox2-example-three"/>
+                            <label for="checkbox2-example-three">Explore gravity</label>
+                        </div>
+                        <span>View all tasks</span>
+                        <button type="button" class="btn btn-primary btn-sm btn-block mt-3">Add to do</button>
+                    </div>
+                    <div class="d-flex flex-row-reverse card-meta">
+                        <div>
+                            <div class="view d-inline">
+                                <i class="fe fe-mic pr-1 mr-3"></i>
+                            </div>
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-trash-2 pr-1"></i>
+                            </div>
+                            <div class="heart d-inline">
+                                <i class="fe fe-paperclip pr-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+    </div> &lt;!&ndash;End Row&ndash;&gt;
+</div> &lt;!&ndash;End Container&ndash;&gt;
+
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-1">
+                <figure>
+                    <img src="images/bg-1.png"/>
+                    <div class="circle"><i class="fe fe-star"></i></i></div>
+                </figure>
+                <div class="card-body pb-0">
+                    <h5 class="text-center">The Sky Was Purple</h5>
+                    <span class="date mb-2">Posted: August 15, 2018</span>
+                    <p class="content pt-2">Apparently we had reached a great height in the atmosphere, for the sky was
+                        a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon
+                        of the sea to the level of the spectator on a hillside, the sable cloud beneath was.</p>
+                </div>
+                <a class="view-detail py-3" href="">View Details</a>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-1">
+                <figure>
+                    <img src="images/bg-2.png"/>
+                    <div class="circle"><i class="fe fe-camera"></i></i></div>
+                </figure>
+                <div class="card-body pb-0">
+                    <h5 class="text-center">Live The Moment</h5>
+                    <span class="date mb-2">Posted: September 9, 2018</span>
+                    <p class="content pt-2">Nulla consequat auctor non, dictum quis, dictum quis, enim aliquam pharetra
+                        elementum. Mauris mattis vel, Mauris mattis vel, dui. Cras non porta tincidunt. Sed aliquet
+                        ultrices iaculis. In hac habitasse platea dictumst. Nulla mi at sagittis vel, sapien.</p>
+                </div>
+                <a class="view-detail py-3" href="">View Details</a>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-1">
+                <figure>
+                    <img src="images/bg-17.png"/>
+                    <div class="circle"><i class="fe fe-cloud-rain"></i></i></div>
+                </figure>
+                <div class="card-body pb-0">
+                    <h5 class="text-center">The Journey</h5>
+                    <span class="date mb-2">Posted:  July 23, 2018</span>
+                    <p class="content pt-2">Blogs are everywhere! This can be both wonderful and overwhelming. If you
+                        have an interest in a topic, all you have to do is search for that topic plus the word “blog,”
+                        and you’re likely to find some excellent blogs out there. Below, you’ll find sample.</p>
+                </div>
+                <a class="view-detail py-3" href="">View Details</a>
+            </div>
+        </div>
+    </div> &lt;!&ndash; End Row &ndash;&gt;
+</div> &lt;!&ndash; End Container &ndash;&gt;
+
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-2">
+                <figure>
+                    <img src="images/bg-4.png"/>
+                </figure>
+                <div class="card-body">
+                    <a class="post-link" href="#">The Orange Country</a>
+                    <p class="content pt-2 pb-4">Look, my liege! The Knights Who Say Ni demand a sacrifice! …Are you
+                        suggesting that coconuts migr...</p>
+                    <div class="d-flex">
+                        <div class="p-2"><img class="avatar" src="images/avatar-2.png"></div>
+                        <div class="p-2 author">
+                            <div>Adrian Lenin</div>
+                            <div class="post-date">7 July 2018</div>
+                        </div>
+                        <div class="ml-auto p-2"><i class="fe fe-heart"></i></div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-2">
+                <figure>
+                    <img src="images/bg-5.png"/>
+                </figure>
+                <div class="card-body">
+                    <a class="post-link" href="#">Crown of Flowers</a>
+                    <p class="content pt-2 pb-4">It’s no secret that the digital industry is booming. From exciting
+                        startups, companies are reaching out to digital agencies.</p>
+                    <div class="d-flex">
+                        <div class="p-2"><img class="avatar" src="images/avatar-2.png"></div>
+                        <div class="p-2 author">
+                            <div>Joel Muni</div>
+                            <div class="post-date">1 January 2018</div>
+                        </div>
+                        <div class="ml-auto p-2"><i class="fe fe-heart"></i></div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-2">
+                <figure>
+                    <img src="images/bg-7.png"/>
+                </figure>
+                <div class="card-body">
+                    <a class="post-link" href="#">My Adventure in Alps</a>
+                    <p class="content pt-2 pb-4">Being creative within the constraints of client briefs, budgets and
+                        timelines is the norm for most agencies.</p>
+                    <div class="d-flex">
+                        <div class="p-2"><img class="avatar" src="images/avatar-2.png"></div>
+                        <div class="p-2 author">
+                            <div>Sanni Banas</div>
+                            <div class="post-date">29 March 2018</div>
+                        </div>
+                        <div class="ml-auto p-2"><i class="fe fe-heart"></i></div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+    </div> &lt;!&ndash;End Row&ndash;&gt;
+</div> &lt;!&ndash;End Container&ndash;&gt;
+
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-3">
+                <div class="d-flex py-3 post-meta">
+                    <div class="p-2"><img class="avatar" src="images/avatar.png"></div>
+                    <div class="p-2 author">
+                        <div>Nathan Butler</div>
+                        <div class="location"><i class="fe fe-map-pin"></i> US, California</div>
+                    </div>
+                    <div class="ml-auto mt-3 p-2 post-date">15 May 2018</div>
+                </div>
+                <figure>
+                    <img src="images/bg-11.jpg"/>
+                </figure>
+                <div class="card-body">
+                    <a class="post-link" href="#">The Moon Light</a>
+                    <p class="content pt-2 pb-4">Being creative within the constraints of client briefs, budgets and
+                        timelines is the norm for most agencies.</p>
+                    <div class="d-flex post-details">
+                        <div>
+                            <i class="fe fe-link pr-2"></i>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-eye pr-1"></i> 2193
+                            </div>
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-message-circle pr-1"></i> 136
+                            </div>
+                            <div class="heart d-inline">
+                                <i class="fe fe-heart pr-1"></i> 560
+                            </div>
+                        </div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-3">
+                <div class="d-flex py-3 post-meta">
+                    <div class="p-2"><img class="avatar" src="images/avatar.png"></div>
+                    <div class="p-2 author">
+                        <div>Enia Suthar</div>
+                        <div class="location"><i class="fe fe-map-pin"></i> England, London</div>
+                    </div>
+                    <div class="ml-auto mt-3 p-2 post-date">8 September 2018</div>
+                </div>
+                <figure>
+                    <img src="images/bg-13.png"/>
+                </figure>
+                <div class="card-body">
+                    <a class="post-link" href="#">Minimal is Perfect</a>
+                    <p class="content pt-2 pb-4">Look, my liege! The Knights Who Say Ni demand a sacrifice! …Are you
+                        suggesting that coconuts migr...</p>
+                    <div class="d-flex post-details">
+                        <div class="">
+                            <i class="fe fe-link pr-2"></i>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-eye pr-1"></i> 4193
+                            </div>
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-message-circle pr-1"></i> 736
+                            </div>
+                            <div class="heart d-inline">
+                                <i class="fe fe-heart pr-1"></i> 1260
+                            </div>
+                        </div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+        <div class="col-12 col-md-6 col-lg-4 px-4">
+            <div class="card card-style-3">
+                <div class="d-flex py-3 post-meta">
+                    <div class="p-2"><img class="avatar" src="images/avatar.png"></div>
+                    <div class="p-2 author">
+                        <div>Chris Sahil</div>
+                        <div class="location"><i class="fe fe-map-pin"></i> Japan, Tokyo</div>
+                    </div>
+                    <div class="ml-auto mt-3 p-2 post-date">3 June 2018</div>
+                </div>
+                <figure>
+                    <img src="images/bg-14.png"/>
+                </figure>
+                <div class="card-body">
+                    <a class="post-link" href="#">Turquoise Ring</a>
+                    <p class="content pt-2 pb-4">It’s no secret that the digital industry is booming. From exciting
+                        startups, companies are reaching out to digital agencies.</p>
+                    <div class="d-flex post-details">
+                        <div class="">
+                            <i class="fe fe-link pr-2"></i>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-eye pr-1"></i> 1816
+                            </div>
+                            <div class="view d-inline mr-3">
+                                <i class="fe fe-message-circle pr-1"></i> 97
+                            </div>
+                            <div class="heart d-inline">
+                                <i class="fe fe-heart pr-1"></i> 320
+                            </div>
+                        </div>
+                    </div>
+                </div> &lt;!&ndash;End Card Body&ndash;&gt;
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-4&ndash;&gt;
+    </div> &lt;!&ndash;End Row&ndash;&gt;
+</div> &lt;!&ndash;End Container&ndash;&gt;
+
+
+<div class="container my-4 py-4">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-lg-6 px-4">
+            <div class="card card-style-5 row">
+                <div class="col-sm-4 col-12 img-container">
+                    <figure>
+                        <img src="images/bg-13.png">
+                    </figure>
+                </div>
+                <div class="col-sm-8 col-12 py-4">
+                    <a class="card-link">El captain climb</a>
+                    <p class="card-content pt-2">Buttons will appear pressed (with a darker background, darker border,
+                        and inset shadow) when active. When determining the correct size for an image intended for the
+                        web</p>
+                    <div class="d-flex card-meta">
+                        <div class="view d-inline">
+                            <i class="fe fe-clock pr-1"></i>
+                            <span class="post-date">2 days ago</span>
+                        </div>
+                        <a class="ml-auto read-more" href="">Read more</a>
+                    </div>
+                </div>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-6&ndash;&gt;
+        <div class="col-12 col-sm-12 col-lg-6 px-4">
+            <div class="card card-style-5 row">
+                <div class="col-sm-4 col-12 img-container">
+                    <figure>
+                        <img src="images/bg-14.jpg">
+                    </figure>
+                </div>
+                <div class="col-sm-8 col-12 py-4">
+                    <a class="card-link">For a walk</a>
+                    <p class="card-content pt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec
+                        eleifend risus. Vestibulum vel lacinia enim. Quisque vel convallis velit, vitae rutrum neque.
+                        Nunc accumsan sem sit amet finibus</p>
+                    <div class="d-flex card-meta">
+                        <div class="view d-inline">
+                            <i class="fe fe-clock pr-1"></i>
+                            <span class="post-date">2 days ago</span>
+                        </div>
+                        <a class="ml-auto read-more" href="">Read more</a>
+                    </div>
+                </div>
+            </div> &lt;!&ndash; End Card&ndash;&gt;
+        </div> &lt;!&ndash; End Col-sm-6&ndash;&gt;
+    </div> &lt;!&ndash;End Row&ndash;&gt;
+</div> &lt;!&ndash;End Container&ndash;&gt;-->
+
 
 </body>
 <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/dist/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/custom/js/keyButtonCancled.js}"></script>
 <script type="text/javascript" th:src="@{/custom/js/commons.js}"></script>
+<script th:src="@{/chart/js/Chart.js}"></script>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
     $(function () {
+        //加载侧边栏
         $.ajax({
             type: 'GET',
             url: getRootPath() + '/webManager/getSideNavList',
@@ -33,7 +718,104 @@
                 //更新服务器状态
                 parent.parent.pullServerSts();
             }
-        })
-    })
+        });
+        //加载仪表盘数据
+        const date = new Date();
+        $.ajax({
+            type: 'POST',
+            url: getRootPath() + '/webManager/getDashboardData',
+            data: {
+                "startDate": addDate(date, -6),
+                "endDate": addDate(date, 0)
+            },
+            success: function (res) {
+                res = JSON.parse(res);
+                const data = res.data;
+
+                console.log(data.userRegData['2020-06-08']);
+                var dataList = [];
+
+
+                $("#userCount").text(data.userCount);
+                $("#textureCount").text(data.textureCount);
+                $("#loginCount").text(data.loginCount);
+                //填充统计图
+                var lineChartData = {
+                    labels: [
+                        addDateNoYear(date, -6),
+                        addDateNoYear(date, -5),
+                        addDateNoYear(date, -4),
+                        addDateNoYear(date, -3),
+                        addDateNoYear(date, -2),
+                        addDateNoYear(date, -1),
+                        addDateNoYear(date, 0)
+                    ],
+                    datasets: [
+                        {
+                            label: "用户注册",
+                            fillColor: "rgba(23,188,209,0.2)",
+                            strokeColor: "#148a9d",
+                            pointColor: "#148a9d",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#ffa547",
+                            pointHighlightStroke: "rgb(255,165,71)",
+                            data: [
+                                data.userRegData[addDate(date, -6)],
+                                data.userRegData[addDate(date, -5)],
+                                data.userRegData[addDate(date, -4)],
+                                data.userRegData[addDate(date, -3)],
+                                data.userRegData[addDate(date, -2)],
+                                data.userRegData[addDate(date, -1)],
+                                data.userRegData[addDate(date, 0)]
+                            ]
+                        },
+                        {
+                            label: "材质上传",
+                            fillColor: "rgba(209,30,184,0.2)",
+                            strokeColor: "#5e38a4",
+                            pointColor: "#5e38a4",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#ffa547",
+                            pointHighlightStroke: "rgb(255,165,71)",
+                            data: [
+                                data.textureUploadData[addDate(date, -6)],
+                                data.textureUploadData[addDate(date, -5)],
+                                data.textureUploadData[addDate(date, -4)],
+                                data.textureUploadData[addDate(date, -3)],
+                                data.textureUploadData[addDate(date, -2)],
+                                data.textureUploadData[addDate(date, -1)],
+                                data.textureUploadData[addDate(date, 0)]
+                            ]
+                        },
+                        {
+                            label: "登陆玩家",
+                            fillColor: "rgba(42,115,72,0.2)",
+                            strokeColor: "#3fab6b",
+                            pointColor: "#3fab6b",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#ffa547",
+                            pointHighlightStroke: "rgb(255,165,71)",
+                            data: [
+                                data.userLoginData[addDate(date, -6)],
+                                data.userLoginData[addDate(date, -5)],
+                                data.userLoginData[addDate(date, -4)],
+                                data.userLoginData[addDate(date, -3)],
+                                data.userLoginData[addDate(date, -2)],
+                                data.userLoginData[addDate(date, -1)],
+                                data.userLoginData[addDate(date, 0)]
+                            ]
+                        }
+                    ]
+
+                };
+
+                var ctx = document.getElementById("canvas").getContext("2d");
+                window.myLine = new Chart(ctx).Line(lineChartData, {
+                    responsive: true
+                });
+            }
+        });
+
+    });
 </script>
 </html>

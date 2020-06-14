@@ -22,7 +22,11 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.net.*;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CommonUtils {
 
@@ -251,5 +255,25 @@ public class CommonUtils {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 计算日期相差天数
+     *
+     * @param startDate 开始日期
+     * @param endDate   截止日期
+     * @return java.lang.Long
+     * @create 2020/6/14 19:48
+     * @author ☪wl
+     * @document ShowDoc:
+     */
+    public static Long calDateBetweenDays(Date startDate, Date endDate) {
+        // 获取相差的天数
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        long timeInMillis1 = calendar.getTimeInMillis();
+        calendar.setTime(endDate);
+        long timeInMillis2 = calendar.getTimeInMillis();
+        return (timeInMillis2 - timeInMillis1) / (1000L * 3600L * 24L);
     }
 }
