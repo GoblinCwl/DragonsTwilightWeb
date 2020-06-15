@@ -7,6 +7,7 @@ import com.goblincwl.dragontwilight.entity.WebOptions;
 import com.goblincwl.dragontwilight.service.BlessingUsersService;
 import com.goblincwl.dragontwilight.service.MinecraftQqPlayerService;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ import java.util.Objects;
  * @description 外部接口访问 Controller
  * @create 2020-05-28 9:25
  */
-//@RestController
+@Controller
 @RequestMapping("/outer")
 public class OuterController {
 
