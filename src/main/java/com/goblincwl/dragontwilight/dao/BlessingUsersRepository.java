@@ -20,4 +20,10 @@ public interface BlessingUsersRepository extends JpaRepository<BlessingUsers, In
             "FROM BLESSING_USERS\n" +
             "WHERE DATE_FORMAT(REGISTER_AT, '%Y-%m-%d') = :date")
     long getDateCount(@Param("date") String date);
+
+    @Query(nativeQuery = true, value = "SELECT BP.NAME\n" +
+            "FROM BLESSING_USERS BU\n" +
+            "         LEFT JOIN BLESSING_PLAYERS BP ON BU.UID = BP.UID\n" +
+            "WHERE BP.NAME IS NOT NULL AND BU.EMAIL = :userName")
+    String getPlayerNameByUserName(@Param("userName") String userName);
 }

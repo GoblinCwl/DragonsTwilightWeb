@@ -20,4 +20,9 @@ public class BlessingUsersServiceImpl implements BlessingUsersService {
     public BlessingUsersServiceImpl(BlessingUsersRepository blessingUsersRepository) {
         this.blessingUsersRepository = blessingUsersRepository;
     }
+
+    @Override
+    public String getPlayerNameByUserName(String userName) {
+        return this.blessingUsersRepository.getPlayerNameByUserName(userName);
+    }
 }

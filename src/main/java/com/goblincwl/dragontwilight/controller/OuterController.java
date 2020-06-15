@@ -4,13 +4,19 @@ import com.goblincwl.dragontwilight.common.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.common.systemInfo.Linux;
 import com.goblincwl.dragontwilight.entity.WebOptions;
+import com.goblincwl.dragontwilight.service.BlessingUsersService;
 import com.goblincwl.dragontwilight.service.MinecraftQqPlayerService;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author ☪wl
@@ -18,16 +24,18 @@ import java.util.Map;
  * @description 外部接口访问 Controller
  * @create 2020-05-28 9:25
  */
-@RestController
+//@RestController
 @RequestMapping("/outer")
 public class OuterController {
 
     private final MinecraftQqPlayerService minecraftQqPlayerService;
     private final WebOptionsService webOptionsService;
+    private final BlessingUsersService blessingUsersService;
 
-    public OuterController(MinecraftQqPlayerService minecraftQqPlayerService, WebOptionsService webOptionsService) {
+    public OuterController(MinecraftQqPlayerService minecraftQqPlayerService, WebOptionsService webOptionsService, BlessingUsersService blessingUsersService) {
         this.minecraftQqPlayerService = minecraftQqPlayerService;
         this.webOptionsService = webOptionsService;
+        this.blessingUsersService = blessingUsersService;
     }
 
     /**
@@ -56,6 +64,48 @@ public class OuterController {
         resultMap.put("diskUse", Linux.disk());
         resultMap.put("memoryUse", Linux.memoryUsage());
         return ResultGenerator.genSuccessResult(resultMap).toString();
+    }
+
+
+    /**
+     * 根据用户邮箱huoqu用户皮肤
+     *
+     * @param userName 用户名（邮箱）
+     * @return void
+     * @create 2020/6/15 22:16
+     * @author ☪wl
+     */
+    @GetMapping("/getImage")
+    public void GetImage(@RequestParam String userName, HttpServletResponse response) throws IOException {
+        InputStream inStream = null;
+        OutputStream os = null;
+        try {
+            //通过用户名获取游戏ID
+            String playerName = this.blessingUsersService.getPlayerNameByUserName(userName);
+            URL url = new URL("https://skin.goblincwl.cn/skin/" + playerName + ".png");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5 * 1000);
+            inStream = conn.getInputStream();//通过输入流获取图片数据
+            //读取输入流数据
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[2048];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+            byte[] data = outStream.toByteArray();
+            inStream.read(data);  //读数据
+            response.setContentType("image/jpg"); //设置返回的文件类型
+            os = response.getOutputStream();
+            os.write(data);
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Objects.requireNonNull(inStream).close();
+            Objects.requireNonNull(os).close();
+        }
     }
 
     /**

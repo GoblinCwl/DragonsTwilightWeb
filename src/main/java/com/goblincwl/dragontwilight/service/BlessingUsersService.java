@@ -7,4 +7,5 @@ package com.goblincwl.dragontwilight.service;
  * @create 2020-06-14 18:34
  */
 public interface BlessingUsersService {
+    String getPlayerNameByUserName(String userName);
 }
