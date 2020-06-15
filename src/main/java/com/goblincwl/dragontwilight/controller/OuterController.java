@@ -46,6 +46,7 @@ public class OuterController {
      * @create 2020/5/28 15:02
      * @author ☪wl
      */
+    @ResponseBody
     @GetMapping("/getPlayerQq")
     public String getPlayerQq(@RequestParam String playerName) {
         String qq = this.minecraftQqPlayerService.findQqByPlayerName(playerName);
@@ -96,7 +97,9 @@ public class OuterController {
             }
             byte[] data = outStream.toByteArray();
             inStream.read(data);  //读数据
-            response.setContentType("image/jpg"); //设置返回的文件类型
+            response.setContentType("image/png"); //设置返回的文件类型
+            response.setHeader("Cache-Control", "private, must-revalidate");
+            response.setHeader("pragma", "no-cache");
             os = response.getOutputStream();
             os.write(data);
             os.flush();
@@ -120,6 +123,7 @@ public class OuterController {
      * @author ☪wl
      * @document
      */
+    @ResponseBody
     @GetMapping("/coolQHttp")
     public String coolQHttp(@RequestParam Map<String, Object> param) {
         //发送人QQ
