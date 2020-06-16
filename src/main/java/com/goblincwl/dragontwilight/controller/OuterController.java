@@ -95,6 +95,7 @@ public class OuterController {
             try {
                 //通过用户名获取游戏ID
                 String playerName = this.blessingUsersService.getPlayerNameByUserName(userName);
+                LOG.info("获取皮肤时名称：" + userName);
                 url = new URL("https://skin.goblincwl.cn/skin/" + playerName + ".png");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
