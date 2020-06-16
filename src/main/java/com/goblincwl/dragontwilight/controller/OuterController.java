@@ -1,7 +1,7 @@
 package com.goblincwl.dragontwilight.controller;
 
-import com.goblincwl.dragontwilight.common.CommonUtils;
-import com.goblincwl.dragontwilight.common.exception.DtWebException;
+import com.alibaba.fastjson.JSONObject;
+import com.goblincwl.dragontwilight.common.utils.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.common.systemInfo.Linux;
 import com.goblincwl.dragontwilight.entity.WebOptions;
@@ -14,10 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -65,19 +63,8 @@ public class OuterController {
         }
     }
 
-
-    @GetMapping("/systemInfo")
-    public String systemInfo() {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("cpuUse", Linux.cpuUsage());
-        resultMap.put("diskUse", Linux.disk());
-        resultMap.put("memoryUse", Linux.memoryUsage());
-        return ResultGenerator.genSuccessResult(resultMap).toString();
-    }
-
-
     /**
-     * 根据用户邮箱huoqu用户皮肤
+     * 根据用户邮箱获取用户皮肤
      *
      * @param userName 用户名（邮箱）
      * @return void
@@ -152,6 +139,12 @@ public class OuterController {
         String sendQq = (String) param.get("fq");
         //返回内容
         String resultMsg;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("return_code", 0);
+        jsonObject.put("return_message", "测试");
+        jsonObject.put("appver", 0);
+        jsonObject.put("update_url", "");
+        jsonObject.put("return_type", 104);
         //关键字
         String key = ((String) param.get("key"));
         if (key.startsWith("#功能 ")) {
@@ -169,6 +162,7 @@ public class OuterController {
         } else {
             resultMsg = "none";
         }
-        return " {\"return_code\":0,\"return_message\":\"" + resultMsg + "\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
+//        return " {\"return_code\":0,\"return_message\":\"" + resultMsg + "\",\"appver\":0,\"update_url\":\"\",\"return_type\":104}";
+        return " "+jsonObject.toJSONString();
     }
 }

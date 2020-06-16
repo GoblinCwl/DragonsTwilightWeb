@@ -1,8 +1,7 @@
 package com.goblincwl.dragontwilight.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.goblincwl.dragontwilight.common.CommonConfig;
-import com.goblincwl.dragontwilight.common.CommonUtils;
+import com.goblincwl.dragontwilight.common.utils.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.WebNavIframe;
 import com.goblincwl.dragontwilight.entity.WebOptions;

@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.common;
+package com.goblincwl.dragontwilight.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -22,8 +22,6 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.net.*;
 import java.util.Calendar;
 import java.util.Date;
