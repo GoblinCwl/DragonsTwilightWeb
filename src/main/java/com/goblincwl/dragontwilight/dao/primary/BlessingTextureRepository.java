@@ -1,6 +1,6 @@
-package com.goblincwl.dragontwilight.dao;
+package com.goblincwl.dragontwilight.dao.primary;
 
-import com.goblincwl.dragontwilight.entity.BlessingTextures;
+import com.goblincwl.dragontwilight.entity.primary.BlessingTextures;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

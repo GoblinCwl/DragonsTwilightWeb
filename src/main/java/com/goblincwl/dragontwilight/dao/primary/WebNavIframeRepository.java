@@ -1,6 +1,6 @@
-package com.goblincwl.dragontwilight.dao;
+package com.goblincwl.dragontwilight.dao.primary;
 
-import com.goblincwl.dragontwilight.entity.WebNavIframe;
+import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

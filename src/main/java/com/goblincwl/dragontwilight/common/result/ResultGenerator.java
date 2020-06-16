@@ -1,5 +1,8 @@
 package com.goblincwl.dragontwilight.common.result;
 
+import com.goblincwl.dragontwilight.common.exception.DtWebException;
+import org.slf4j.Logger;
+
 import java.util.List;
 
 /**
@@ -42,5 +45,22 @@ public class ResultGenerator {
      */
     public static Result genFailResult(String message) {
         return new Result(message, ResultCode.FAIL, null);
+    }
+
+    /**
+     * 返回错误封装
+     *
+     * @param defaultMsg 默认消息
+     * @param log        日志对象
+     * @param e          异常对象
+     * @return com.goblincwl.dragontwilight.common.result.Result
+     * @create 2020/6/16 22:54
+     * @author ☪wl
+     * @document ShowDoc:
+     */
+    public static String autoReturnFailResult(String defaultMsg, Logger log, Exception e) {
+        String resultMsg = (e instanceof DtWebException) ? e.getMessage() : defaultMsg;
+        log.error(resultMsg, e);
+        return ResultGenerator.genFailResult(resultMsg).toString();
     }
 }

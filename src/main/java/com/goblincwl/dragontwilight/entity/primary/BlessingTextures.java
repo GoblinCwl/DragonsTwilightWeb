@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.entity;
+package com.goblincwl.dragontwilight.entity.primary;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

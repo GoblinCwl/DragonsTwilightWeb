@@ -3,8 +3,8 @@ package com.goblincwl.dragontwilight.controller;
 import com.goblincwl.dragontwilight.common.EntityMap;
 import com.goblincwl.dragontwilight.common.result.Result;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
-import com.goblincwl.dragontwilight.entity.WebNavIframe;
-import com.goblincwl.dragontwilight.entity.WebOptions;
+import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
+import com.goblincwl.dragontwilight.entity.primary.WebOptions;
 import com.goblincwl.dragontwilight.service.WebNavIframeService;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -1,12 +1,13 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.MinecraftQqPlayerRepository;
-import com.goblincwl.dragontwilight.entity.MinecraftQqPlayer;
+import com.goblincwl.dragontwilight.dao.primary.MinecraftQqPlayerRepository;
+import com.goblincwl.dragontwilight.entity.primary.MinecraftQqPlayer;
 import com.goblincwl.dragontwilight.service.MinecraftQqPlayerService;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,10 +27,12 @@ public class MinecraftQqPlayerServiceImpl implements MinecraftQqPlayerService {
     }
 
     @Override
-    public String findQqByPlayerName(String playerName) {
-        MinecraftQqPlayer minecraftQqPlayer = new MinecraftQqPlayer();
-        minecraftQqPlayer.setName(playerName);
-        Optional<MinecraftQqPlayer> qqPlayer = this.minecraftQqPlayerRepository.findOne(Example.of(minecraftQqPlayer));
-        return qqPlayer.map(MinecraftQqPlayer::getQq).orElse(null);
+    public MinecraftQqPlayer findOne(MinecraftQqPlayer minecraftQqPlayer) {
+        return this.minecraftQqPlayerRepository.findOne(Example.of(minecraftQqPlayer)).orElse(null);
+    }
+
+    @Override
+    public List<MinecraftQqPlayer> findList(MinecraftQqPlayer minecraftQqPlayer) {
+        return this.minecraftQqPlayerRepository.findAll(Example.of(minecraftQqPlayer));
     }
 }

@@ -18,4 +18,8 @@ public class DtWebException extends RuntimeException {
         this.code = code;
         this.message = message;
     }
+
+    public DtWebException(String message) {
+        this.message = message;
+    }
 }

@@ -37,6 +37,15 @@ public class CommonUtils {
         this.tomcatServletWebServerFactory = tomcatServletWebServerFactory;
     }
 
+    /**
+     * 转换UUID为有-的
+     *
+     * @param uuId
+     * @return java.lang.String
+     * @create 2020/6/16 11:04
+     * @author ☪wl
+     * @document ShowDoc:
+     */
     public static String convertUUId(String uuId) {
         String sub1 = uuId.substring(0, 8);
         String sub2 = uuId.substring(8, 12);
@@ -106,10 +115,10 @@ public class CommonUtils {
 
 
     /**
-     * POST无参
+     * 发送POST请求
      *
-     * @param url
-     * @param params
+     * @param url    请求URL
+     * @param params 请求参数
      * @return void
      * @create 2020/5/27 0:39
      * @author ☪wl
@@ -153,6 +162,16 @@ public class CommonUtils {
         return resultJson;
     }
 
+    /**
+     * 发送POST请求 请求体参数
+     *
+     * @param url    请求URL
+     * @param object 请求参数
+     * @return com.alibaba.fastjson.JSONObject
+     * @create 2020/6/16 11:05
+     * @author ☪wl
+     * @document ShowDoc:
+     */
     public JSONObject httpPost(String url, Object object) {
         JSONObject resultJson = null;
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
@@ -263,7 +282,6 @@ public class CommonUtils {
      * @return java.lang.Long
      * @create 2020/6/14 19:48
      * @author ☪wl
-     * @document ShowDoc:
      */
     public static Long calDateBetweenDays(Date startDate, Date endDate) {
         // 获取相差的天数
@@ -273,5 +291,22 @@ public class CommonUtils {
         calendar.setTime(endDate);
         long timeInMillis2 = calendar.getTimeInMillis();
         return (timeInMillis2 - timeInMillis1) / (1000L * 3600L * 24L);
+    }
+
+    /**
+     * 封装lodeApi WebSocket消息格式
+     *
+     * @param action 执行操作["executeCmd":"执行指令"]
+     * @param param  json参数
+     * @return com.alibaba.fastjson.JSONObject
+     * @create 2020/6/16 11:07
+     * @author ☪wl
+     * @document ShowDoc:
+     */
+    public static JSONObject lodeApiParam(String action, JSONObject param) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action", action);
+        jsonObject.put("params", param);
+        return jsonObject;
     }
 }

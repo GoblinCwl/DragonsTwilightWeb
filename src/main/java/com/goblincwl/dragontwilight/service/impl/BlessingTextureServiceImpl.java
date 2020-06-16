@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.BlessingTextureRepository;
+import com.goblincwl.dragontwilight.dao.primary.BlessingTextureRepository;
 import com.goblincwl.dragontwilight.service.BlessingTextureService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

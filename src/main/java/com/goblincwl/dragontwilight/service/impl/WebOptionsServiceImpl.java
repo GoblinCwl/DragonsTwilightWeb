@@ -1,7 +1,7 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.WebOptionsRepository;
-import com.goblincwl.dragontwilight.entity.WebOptions;
+import com.goblincwl.dragontwilight.dao.primary.WebOptionsRepository;
+import com.goblincwl.dragontwilight.entity.primary.WebOptions;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

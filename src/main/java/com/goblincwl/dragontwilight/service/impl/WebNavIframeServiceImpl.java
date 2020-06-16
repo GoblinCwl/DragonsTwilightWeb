@@ -2,11 +2,11 @@ package com.goblincwl.dragontwilight.service.impl;
 
 import com.goblincwl.dragontwilight.common.utils.CommonUtils;
 import com.goblincwl.dragontwilight.common.EntityMap;
-import com.goblincwl.dragontwilight.dao.BlessingTextureRepository;
-import com.goblincwl.dragontwilight.dao.BlessingUsersRepository;
-import com.goblincwl.dragontwilight.dao.BlessingYggLogRepository;
-import com.goblincwl.dragontwilight.dao.WebNavIframeRepository;
-import com.goblincwl.dragontwilight.entity.WebNavIframe;
+import com.goblincwl.dragontwilight.dao.primary.BlessingTextureRepository;
+import com.goblincwl.dragontwilight.dao.primary.BlessingUsersRepository;
+import com.goblincwl.dragontwilight.dao.primary.BlessingYggLogRepository;
+import com.goblincwl.dragontwilight.dao.primary.WebNavIframeRepository;
+import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
 import com.goblincwl.dragontwilight.service.WebNavIframeService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;

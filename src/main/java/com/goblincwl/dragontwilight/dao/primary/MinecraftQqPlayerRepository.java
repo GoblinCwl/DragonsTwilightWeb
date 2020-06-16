@@ -1,6 +1,6 @@
-package com.goblincwl.dragontwilight.dao;
+package com.goblincwl.dragontwilight.dao.primary;
 
-import com.goblincwl.dragontwilight.entity.MinecraftQqPlayer;
+import com.goblincwl.dragontwilight.entity.primary.MinecraftQqPlayer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

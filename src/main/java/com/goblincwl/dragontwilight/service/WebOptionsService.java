@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service;
 
-import com.goblincwl.dragontwilight.entity.WebOptions;
+import com.goblincwl.dragontwilight.entity.primary.WebOptions;
 
 /**
  * @author ☪wl

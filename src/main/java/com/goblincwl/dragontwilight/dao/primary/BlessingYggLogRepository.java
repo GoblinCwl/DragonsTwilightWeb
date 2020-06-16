@@ -1,6 +1,6 @@
-package com.goblincwl.dragontwilight.dao;
+package com.goblincwl.dragontwilight.dao.primary;
 
-import com.goblincwl.dragontwilight.entity.BlessingYggLog;
+import com.goblincwl.dragontwilight.entity.primary.BlessingYggLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
