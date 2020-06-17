@@ -205,7 +205,7 @@ public class OuterController {
             minecraftQqPlayer.setQq(sendQq);
             MinecraftQqPlayer minecraftQqPlayerResult = this.minecraftQqPlayerService.findOne(minecraftQqPlayer);
             if (minecraftQqPlayerResult == null) {
-                throw new DtWebException("签到失败，请先绑定游戏ID！");
+                throw new DtWebException("@" + sendQq + "，签到失败！\n请先绑定游戏ID！");
             }
             //玩家名称
             String playerName = minecraftQqPlayerResult.getName();
@@ -214,14 +214,14 @@ public class OuterController {
             blessingUuid.setName(playerName);
             BlessingUuid blessingUuidResult = this.blessingUuidService.findONe(blessingUuid);
             if (blessingUuidResult == null) {
-                throw new DtWebException("@" + playerName + "，签到失败，数据异常，请联系管理员。");
+                throw new DtWebException("@" + playerName + "，签到失败！\n数据异常，请联系管理员。");
             }
             //查询玩家签到数据
             VexSign vexSign = new VexSign();
             vexSign.setSignUuid(CommonUtils.convertUUId(blessingUuidResult.getUuid()));
             VexSign vexSignResult = this.vexSignService.findOne(vexSign);
             if (vexSignResult == null) {
-                throw new DtWebException("@" + playerName + "，签到失败，你至少要在游戏中签到过一次才可以在QQ群内签到！");
+                throw new DtWebException("@" + playerName + "，签到失败！\n你至少要登陆过一次客户但才能在群内签到！");
             }
             //通过反射获取当前日期的get方法
             String nowDay = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
