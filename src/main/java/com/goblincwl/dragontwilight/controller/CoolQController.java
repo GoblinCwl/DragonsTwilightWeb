@@ -143,7 +143,7 @@ public class CoolQController {
         StringBuilder stringBuilder = new StringBuilder();
         //玩家名称
         String playerName = getPlayerName(sendQq);
-        stringBuilder.append("=====").append(playerName).append("的邮箱").append("=====").append("\n");
+        stringBuilder.append(playerName).append("的邮箱").append("\n");
         //查询玩家邮箱
         MailboxPlayer mailboxPlayer = new MailboxPlayer();
         mailboxPlayer.setRecipient(playerName);
@@ -153,11 +153,11 @@ public class CoolQController {
             stringBuilder.append("这里面空空如也~");
         } else {
             for (MailboxPlayer mail : mailboxPlayerList) {
-                stringBuilder.append("-----------------------------").append("\n");
-                stringBuilder.append("发件人：").append(mail.getSender()).append("\n");
-                stringBuilder.append("发送时间：").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mail.getSendtime())).append("\n");
+                stringBuilder.append("------------------------------").append("\n");
+                stringBuilder.append("来自：").append(mail.getSender()).append("\n");
+                stringBuilder.append("时间：").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(mail.getSendtime())).append("\n");
                 stringBuilder.append("标题：").append(mail.getTopic()).append("\n");
-                stringBuilder.append("是否有附件：").append(("0".equals(mail.getFilename())) ? "否" : "是").append("\n");
+                stringBuilder.append("附件：").append(("0".equals(mail.getFilename())) ? "无" : "有").append("\n");
             }
         }
         return stringBuilder.toString();
