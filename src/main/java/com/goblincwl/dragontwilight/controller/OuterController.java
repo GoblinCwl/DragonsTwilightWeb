@@ -228,7 +228,7 @@ public class OuterController {
             Method getSignDayMethod = vexSignResult.getClass().getMethod("getSignDay" + nowDay);
             String signDay = String.valueOf(getSignDayMethod.invoke(vexSignResult));
             if ("1".equals(signDay)) {
-                throw new DtWebException("@" + playerName + "，签到失败，你今天已经签到过了！！");
+                throw new DtWebException("@" + playerName + "，签到失败！\n你今天已经签到过了！！");
             } else {
                 //签到
                 WebOptions webOptions = this.webOptionsService.findByKey("lodeWebSocketApiUri");
