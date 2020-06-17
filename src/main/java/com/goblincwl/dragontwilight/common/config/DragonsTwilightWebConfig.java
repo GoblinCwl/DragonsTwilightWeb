@@ -1,6 +1,5 @@
 package com.goblincwl.dragontwilight.common.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
  * @create 2020-05-24 0:39
  */
 @Configuration
-@PropertySource(value = "classpath:dragonsTwilight.properties")
-public class CommonConfig {
+@PropertySource(value = "classpath:properties/dragonsTwilight.properties")
+public class DragonsTwilightWebConfig {
 
 }

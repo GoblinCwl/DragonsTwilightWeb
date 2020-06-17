@@ -168,7 +168,7 @@ public class OuterController {
             //执行方法
             message = doCoolQWork(sendQq, key);
         } catch (Exception e) {
-            message = (e instanceof DtWebException) ? e.getMessage() : "酷Q接口请求异常！";
+            message = (e instanceof DtWebException) ? e.getMessage() : "酷Q接口请求异常！\n请联系管理员。";
             LOG.error(message, e);
         }
         jsonObject.put("return_message", message);

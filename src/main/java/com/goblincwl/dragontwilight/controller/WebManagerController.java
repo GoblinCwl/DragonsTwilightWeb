@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.controller;
 
-import com.goblincwl.dragontwilight.common.EntityMap;
+import com.goblincwl.dragontwilight.common.entity.EntityMap;
 import com.goblincwl.dragontwilight.common.result.Result;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;

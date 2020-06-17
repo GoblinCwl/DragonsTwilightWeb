@@ -1,7 +1,7 @@
 package com.goblincwl.dragontwilight.service.impl;
 
 import com.goblincwl.dragontwilight.common.utils.CommonUtils;
-import com.goblincwl.dragontwilight.common.EntityMap;
+import com.goblincwl.dragontwilight.common.entity.EntityMap;
 import com.goblincwl.dragontwilight.dao.primary.BlessingTextureRepository;
 import com.goblincwl.dragontwilight.dao.primary.BlessingUsersRepository;
 import com.goblincwl.dragontwilight.dao.primary.BlessingYggLogRepository;

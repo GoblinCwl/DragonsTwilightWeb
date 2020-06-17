@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service;
 
-import com.goblincwl.dragontwilight.common.EntityMap;
+import com.goblincwl.dragontwilight.common.entity.EntityMap;
 import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
 
 import java.text.ParseException;
