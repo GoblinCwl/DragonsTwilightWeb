@@ -139,6 +139,14 @@ public class CoolQController {
         }
     }
 
+    /**
+     * #邮箱 查询玩家邮箱数据
+     *
+     * @param sendQq 发送人QQ
+     * @return java.lang.String
+     * @create 2020/6/17 22:15
+     * @author ☪wl
+     */
     private String mailBox(String sendQq) {
         StringBuilder stringBuilder = new StringBuilder();
         //玩家名称
@@ -164,7 +172,7 @@ public class CoolQController {
     }
 
     /**
-     * #签到
+     * #签到 玩家签到
      *
      * @param sendQq 发送人QQ
      * @return java.lang.String

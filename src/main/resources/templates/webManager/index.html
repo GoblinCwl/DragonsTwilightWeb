@@ -162,17 +162,17 @@
                 </div>
             </div>
             <div class="card card-style-8 row">
-                <div class="myDataCard" style="background-color: #000000;">
+                <div class="myDataCard" style="background-color: #b5362f;">
                     <div class="row">
-                        <div class="col-lg-5">
-                            <span class="myDataNumber">0</span><br>
-                            <span>待定</span>
+                        <div class="col-lg-6">
+                            <span class="myDataNumber" id="moneyCount">--</span><br>
+                            <span>收入/成本</span>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                         </div>
                         <div class="col-lg-4">
                             <figure>
-                                <i class="fa fa-4x fa-jpy" style="color: #f9fff9"></i>
+                                <i class="fa fa-4x fa-jpy" style="color: #7f2621"></i>
                             </figure>
                         </div>
                     </div>
@@ -739,6 +739,7 @@
                 $("#userCount").text(data.userCount);
                 $("#textureCount").text(data.textureCount);
                 $("#loginCount").text(data.loginCount);
+                $("#moneyCount").text(data.moneyCount);
                 //填充统计图
                 var lineChartData = {
                     labels: [
@@ -803,6 +804,42 @@
                                 data.userLoginData[addDate(date, -2)],
                                 data.userLoginData[addDate(date, -1)],
                                 data.userLoginData[addDate(date, 0)]
+                            ]
+                        },
+                        {
+                            label: "签到数量",
+                            fillColor: "rgba(171,140,59,0.2)",
+                            strokeColor: "#ab9728",
+                            pointColor: "#ab8c3b",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#ffa547",
+                            pointHighlightStroke: "rgb(255,165,71)",
+                            data: [
+                                data.playerSignData[addDate(date, -6)],
+                                data.playerSignData[addDate(date, -5)],
+                                data.playerSignData[addDate(date, -4)],
+                                data.playerSignData[addDate(date, -3)],
+                                data.playerSignData[addDate(date, -2)],
+                                data.playerSignData[addDate(date, -1)],
+                                data.playerSignData[addDate(date, 0)]
+                            ]
+                        },
+                        {
+                            label: "收入/成本",
+                            fillColor: "rgba(181,54,47,0.2)",
+                            strokeColor: "#b5362f",
+                            pointColor: "#b5362f",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#ffa547",
+                            pointHighlightStroke: "rgb(255,165,71)",
+                            data: [
+                                data.moneyRecordData[addDate(date, -6)],
+                                data.moneyRecordData[addDate(date, -5)],
+                                data.moneyRecordData[addDate(date, -4)],
+                                data.moneyRecordData[addDate(date, -3)],
+                                data.moneyRecordData[addDate(date, -2)],
+                                data.moneyRecordData[addDate(date, -1)],
+                                data.moneyRecordData[addDate(date, 0)]
                             ]
                         }
                     ]

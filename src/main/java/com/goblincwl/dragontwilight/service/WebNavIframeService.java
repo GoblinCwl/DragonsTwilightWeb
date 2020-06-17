@@ -3,6 +3,7 @@ package com.goblincwl.dragontwilight.service;
 import com.goblincwl.dragontwilight.common.entity.EntityMap;
 import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -18,5 +19,5 @@ public interface WebNavIframeService {
 
     WebNavIframe findNavByUri(String webManagerIndeUri);
 
-    Map<String, Object> getDashboardDate(EntityMap<String, Object> entityMap) throws ParseException;
+    Map<String, Object> getDashboardDate(EntityMap<String, Object> entityMap) throws ParseException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 }
