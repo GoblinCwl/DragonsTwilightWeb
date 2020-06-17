@@ -153,7 +153,7 @@ public class CoolQController {
             stringBuilder.append("这里面空空如也~");
         } else {
             for (MailboxPlayer mail : mailboxPlayerList) {
-                stringBuilder.append("------------------------------").append("\n");
+                stringBuilder.append("----------------------------").append("\n");
                 stringBuilder.append("来自：").append(mail.getSender()).append("\n");
                 stringBuilder.append("时间：").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(mail.getSendtime())).append("\n");
                 stringBuilder.append("标题：").append(mail.getTopic()).append("\n");
