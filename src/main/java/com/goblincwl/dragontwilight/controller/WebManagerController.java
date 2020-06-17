@@ -46,7 +46,7 @@ public class WebManagerController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "/webManager/index";
+        return "webManager/index";
     }
 
     @GetMapping("/loginPage")
