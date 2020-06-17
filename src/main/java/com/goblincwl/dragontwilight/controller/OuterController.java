@@ -221,7 +221,7 @@ public class OuterController {
             vexSign.setSignUuid(CommonUtils.convertUUId(blessingUuidResult.getUuid()));
             VexSign vexSignResult = this.vexSignService.findOne(vexSign);
             if (vexSignResult == null) {
-                throw new DtWebException("@" + playerName + "，签到失败！\n你至少要登陆过一次客户但才能在群内签到！");
+                throw new DtWebException("@" + playerName + "，签到失败！\n你至少要登陆过一次客户端才能在群内签到！");
             }
             //通过反射获取当前日期的get方法
             String nowDay = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
