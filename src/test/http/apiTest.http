@@ -1,0 +1,21 @@
+#酷Q接口
+#fq：发送者QQ
+#key：发送指令
+GET https://localhost:9000/coolQ?fq=2395025802&key=#邮箱
+Accept: application/json
+
+###
+
+#根据玩家名获取玩家QQ号
+#playerName：玩家名
+GET https://localhost:9000/outer/getPlayerQq?playerName=GoblinCwl
+Accept: application/json
+
+###
+
+#根据用户名获取玩家皮肤
+#userName：用户登陆名
+GET https://localhost:9000/outer/getImage?userName=goblincwl@qq.com
+Accept: application/json
+
+###
