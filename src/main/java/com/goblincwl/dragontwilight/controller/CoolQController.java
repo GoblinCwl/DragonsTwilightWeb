@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -155,6 +156,7 @@ public class CoolQController {
         //查询玩家邮箱
         MailboxPlayer mailboxPlayer = new MailboxPlayer();
         mailboxPlayer.setRecipient(playerName);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         List<MailboxPlayer> mailboxPlayerList = this.mailboxPlayerService.findList(mailboxPlayer);
         if (CollectionUtils.isEmpty(mailboxPlayerList)) {
             //如果没有邮件
@@ -163,7 +165,13 @@ public class CoolQController {
             for (MailboxPlayer mail : mailboxPlayerList) {
                 stringBuilder.append("===============").append("\n");
                 stringBuilder.append("来自：").append(mail.getSender()).append("\n");
-                stringBuilder.append("时间：").append(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(mail.getSendtime())).append("\n");
+                stringBuilder.append("时间：").append(sdf.format(mail.getSendtime())).append("\n");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date(mail.getSendtime().getTime()));
+                //邮件过期时间，30天
+                calendar.add(Calendar.DAY_OF_MONTH, 29);
+                calendar.add(Calendar.HOUR_OF_DAY, -8);
+                stringBuilder.append("到期：").append(sdf.format(calendar.getTime())).append("\n");
                 stringBuilder.append("标题：").append(mail.getTopic()).append("\n");
                 stringBuilder.append("附件：").append(("0".equals(mail.getFilename())) ? "无" : "有").append("\n");
             }
