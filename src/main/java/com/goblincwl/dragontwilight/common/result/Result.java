@@ -69,9 +69,6 @@ public class Result {
         ValueFilter filter = (object, name, value) -> {
             if (value == null && !"data".equals(name))
                 return "";
-            if ("data".equals(name) && value != null && value.toString().length() < 5) {
-                value = null;
-            }
             return value;
         };
         filters[0] = filter;

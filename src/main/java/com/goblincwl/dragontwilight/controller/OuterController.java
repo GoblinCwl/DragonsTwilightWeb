@@ -3,6 +3,7 @@ package com.goblincwl.dragontwilight.controller;
 import com.goblincwl.dragontwilight.common.exception.DtWebException;
 import com.goblincwl.dragontwilight.common.utils.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
+import com.goblincwl.dragontwilight.entity.primary.BlessingPlayers;
 import com.goblincwl.dragontwilight.entity.primary.MinecraftQqPlayer;
 import com.goblincwl.dragontwilight.service.*;
 import org.slf4j.Logger;
@@ -30,17 +31,13 @@ public class OuterController {
 
     private final static Logger LOG = LoggerFactory.getLogger(OuterController.class);
     private final MinecraftQqPlayerService minecraftQqPlayerService;
-    private final WebOptionsService webOptionsService;
     private final BlessingUsersService blessingUsersService;
-    private final VexSignService vexSignService;
-    private final BlessingUuidService blessingUuidService;
+    private final BlessingPlayersService blessingPlayersService;
 
-    public OuterController(MinecraftQqPlayerService minecraftQqPlayerService, WebOptionsService webOptionsService, BlessingUsersService blessingUsersService, VexSignService vexSignService, BlessingUuidService blessingUuidService) {
+    public OuterController(MinecraftQqPlayerService minecraftQqPlayerService, BlessingUsersService blessingUsersService, BlessingPlayersService blessingPlayersService) {
         this.minecraftQqPlayerService = minecraftQqPlayerService;
-        this.webOptionsService = webOptionsService;
         this.blessingUsersService = blessingUsersService;
-        this.vexSignService = vexSignService;
-        this.blessingUuidService = blessingUuidService;
+        this.blessingPlayersService = blessingPlayersService;
     }
 
     /**
@@ -70,6 +67,25 @@ public class OuterController {
             return ResultGenerator.autoReturnFailResult("获取玩家QQ号异常!", LOG, e);
         }
         return ResultGenerator.genSuccessResult(qq).toString();
+    }
+
+    @ResponseBody
+    @GetMapping("/getPlayerSkinId")
+    public String getPlayerSkinId(@RequestParam String playerName) {
+        String skinId;
+        try {
+            BlessingPlayers blessingPlayers = new BlessingPlayers();
+            blessingPlayers.setName(playerName);
+            BlessingPlayers blessingPlayersResult = this.blessingPlayersService.findOne(blessingPlayers);
+            if (blessingPlayersResult != null) {
+                skinId = String.valueOf(blessingPlayersResult.getTidSkin());
+            } else {
+                throw new DtWebException("未找到该玩家！");
+            }
+        } catch (Exception e) {
+            return ResultGenerator.autoReturnFailResult("获取玩家皮肤ID异常！", LOG, e);
+        }
+        return ResultGenerator.genSuccessResult(skinId).toString();
     }
 
     /**
@@ -128,8 +144,6 @@ public class OuterController {
             Objects.requireNonNull(os).close();
         }
     }
-
-
 
 
 }
