@@ -94,7 +94,7 @@
 	<!--设置日志打印级别为INFO-->
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
-		<appender-ref ref="FILEINFO"/>
+<!--		<appender-ref ref="FILEINFO"/>-->
 		<appender-ref ref="FILEWARN"/>
 		<appender-ref ref="FILEERROR"/>
 	</root>
