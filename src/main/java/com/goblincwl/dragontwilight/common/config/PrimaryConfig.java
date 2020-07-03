@@ -24,7 +24,10 @@ import java.util.Objects;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactoryPrimary",
         transactionManagerRef = "transactionManagerPrimary",
-        basePackages = {"com.goblincwl.dragontwilight.dao.primary"}) //设置Repository所在位置
+        basePackages = {
+                "com.goblincwl.dragontwilight.repository.primary",
+                "com.goblincwl.dragontwilight.yggdrasil.repository"
+        })
 public class PrimaryConfig {
 
     @Resource(name = "primaryDruidDataSource")
@@ -42,7 +45,10 @@ public class PrimaryConfig {
         return builder
                 .dataSource(primaryDruidDataSource)
                 .properties(jpaProperties.getProperties())
-                .packages("com.goblincwl.dragontwilight.entity.primary") //设置实体类所在位置
+                .packages(
+                        "com.goblincwl.dragontwilight.entity.primary",
+                        "com.goblincwl.dragontwilight.yggdrasil.entity"
+                ) //设置实体类所在位置
                 .persistenceUnit("primaryPersistenceUnit")
                 .build();
     }

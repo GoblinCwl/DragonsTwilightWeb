@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.primary.MinecraftQqPlayerRepository;
+import com.goblincwl.dragontwilight.repository.primary.MinecraftQqPlayerRepository;
 import com.goblincwl.dragontwilight.entity.primary.MinecraftQqPlayer;
 import com.goblincwl.dragontwilight.service.MinecraftQqPlayerService;
 import org.springframework.data.domain.Example;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author ☪wl

@@ -23,7 +23,7 @@ import java.util.Objects;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactorySlave",
         transactionManagerRef = "transactionManagerSlave",
-        basePackages = {"com.goblincwl.dragontwilight.dao.slave"}) //设置Repository所在位置
+        basePackages = {"com.goblincwl.dragontwilight.repository.slave"}) //设置Repository所在位置
 public class SlaveConfig {
 
     @Resource(name = "slaveDruidDataSource")

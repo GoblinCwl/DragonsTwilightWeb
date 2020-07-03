@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.primary.BlessingPlayersRepository;
+import com.goblincwl.dragontwilight.repository.primary.BlessingPlayersRepository;
 import com.goblincwl.dragontwilight.entity.primary.BlessingPlayers;
 import com.goblincwl.dragontwilight.service.BlessingPlayersService;
 import org.springframework.data.domain.Example;

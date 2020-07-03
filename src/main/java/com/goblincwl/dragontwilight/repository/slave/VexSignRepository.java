@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.dao.slave;
+package com.goblincwl.dragontwilight.repository.slave;
 
 import com.goblincwl.dragontwilight.entity.slave.VexSign;
 import org.springframework.data.jpa.repository.JpaRepository;

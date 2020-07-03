@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.slave.VexSignRepository;
+import com.goblincwl.dragontwilight.repository.slave.VexSignRepository;
 import com.goblincwl.dragontwilight.entity.slave.VexSign;
 import com.goblincwl.dragontwilight.service.VexSignService;
 import org.springframework.data.domain.Example;

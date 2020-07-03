@@ -2,8 +2,8 @@ package com.goblincwl.dragontwilight.service.impl;
 
 import com.goblincwl.dragontwilight.common.utils.CommonUtils;
 import com.goblincwl.dragontwilight.common.entity.EntityMap;
-import com.goblincwl.dragontwilight.dao.primary.*;
-import com.goblincwl.dragontwilight.dao.slave.VexSignRepository;
+import com.goblincwl.dragontwilight.repository.primary.*;
+import com.goblincwl.dragontwilight.repository.slave.VexSignRepository;
 import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
 import com.goblincwl.dragontwilight.entity.slave.VexSign;
 import com.goblincwl.dragontwilight.service.WebNavIframeService;

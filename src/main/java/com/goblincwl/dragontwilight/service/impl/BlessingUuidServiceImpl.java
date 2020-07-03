@@ -1,6 +1,6 @@
 package com.goblincwl.dragontwilight.service.impl;
 
-import com.goblincwl.dragontwilight.dao.primary.BlessingUuidRepository;
+import com.goblincwl.dragontwilight.repository.primary.BlessingUuidRepository;
 import com.goblincwl.dragontwilight.entity.primary.BlessingUuid;
 import com.goblincwl.dragontwilight.service.BlessingUuidService;
 import org.springframework.data.domain.Example;

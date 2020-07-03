@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.dao.primary;
+package com.goblincwl.dragontwilight.repository.primary;
 
 import com.goblincwl.dragontwilight.entity.primary.BlessingUsers;
 import org.springframework.data.jpa.repository.JpaRepository;
