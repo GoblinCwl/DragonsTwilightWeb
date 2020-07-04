@@ -1,6 +1,11 @@
 package com.goblincwl.dragontwilight.yggdrasil;
 
-import com.goblincwl.dragontwilight.yggdrasil.dto.*;
+import com.alibaba.fastjson.JSONObject;
+import com.goblincwl.dragontwilight.yggdrasil.dto.request.*;
+import com.goblincwl.dragontwilight.yggdrasil.dto.response.AuthenticateResponse;
+import com.goblincwl.dragontwilight.yggdrasil.dto.response.ErrorResponse;
+import com.goblincwl.dragontwilight.yggdrasil.dto.response.JSONResponse;
+import com.goblincwl.dragontwilight.yggdrasil.dto.response.RefreshResponse;
 import com.goblincwl.dragontwilight.yggdrasil.entity.YggToken;
 import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
 import com.goblincwl.dragontwilight.yggdrasil.exception.YggdrasilException;
@@ -9,7 +14,7 @@ import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
 import com.goblincwl.dragontwilight.yggdrasil.service.YggTokenService;
 import com.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
 import com.goblincwl.dragontwilight.yggdrasil.service.cache.CacheService;
-import com.goblincwl.dragontwilight.yggdrasil.utils.minecraft.MCUUIDUtil;
+import com.goblincwl.dragontwilight.yggdrasil.utils.MCUUIDUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,13 +24,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -85,15 +88,16 @@ public class AuthServerController {
                 .build();
     }
 
+    /**
+     * 登录认证
+     *
+     * @return com.goblincwl.dragontwilight.yggdrasil.dto.response.JSONResponse
+     * @create 2020/7/4 14:35
+     * @author ☪wl
+     */
     @RequestMapping(value = "/yggdrasil/authserver/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object authenticate(@RequestBody @Valid AuthenticateRequest request, BindingResult bindingResult) {
+    public JSONResponse authenticate(@RequestBody AuthenticateRequest request, HttpServletResponse response) {
         try {
-            // 检查是否有参数绑定错误
-            if (bindingResult.getAllErrors().size() != 0) {
-                // 抛出绑定异常
-                throw new YggdrasilException("ForbiddenOperationException", "请输入正确的用户名和密码！");
-            }
-
             // 检查请求是否携带有 ClientToken，未携带则进行添加
             if (!StringUtils.hasText(request.getClientToken())) {
                 request.setClientToken(MCUUIDUtil.getRandomNonWhipUUID());
@@ -119,133 +123,167 @@ public class AuthServerController {
                 throw new YggdrasilException("ForbiddenOperationException", "密码错误");
             }
 
-            // 初始化回复
+            //服务器只用一个玩家一个号，所以始终选定唯一的profile
+            MCProfile userProfile = MCProfile.builder()
+                    .id(yggUser.getUUID())
+                    .name(yggUser.getPlayerName())
+                    .build();
+            ArrayList<MCProfile> availableProfiles = new ArrayList<>();
+            availableProfiles.add(userProfile);
+
+            //返回地JSON对象
             AuthenticateResponse authenticateResponse = AuthenticateResponse.builder()
                     .accessToken(MCUUIDUtil.getRandomNonWhipUUID())
                     .clientToken(request.getClientToken())
+                    .availableProfiles(availableProfiles)
+                    .selectedProfile(userProfile)
+                    .user(MCUser.builder()
+                            .id(yggUser.getUUID())
+                            .properties(new ArrayList<>())
+                            .build())
                     .build();
 
-            // 构建用户可用角色信息
-//            List<MCProfile> availableProfiles = new ArrayList<>();
-//            availableProfiles.add(yggPlayerProfileService.getBriefMCProfile(yggUser));
-//            authenticateResponse.setAvailableProfiles(availableProfiles);
-
-            // 构建用户选择角色信息
-            authenticateResponse.setSelectedProfile(
-                    MCProfile.builder()
-                            .id(yggUser.getProfileUUID())
-                            .name(yggUser.getProfileName())
-                            .properties(new ArrayList<>())
-                            .build()
-            );
-
-            // 构建可选的用户信息
-            if (request.getRequestUser()) {
-                MCUser user = yggUserService.getMCUserByYggUser(yggUser);
-                authenticateResponse.setUser(user);
-            }
 
             // 登录成功，移除密码防爆
             cacheService.clearBruteTimeCount(request.getUsername());
-
             // 储存登录缓存
             this.yggTokenService.createToken(yggUser, authenticateResponse.getAccessToken(), authenticateResponse.getClientToken());
+
             return authenticateResponse;
+
         } catch (Exception e) {
+            String error = "ERROR";
+            String errorMessage = "未知错误";
             if (e instanceof YggdrasilException) {
-                LOG.error(((YggdrasilException) e).getErrorMessage());
-                return e;
+                error = ((YggdrasilException) e).getError();
+                errorMessage = ((YggdrasilException) e).getErrorMessage();
             } else {
-                LOG.error("认证服务器异常", e);
-                return YggdrasilException.builder()
-                        .error("ForbiddenOperationException")
-                        .errorMessage("未知错误，请联系服主")
-                        .build();
+                LOG.error("yggdrasil登陆验证异常", e);
             }
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return ErrorResponse.builder()
+                    .error(error)
+                    .errorMessage(errorMessage)
+                    .build();
         }
     }
 
+    /**
+     * 令牌刷新
+     *
+     * @return com.goblincwl.dragontwilight.yggdrasil.dto.response.JSONResponse
+     * @create 2020/7/4 14:35
+     * @author ☪wl
+     */
     @PostMapping("/yggdrasil/authserver/refresh")
-    public RefreshResponse refresh(@RequestBody @Valid RefreshRequest request, BindingResult bindingResult) {
-        // 检查参数绑定是否有错
-        if (bindingResult.getAllErrors().size() != 0) {
-            throw new YggdrasilException("ForbiddenOperationException", "绑定错误，无法识别输入数据！");
+    public JSONResponse refresh(@RequestBody RefreshRequest request, HttpServletResponse response) {
+        try {
+            // 初始化 token， 准备拉取
+            YggToken yggToken;
+
+            // 判断进行的拉取模式
+            if (!StringUtils.hasText(request.getClientToken())) {
+                yggToken = yggTokenService.getTokenByAccessToken(request.getAccessToken());
+            } else {
+                yggToken = yggTokenService.getTokenByBothToken(request.getAccessToken(), request.getClientToken());
+            }
+
+            // 如果没能拉取到 token，抛出异常
+            if (yggToken == null) {
+                throw new YggdrasilException("ForbiddenOperationException", "无效的Token");
+            }
+
+            // 开始构建回复新 token
+            RefreshResponse refreshResponse = RefreshResponse.builder()
+                    .accessToken(UUID.randomUUID().toString().replace("-", ""))
+                    .clientToken(yggToken.getClientToken())
+                    .build();
+
+            // 如果请求了用户，则发送用户数据
+            if (request.getRequestUser()) {
+                refreshResponse.setUser(yggUserService.getMCUserByYggUser(yggToken.getOwner()));
+            } else {
+                refreshResponse.setUser(null);
+            }
+
+            this.yggTokenService.createToken(yggToken.getOwner(), refreshResponse.getAccessToken(), refreshResponse.getClientToken());
+            return refreshResponse;
+        } catch (Exception e) {
+            String error = "ERROR";
+            String errorMessage = "未知错误";
+            if (e instanceof YggdrasilException) {
+                error = ((YggdrasilException) e).getError();
+                errorMessage = ((YggdrasilException) e).getErrorMessage();
+            } else {
+                LOG.error("yggdrasil令牌刷新异常", e);
+            }
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return ErrorResponse.builder()
+                    .error(error)
+                    .errorMessage(errorMessage)
+                    .build();
         }
-
-        // 初始化 token， 准备拉取
-        YggToken yggToken = null;
-
-        // 判断进行的拉取模式
-        if (!StringUtils.hasText(request.getClientToken())) {
-            yggToken = yggTokenService.getTokenByAccessToken(request.getAccessToken());
-        } else {
-            yggToken = yggTokenService.getTokenByBothToken(request.getAccessToken(), request.getClientToken());
-        }
-
-        // 如果没能拉取到 token，抛出异常
-        if (yggToken == null) {
-            throw new YggdrasilException("ForbiddenOperationException", "无法找到目标 token");
-        }
-
-        // 开始构建回复新 token
-        RefreshResponse refreshResponse = RefreshResponse.builder()
-                .accessToken(UUID.randomUUID().toString().replace("-", ""))
-                .clientToken(yggToken.getClientToken())
-                .build();
-
-        // 如果请求了用户，则发送用户数据
-        if (request.getRequestUser()) {
-            refreshResponse.setUser(yggUserService.getMCUserByYggUser(yggToken.getOwner()));
-        } else {
-            refreshResponse.setUser(null);
-        }
-        // 否则返回的角色为空，沿用老Token数据
-        this.yggTokenService.createToken(yggToken.getOwner(), refreshResponse.getAccessToken(), refreshResponse.getClientToken());
-        return refreshResponse;
     }
 
+    /**
+     * 验证令牌
+     *
+     * @return void
+     * @create 2020/7/4 14:35
+     * @author ☪wl
+     */
     @PostMapping("/yggdrasil/authserver/validate")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void validate(@RequestBody @Valid ValidateRequest request, HttpServletResponse response, BindingResult bindingResult) throws IOException {
-        // 检测入参情况
-        if (bindingResult.getAllErrors().size() != 0) {
-            throw new YggdrasilException("ForbiddenOperationException", "绑定错误，无法识别输入数据！");
-        }
-
+    public Object validate(@RequestBody ValidateRequest request, HttpServletResponse response) {
         // 声明这次查询的 token
-        YggToken yggToken = null;
+        try {
+            YggToken yggToken;
 
-        // 确认请求中是否含有 clientToken
-        if (StringUtils.hasText(request.getClientToken())) {
-            // 存在 clientToken，进行查询
-            yggToken = this.yggTokenService.getTokenByBothToken(request.getAccessToken(), request.getClientToken());
-        } else {
-            // 不存在， 进行查询
-            yggToken = this.yggTokenService.getTokenByAccessToken(request.getAccessToken());
+            // 确认请求中是否含有 clientToken
+            if (StringUtils.hasText(request.getClientToken())) {
+                // 存在 clientToken，进行查询
+                yggToken = this.yggTokenService.getTokenByBothToken(request.getAccessToken(), request.getClientToken());
+            } else {
+                // 不存在， 进行查询
+                yggToken = this.yggTokenService.getTokenByAccessToken(request.getAccessToken());
+            }
+
+            // 如果没有查询到，抛出无效异常
+            if (yggToken == null) {
+                throw new YggdrasilException("ForbiddenOperationException", "无效的Token");
+            }
+
+            // 如果有必要，进行 token 的时间延长
+            this.yggTokenService.extendExpiredTime(yggToken);
+        } catch (Exception e) {
+            String error = "ERROR";
+            String errorMessage = "未知错误";
+            if (e instanceof YggdrasilException) {
+                error = ((YggdrasilException) e).getError();
+                errorMessage = ((YggdrasilException) e).getErrorMessage();
+            } else {
+                LOG.error("yggdrasil令牌验证异常", e);
+            }
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return ErrorResponse.builder()
+                    .error(error)
+                    .errorMessage(errorMessage)
+                    .build();
         }
-
-        // 如果没有查询到，抛出无效异常
-        if (yggToken == null) {
-            throw new YggdrasilException("ForbiddenOperationException", "该 Token 无效");
-        }
-
-        // 如果有必要，进行 token 的时间延长
-        this.yggTokenService.extendExpiredTime(yggToken);
-        // 关闭输出流
-        response.getOutputStream().close();
+        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
     }
 
-    //
+    /**
+     * 吊销零盘
+     *
+     * @return void
+     * @create 2020/7/4 19:20
+     * @author ☪wl
+     */
     @PostMapping("/yggdrasil/authserver/invalidate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void invalidate(@RequestBody @Valid InvalidateRequest request, HttpServletResponse response, BindingResult bindingResult) throws IOException {
-        // 检查传入参数
-        if (bindingResult.getAllErrors().size() != 0) {
-            throw new YggdrasilException("ForbiddenOperationException", "绑定错误，无法识别输入数据！");
-        }
-
+    public void invalidate(@RequestBody InvalidateRequest request) {
         // 声明这次使用到的 token
-        YggToken yggToken = null;
+        YggToken yggToken;
 
         // 如果存在 clientToken， 进行查询
         if (StringUtils.hasText(request.getClientToken())) {
@@ -260,49 +298,64 @@ public class AuthServerController {
         if (yggToken != null) {
             this.yggTokenService.deleteToken(yggToken);
         }
-
-        // 关闭流
-        response.getOutputStream().close();
     }
 
-    //
+    /**
+     * 登出
+     *
+     * @return java.lang.Object
+     * @create 2020/7/4 19:20
+     * @author ☪wl
+     */
     @PostMapping("/yggdrasil/authserver/signout")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signOut(@RequestBody @Valid SignOutRequest request, BindingResult bindingResult) {
-        // 进行参数绑定检查
-        if (bindingResult.getAllErrors().size() != 0) {
-            throw new YggdrasilException("ForbiddenOperationException", "绑定错误，无法识别输入数据！");
+    public Object signOut(@RequestBody SignOutRequest request, HttpServletResponse response) {
+
+        try {
+            // 检查是否存在爆破攻击
+            int count = cacheService.getBruteTimeCount(request.getUsername());
+            // 存在爆破攻击
+            if (count >= 5) {
+                // 抛出异常
+                throw new YggdrasilException("ForbiddenOperationException", "在短期内进行了太多的尝试，请稍等一会儿再继续");
+            }
+
+            // 增加尝试记录
+            cacheService.increaseBruteTimeCount(request.getUsername());
+
+            // 通过用户名获取用户
+            YggUser yggUser = this.yggUserService.getUserByUsername(request.getUsername());
+
+            // 如果没有获取到用户
+            if (yggUser == null) {
+                // 抛出用户无法被获取到异常
+                throw new YggdrasilException("ForbiddenOperationException", "错误的用户名/密码");
+            }
+
+            // 进行密码比对
+            if (yggUser.getPassword().equals(request.getPassword())) {
+                // 删除用户所有的 token
+                this.yggTokenService.deleteAllTokensOfUser(yggUser);
+                // 清除用户的尝试计数
+                cacheService.clearBruteTimeCount(request.getUsername());
+            } else {
+                // 抛出密码错误异常
+                throw new YggdrasilException("ForbiddenOperationException", "错误的用户名/密码");
+            }
+        } catch (Exception e) {
+            String error = "ERROR";
+            String errorMessage = "未知错误";
+            if (e instanceof YggdrasilException) {
+                error = ((YggdrasilException) e).getError();
+                errorMessage = ((YggdrasilException) e).getErrorMessage();
+            } else {
+                LOG.error("yggdrasil登出验证异常", e);
+            }
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return ErrorResponse.builder()
+                    .error(error)
+                    .errorMessage(errorMessage)
+                    .build();
         }
-
-        // 检查是否存在爆破攻击
-        int count = cacheService.getBruteTimeCount(request.getUsername());
-        // 存在爆破攻击
-        if (count >= 5) {
-            // 抛出异常
-            throw new YggdrasilException("ForbiddenOperationException", "在短期内进行了太多的尝试，请稍等一会儿再继续");
-        }
-
-        // 增加尝试记录
-        cacheService.increaseBruteTimeCount(request.getUsername());
-
-        // 通过用户名获取用户
-        YggUser yggUser = this.yggUserService.getUserByUsername(request.getUsername());
-
-        // 如果没有获取到用户
-        if (yggUser == null) {
-            // 抛出用户无法被获取到异常
-            throw new YggdrasilException("ForbiddenOperationException", "错误的用户名/密码");
-        }
-
-        // 进行密码比对
-        if (yggUser.getPassword().equals(request.getPassword())) {
-            // 删除用户所有的 token
-            this.yggTokenService.deleteAllTokensOfUser(yggUser);
-            // 清除用户的尝试计数
-            cacheService.clearBruteTimeCount(request.getUsername());
-        } else {
-            // 抛出密码错误异常
-            throw new YggdrasilException("ForbiddenOperationException", "错误的用户名/密码");
-        }
+        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
     }
 }

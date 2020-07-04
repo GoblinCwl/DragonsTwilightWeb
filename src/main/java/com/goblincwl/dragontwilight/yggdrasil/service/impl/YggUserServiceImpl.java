@@ -1,6 +1,7 @@
 package com.goblincwl.dragontwilight.yggdrasil.service.impl;
 
 import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
+import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcprofile.MCProfile;
 import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
 import com.goblincwl.dragontwilight.yggdrasil.repository.YggUserRepository;
 import com.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
@@ -41,4 +42,15 @@ public class YggUserServiceImpl implements YggUserService {
                 .properties(new ArrayList<>())
                 .build();
     }
+
+    @Override
+    public YggUser getUserByProfileUUID(String selectedProfile) {
+        return this.yggUserRepository.findByUUID(selectedProfile);
+    }
+
+    @Override
+    public YggUser getUserByPlayerName(String playerName) {
+        return this.yggUserRepository.findByPlayerName(playerName);
+    }
+
 }

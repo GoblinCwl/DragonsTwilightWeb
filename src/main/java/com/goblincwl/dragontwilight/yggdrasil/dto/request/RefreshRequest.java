@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.yggdrasil.dto;
+package com.goblincwl.dragontwilight.yggdrasil.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.goblincwl.dragontwilight.yggdrasil.constant.MinecraftConstant;

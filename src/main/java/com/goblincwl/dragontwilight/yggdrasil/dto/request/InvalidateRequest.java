@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.yggdrasil.dto;
+package com.goblincwl.dragontwilight.yggdrasil.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.goblincwl.dragontwilight.yggdrasil.constant.MinecraftConstant;
@@ -15,13 +15,13 @@ import javax.validation.constraints.Pattern;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidateRequest {
+public class InvalidateRequest {
     @JsonProperty(value = "accessToken", required = true)
-    @Pattern(regexp = MinecraftConstant.uuid, message = "Bad accessToken")
+    @Pattern(regexp = MinecraftConstant.uuid)
     @NotBlank
     private String accessToken;
     @JsonProperty(value = "clientToken", required = false)
-    @Pattern(regexp = MinecraftConstant.uuid, message = "Bad clientToken")
+    @Pattern(regexp = MinecraftConstant.uuid)
     @Nullable
     private String clientToken;
 }

@@ -1,4 +1,4 @@
-package com.goblincwl.dragontwilight.yggdrasil.utils.minecraft;
+package com.goblincwl.dragontwilight.yggdrasil.utils;
 
 import java.awt.image.BufferedImage;
 import java.math.BigInteger;

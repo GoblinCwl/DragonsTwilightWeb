@@ -24,8 +24,6 @@ public class YggUser {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "profile_uuid")
-    private String profileUUID;
-    @Column(name = "profile_name")
-    private String profileName;
+    @Column(name = "player_name")
+    private String playerName;
 }

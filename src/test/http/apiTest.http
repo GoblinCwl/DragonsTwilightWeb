@@ -21,7 +21,9 @@ Accept: application/json
 ###
 
 
-POST http://localhost:8080/yggdrasil/authserver
+
+
+POST http://localhost:9000/yggdrasil/
 Content-Type: application/json
 
 {}
@@ -31,16 +33,9 @@ Content-Type: application/json
 POST http://localhost:9000/yggdrasil/authserver/authenticate
 Content-Type: application/json
 
-{}
-
-###
-
-POST https://skin.goblincwl.cn/api/yggdrasil/authserver/authenticate
-Content-Type: application/json
-
 {
   "username": "goblincwl@qq.com",
-  "password": "qwaszx1123",
+  "password": "qwaszx1113",
   "clientToken": "由客户端指定的令牌的 clientToken（可选）",
   "requestUser": true,
   "agent": {
@@ -48,5 +43,89 @@ Content-Type: application/json
     "version": 1
   }
 }
+###
+POST https://skin.goblincwl.cn/api/yggdrasil/authserver/authenticate
+Content-Type: application/json
+
+{
+"username": "goblincwl@qq.com",
+"password": "qwasaazx123",
+"clientToken": "由客户端指定的令牌的 clientToken（可选）",
+"requestUser": true,
+"agent": {
+"name": "Minecraft",
+"version": 1
+}
+}
+
+###
+POST http://localhost:9000/yggdrasil/authserver/refresh
+Content-Type: application/json
+
+{
+  "accessToken": "c21d4964dc2544e8a6e4fc8a8282f121",
+  "clientToken": "0596720be1e549fc8cc6d493c40e8069",
+  "requestUser": true,
+  "selectedProfile": {
+  }
+}
+
+
+###
+POST http://localhost:9000/yggdrasil/authserver/validate
+Content-Type: application/json
+
+{
+  "accessToken": "c21d4964dc2544e8a6e4fc8a8282f121",
+  "clientToken": "0596720be1e549fc8cc6d493c40e80691"
+}
+
+###
+
+POST http://localhost:9000/yggdrasil/authserver/invalidate
+Content-Type: application/json
+
+{
+  "accessToken": "181ad6ea0ea5478d86025f197f36e7a61qwdasdadsad",
+  "clientToken": "由客户端指定的令牌的 clientToken（asdad可选）"
+}
+
+###
+
+POST http://localhost:9000/yggdrasil/authserver/signout
+Content-Type: application/json
+
+{
+  "username": "goblincwl@qq.com",
+  "password": "qwaszx1213"
+}
+
+###
+
+POST http://localhost:9000/yggdrasil/sessionserver/session/minecraft/join
+Content-Type: application/json
+
+{
+  "accessToken": "13b3366659e2427eae5d6dffd3ffd66f",
+  "selectedProfile": "0f0f8c5ec89d3cad9e159525d2e6d521",
+  "serverId": "服务端发送给客户端的 serverId"
+}
+
+###
+
+GET http://localhost:9000/yggdrasil/sessionserver/session/minecraft/hasJoined?username=long_dao&serverId=服务端发送给客户端的 serverId&ip=127.0.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:9000/yggdrasil/sessionserver/session/minecraft/profile/123?unsigned=true
+Content-Type: application/json
+
+###
+
+POST http://localhost:9000/yggdrasil/api/profiles/minecraft
+Content-Type: application/json
+
+["GoblinCwl","Ivara"]
 
 ###

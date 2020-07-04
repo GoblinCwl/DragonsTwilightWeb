@@ -1,6 +1,7 @@
 package com.goblincwl.dragontwilight.yggdrasil.service;
 
 import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
+import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcprofile.MCProfile;
 import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
 
 /**
@@ -14,4 +15,7 @@ public interface YggUserService {
 
     MCUser getMCUserByYggUser(YggUser yggUser);
 
+    YggUser getUserByProfileUUID(String selectedProfile);
+
+    YggUser getUserByPlayerName(String playerName);
 }
