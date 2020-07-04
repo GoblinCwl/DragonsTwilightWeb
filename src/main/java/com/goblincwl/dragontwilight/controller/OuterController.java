@@ -6,6 +6,7 @@ import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.primary.BlessingPlayers;
 import com.goblincwl.dragontwilight.entity.primary.MinecraftQqPlayer;
 import com.goblincwl.dragontwilight.service.*;
+import com.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -31,13 +32,11 @@ public class OuterController {
 
     private final static Logger LOG = LoggerFactory.getLogger(OuterController.class);
     private final MinecraftQqPlayerService minecraftQqPlayerService;
-    private final BlessingUsersService blessingUsersService;
-    private final BlessingPlayersService blessingPlayersService;
+    private final YggUserService yggUserService;
 
-    public OuterController(MinecraftQqPlayerService minecraftQqPlayerService, BlessingUsersService blessingUsersService, BlessingPlayersService blessingPlayersService) {
+    public OuterController(MinecraftQqPlayerService minecraftQqPlayerService, YggUserService yggUserService) {
         this.minecraftQqPlayerService = minecraftQqPlayerService;
-        this.blessingUsersService = blessingUsersService;
-        this.blessingPlayersService = blessingPlayersService;
+        this.yggUserService = yggUserService;
     }
 
     /**
@@ -69,25 +68,6 @@ public class OuterController {
         return ResultGenerator.genSuccessResult(qq).toString();
     }
 
-    @ResponseBody
-    @GetMapping("/getPlayerSkinId")
-    public String getPlayerSkinId(@RequestParam String playerName) {
-        String skinId;
-        try {
-            BlessingPlayers blessingPlayers = new BlessingPlayers();
-            blessingPlayers.setName(playerName);
-            BlessingPlayers blessingPlayersResult = this.blessingPlayersService.findOne(blessingPlayers);
-            if (blessingPlayersResult != null) {
-                skinId = String.valueOf(blessingPlayersResult.getTidSkin());
-            } else {
-                throw new DtWebException("未找到该玩家！");
-            }
-        } catch (Exception e) {
-            return ResultGenerator.autoReturnFailResult("获取玩家皮肤ID异常！", LOG, e);
-        }
-        return ResultGenerator.genSuccessResult(skinId).toString();
-    }
-
     /**
      * 根据用户邮箱获取用户皮肤
      *
@@ -106,7 +86,7 @@ public class OuterController {
         try {
             try {
                 //通过用户名获取游戏ID
-                String playerName = this.blessingUsersService.getPlayerNameByUserName(userName);
+                String playerName = this.yggUserService.getUserByPlayerName(userName).getPlayerName();
                 LOG.info("获取皮肤时名称：" + userName);
                 url = new URL("https://skin.goblincwl.cn/skin/" + playerName + ".png");
                 conn = (HttpURLConnection) url.openConnection();

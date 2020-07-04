@@ -3,7 +3,6 @@ package com.goblincwl.dragontwilight.yggdrasil.service;
 import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
 import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
 
-import javax.mail.MessagingException;
 
 /**
  * @author ☪wl

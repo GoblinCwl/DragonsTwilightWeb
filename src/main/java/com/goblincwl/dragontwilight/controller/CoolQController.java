@@ -10,6 +10,8 @@ import com.goblincwl.dragontwilight.entity.primary.WebOptions;
 import com.goblincwl.dragontwilight.entity.slave.MailboxPlayer;
 import com.goblincwl.dragontwilight.entity.slave.VexSign;
 import com.goblincwl.dragontwilight.service.*;
+import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
+import com.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -38,17 +40,17 @@ public class CoolQController {
     private final MinecraftQqPlayerService minecraftQqPlayerService;
     private final WebOptionsService webOptionsService;
     private final VexSignService vexSignService;
-    private final BlessingUuidService blessingUuidService;
     private final DragonsTwilightWebConfig dragonsTwilightWebConfig;
     private final MailboxPlayerService mailboxPlayerService;
+    private final YggUserService yggUserService;
 
-    public CoolQController(MinecraftQqPlayerService minecraftQqPlayerService, WebOptionsService webOptionsService, VexSignService vexSignService, BlessingUuidService blessingUuidService, DragonsTwilightWebConfig dragonsTwilightWebConfig, MailboxPlayerService mailboxPlayerService) {
+    public CoolQController(MinecraftQqPlayerService minecraftQqPlayerService, WebOptionsService webOptionsService, VexSignService vexSignService, DragonsTwilightWebConfig dragonsTwilightWebConfig, MailboxPlayerService mailboxPlayerService, YggUserService yggUserService) {
         this.minecraftQqPlayerService = minecraftQqPlayerService;
         this.webOptionsService = webOptionsService;
         this.vexSignService = vexSignService;
-        this.blessingUuidService = blessingUuidService;
         this.dragonsTwilightWebConfig = dragonsTwilightWebConfig;
         this.mailboxPlayerService = mailboxPlayerService;
+        this.yggUserService = yggUserService;
     }
 
     /**
@@ -191,15 +193,13 @@ public class CoolQController {
         //玩家名称
         String playerName = getPlayerName(sendQq);
         //获取角色名对应UUID
-        BlessingUuid blessingUuid = new BlessingUuid();
-        blessingUuid.setName(playerName);
-        BlessingUuid blessingUuidResult = this.blessingUuidService.findONe(blessingUuid);
-        if (blessingUuidResult == null) {
+        YggUser yggUser = this.yggUserService.getUserByPlayerName(playerName);
+        if (yggUser == null) {
             throw new DtWebException("@" + playerName + "，签到失败！\n数据异常，请联系管理员。");
         }
         //查询玩家签到数据
         VexSign vexSign = new VexSign();
-        vexSign.setSignUuid(CommonUtils.convertUUId(blessingUuidResult.getUuid()));
+        vexSign.setSignUuid(CommonUtils.convertUUId(yggUser.getUUID()));
         VexSign vexSignResult = this.vexSignService.findOne(vexSign);
         if (vexSignResult == null) {
             throw new DtWebException("@" + playerName + "，签到失败！\n你至少要登陆过一次客户端才能在群内签到！");
