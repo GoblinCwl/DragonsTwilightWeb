@@ -12,5 +12,6 @@ import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
 public interface YggUserService {
     YggUser getUserByUsername(String username);
 
-    MCUser getMCUserBySodaUser(YggUser yggUser);
+    MCUser getMCUserByYggUser(YggUser yggUser);
+
 }

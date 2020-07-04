@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Builder
@@ -24,21 +21,11 @@ public class YggUser {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToOne(targetEntity = YggPlayerProfile.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    private YggPlayerProfile selectedProfile;
-    //
-    @OneToMany(targetEntity = YggPlayerProfile.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    private List<YggPlayerProfile> profiles;
-
-    @ManyToMany(targetEntity = YggUserGroup.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    private List<YggUserGroup> groups;
-
-    @OneToMany(targetEntity = TextureMapping.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    private List<TextureMapping> textures;
+    @Column(name = "profile_uuid")
+    private String profileUUID;
+    @Column(name = "profile_name")
+    private String profileName;
 }

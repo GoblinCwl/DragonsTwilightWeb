@@ -1,7 +1,7 @@
 #酷Q接口
 #fq：发送者QQ
 #key：发送指令
-GET https://localhost:9000/coolQ?fq=2395025802&key=#邮箱
+GET https://localhost:9000/coolQ?fq=2395025802&key=#签到
 Accept: application/json
 
 ###
@@ -17,5 +17,36 @@ Accept: application/json
 #userName：用户登陆名
 GET https://localhost:9000/outer/getImage?userName=goblincwl@qq.com
 Accept: application/json
+
+###
+
+
+POST http://localhost:8080/yggdrasil/authserver
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://localhost:9000/yggdrasil/authserver/authenticate
+Content-Type: application/json
+
+{}
+
+###
+
+POST https://skin.goblincwl.cn/api/yggdrasil/authserver/authenticate
+Content-Type: application/json
+
+{
+  "username": "goblincwl@qq.com",
+  "password": "qwaszx1123",
+  "clientToken": "由客户端指定的令牌的 clientToken（可选）",
+  "requestUser": true,
+  "agent": {
+    "name": "Minecraft",
+    "version": 1
+  }
+}
 
 ###

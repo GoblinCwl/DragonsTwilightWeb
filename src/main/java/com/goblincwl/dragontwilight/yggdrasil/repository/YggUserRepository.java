@@ -4,6 +4,8 @@ import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author ☪wl
  * @program dragons-twilight-web
@@ -13,4 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface YggUserRepository extends JpaRepository<YggUser, String> {
     YggUser findByUsername(String username);
+
 }

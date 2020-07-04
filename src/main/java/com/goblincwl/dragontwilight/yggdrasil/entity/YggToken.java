@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ygg_minecraft_token", schema = "mc_base")
-public class MinecraftToken {
+@Table(name = "ygg_token", schema = "mc_base")
+public class YggToken {
     @Id
     @Column(name = "uuid", unique = true, nullable = false)
     private String UUID;
@@ -27,10 +27,6 @@ public class MinecraftToken {
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "owner", unique = true, nullable = false)
     private YggUser owner;
-
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = YggPlayerProfile.class)
-    @JoinColumn(name = "player_profile", unique = true)
-    private YggPlayerProfile playerProfile;
 
     @Column(name = "expired_time", nullable = false)
     private long expiredTime;

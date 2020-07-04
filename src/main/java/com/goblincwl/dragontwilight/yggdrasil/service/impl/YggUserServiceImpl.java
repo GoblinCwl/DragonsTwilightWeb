@@ -31,14 +31,13 @@ public class YggUserServiceImpl implements YggUserService {
     }
 
     @Override
-    public MCUser getMCUserBySodaUser(YggUser yggUser) {
+    public MCUser getMCUserByYggUser(YggUser yggUser) {
         if (yggUser == null) {
             return null;
         }
 
         return MCUser.builder()
                 .id(yggUser.getUUID())
-                // TODO: 支持本地化？
                 .properties(new ArrayList<>())
                 .build();
     }
