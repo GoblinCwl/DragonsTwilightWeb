@@ -26,4 +26,7 @@ public class YggUser {
 
     @Column(name = "player_name")
     private String playerName;
+
+    @Column(name = "ip_addr")
+    private String ipAddr;
 }

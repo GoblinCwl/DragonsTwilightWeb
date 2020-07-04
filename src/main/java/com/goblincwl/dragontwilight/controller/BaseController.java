@@ -1,16 +1,24 @@
 package com.goblincwl.dragontwilight.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.goblincwl.dragontwilight.common.exception.DtWebException;
 import com.goblincwl.dragontwilight.common.utils.CommonUtils;
 import com.goblincwl.dragontwilight.common.result.ResultGenerator;
 import com.goblincwl.dragontwilight.entity.primary.WebNavIframe;
 import com.goblincwl.dragontwilight.entity.primary.WebOptions;
 import com.goblincwl.dragontwilight.service.WebNavIframeService;
 import com.goblincwl.dragontwilight.service.WebOptionsService;
+import com.goblincwl.dragontwilight.yggdrasil.entity.YggPasswordLink;
+import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
+import com.goblincwl.dragontwilight.yggdrasil.service.YggPasswordLinkService;
+import com.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -29,10 +37,15 @@ public class BaseController {
 
     private final WebNavIframeService webNavIframeService;
     private final WebOptionsService webOptionsService;
+    private final YggUserService yggUserService;
+    private final YggPasswordLinkService yggPasswordLinkService;
+    private final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
-    public BaseController(WebNavIframeService webNavIframeService, WebOptionsService webOptionsService) {
+    public BaseController(WebNavIframeService webNavIframeService, WebOptionsService webOptionsService, YggUserService yggUserService, YggPasswordLinkService yggPasswordLinkService) {
         this.webNavIframeService = webNavIframeService;
         this.webOptionsService = webOptionsService;
+        this.yggUserService = yggUserService;
+        this.yggPasswordLinkService = yggPasswordLinkService;
     }
 
     /**
@@ -65,6 +78,107 @@ public class BaseController {
             e.printStackTrace();
         }
         return "index";
+    }
+
+    @GetMapping("/registerPage")
+    public String registerPage() {
+        return "register";
+    }
+
+    @ResponseBody
+    @PostMapping("/register")
+    public String register(HttpServletRequest request, String email, String password, String playerName) {
+        String resultMsg = null;
+        try {
+            YggUser yggUser = this.yggUserService.register(email, password, playerName, CommonUtils.getIP(request));
+            if (yggUser != null) {
+                resultMsg = "注册成功!";
+            }
+        } catch (Exception e) {
+            String msg = "注册异常，请联系腐竹";
+            if (e instanceof DtWebException) {
+                msg = e.getMessage();
+            }
+            LOG.error(msg, e);
+            return ResultGenerator.genFailResult(msg).toString();
+        }
+        return ResultGenerator.genSuccessResult(resultMsg).toString();
+    }
+
+    @ResponseBody
+    @PostMapping("/backPassword")
+    public String backPassword(HttpServletRequest request, String email, String playerName) {
+        try {
+            //查询用户是否存在
+            YggUser yggUser = new YggUser();
+            yggUser.setUsername(email);
+            yggUser.setPlayerName(playerName);
+            YggUser userByUsername = this.yggUserService.findOne(yggUser);
+            if (userByUsername == null) {
+                throw new DtWebException("此用户不存在");
+            }
+            //生成邮件地址
+            this.yggPasswordLinkService.createEmailLink(yggUser, CommonUtils.getServerUrl(request));
+        } catch (Exception e) {
+            String msg = "发送邮件异常，请联系腐竹";
+            if (e instanceof DtWebException) {
+                msg = e.getMessage();
+            }
+            LOG.error(msg, e);
+            return ResultGenerator.genFailResult(msg).toString();
+        }
+        return ResultGenerator.genSuccessResult("发送成功").toString();
+    }
+
+    @GetMapping("/emailBackPassword/{uuid}")
+    public ModelAndView emailBackPassword(@PathVariable("uuid") String uuid, ModelAndView modelAndView) {
+        modelAndView.setViewName("backPassword");
+        modelAndView.addObject("uuid", uuid);
+        //查询UUID是否有效
+        YggPasswordLink yggPasswordLink = new YggPasswordLink();
+        yggPasswordLink.setUUID(uuid);
+        YggPasswordLink resultYggPasswordLink = this.yggPasswordLinkService.findOne(yggPasswordLink);
+        if (resultYggPasswordLink != null) {
+            if (resultYggPasswordLink.getEndTime() > System.currentTimeMillis()) {
+                //判断链接是否超时
+                modelAndView.addObject("checkOk", true);
+                modelAndView.addObject("userName", resultYggPasswordLink.getUsername());
+                return modelAndView;
+            } else {
+                //链接超时，删除链接
+                this.yggPasswordLinkService.delete(resultYggPasswordLink);
+            }
+        }
+        modelAndView.addObject("checkOk", false);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @PostMapping("/modifyPassword")
+    public String modifyPassword(String userName, String newPassword, String uuid) {
+        //通过UUID查询链接
+        try {
+            YggPasswordLink yggPasswordLink = new YggPasswordLink();
+            yggPasswordLink.setUUID(uuid);
+            YggPasswordLink linkServiceOne = this.yggPasswordLinkService.findOne(yggPasswordLink);
+            if (linkServiceOne != null && linkServiceOne.getEndTime() > System.currentTimeMillis()) {
+                //修改密码
+                YggUser yggUser = new YggUser();
+                yggUser.setUsername(userName);
+                yggUser.setPassword(newPassword);
+                this.yggUserService.changePassword(yggUser, uuid);
+            } else {
+                throw new DtWebException("链接已过期");
+            }
+        } catch (Exception e) {
+            String msg = "修改密码异常，请联系腐竹";
+            if (e instanceof DtWebException) {
+                msg = e.getMessage();
+            }
+            LOG.error(msg, e);
+            return ResultGenerator.genFailResult(msg).toString();
+        }
+        return ResultGenerator.genSuccessResult("修改成功").toString();
     }
 
     @GetMapping("/indexPage")

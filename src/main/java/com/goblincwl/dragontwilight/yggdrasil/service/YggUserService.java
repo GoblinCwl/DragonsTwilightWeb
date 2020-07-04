@@ -1,8 +1,9 @@
 package com.goblincwl.dragontwilight.yggdrasil.service;
 
 import com.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
-import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcprofile.MCProfile;
 import com.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
+
+import javax.mail.MessagingException;
 
 /**
  * @author ☪wl
@@ -18,4 +19,12 @@ public interface YggUserService {
     YggUser getUserByProfileUUID(String selectedProfile);
 
     YggUser getUserByPlayerName(String playerName);
+
+    YggUser register(String email, String password, String playerName, String ipAddr);
+
+    YggUser findOne(YggUser yggUser);
+
+    void update(YggUser yggUser);
+
+    void changePassword(YggUser yggUser, String linkUUID);
 }

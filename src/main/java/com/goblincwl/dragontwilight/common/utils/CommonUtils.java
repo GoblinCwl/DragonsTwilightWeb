@@ -2,6 +2,7 @@ package com.goblincwl.dragontwilight.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.goblincwl.dragontwilight.common.config.DragonsTwilightWebConfig;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.config.RequestConfig;
@@ -18,24 +19,25 @@ import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 public class CommonUtils {
 
     private static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
+    private static final DragonsTwilightWebConfig dragonsTwilightWebConfig = ApplicationUtils.get(DragonsTwilightWebConfig.class);
     public static WebSocketClient client;
-
-    TomcatServletWebServerFactory tomcatServletWebServerFactory;
-
-    public CommonUtils(TomcatServletWebServerFactory tomcatServletWebServerFactory) {
-        this.tomcatServletWebServerFactory = tomcatServletWebServerFactory;
-    }
 
     /**
      * 转换UUID为有-的
@@ -309,4 +311,65 @@ public class CommonUtils {
         jsonObject.put("params", param);
         return jsonObject;
     }
+
+
+    public static String getIP(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
+    /**
+     * 发送邮件
+     *
+     * @param toEmail    收件人
+     * @param emailTitle 主题
+     * @param context    内容
+     * @return void
+     * @create 2020/7/4 23:33
+     * @author ☪wl
+     */
+    public static void sendMail(String toEmail, String emailTitle, String context) throws MessagingException {
+        Properties properties = new Properties();
+        properties.setProperty("mail.transport.protocol", dragonsTwilightWebConfig.getSendEmailTransportProtocol());
+        properties.setProperty("mail.smtp.host", dragonsTwilightWebConfig.getSendEmailSMTPHost());
+        properties.setProperty("mail.smtp.port", dragonsTwilightWebConfig.getSendEmailSMTPPort());
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.ssl.enable", "true");
+        properties.setProperty("mail.debug", "true");
+
+        Session session = Session.getInstance(properties);
+        MimeMessage mimeMessage = new MimeMessage(session);
+        //发件人
+        String sendEmailCount = dragonsTwilightWebConfig.getSendEmailCount();
+        mimeMessage.setFrom(sendEmailCount);
+        //收件人
+        mimeMessage.setRecipients(
+                Message.RecipientType.TO,
+                new InternetAddress[]{
+                        new InternetAddress(toEmail)
+                });
+        //标题
+        mimeMessage.setSubject(emailTitle);
+        //内容
+        mimeMessage.setText(context);
+
+        Transport transport = session.getTransport();
+        transport.connect(sendEmailCount, dragonsTwilightWebConfig.getSendEmailPassword());
+        transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+        transport.close();
+    }
+
+
 }

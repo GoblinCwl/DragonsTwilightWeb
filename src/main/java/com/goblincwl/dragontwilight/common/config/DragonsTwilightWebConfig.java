@@ -21,4 +21,19 @@ public class DragonsTwilightWebConfig {
     @Value("${adminQq}")
     private String adminQq;
 
+    @Value("${sendEmailCount}")
+    private String sendEmailCount;
+
+    @Value("${sendEmailPassword}")
+    private String sendEmailPassword;
+
+    @Value("${sendEmailSMTPHost}")
+    private String sendEmailSMTPHost;
+
+    @Value("${sendEmailTransportProtocol}")
+    private String sendEmailTransportProtocol;
+
+    @Value("${sendEmailSMTPPort}")
+    private String sendEmailSMTPPort;
+
 }
