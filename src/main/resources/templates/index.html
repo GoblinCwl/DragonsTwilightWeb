@@ -1,95 +1,42 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="https://www.thymeleaf.org/">
 
-<head>
-    <link rel="icon" th:href="@{/images/icon.png}" type="image/x-icon"/>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="Uwd1bTRQsC"/>
+<head th:replace="common/commonSrc :: commonHead(~{::title},~{},~{::style})">
     <title>Dragon's Twilight 龙之暮</title>
-    <link rel="stylesheet" th:href="@{/live2d/css/live2d.css}"/>
-    <link rel="stylesheet" th:href="@{/css/loading.css}">
     <style type="text/css">
-        .mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: rgba(0, 0, 0, .6);
-            /*Opacity: 50%;*/
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-size: cover;
+            background: url(/images/bgIndex.jpg) no-repeat fixed center 0;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
         }
+
     </style>
 </head>
+<body>
 
-<body style="background:url('/images/bgBack.jpg') 50% / cover no-repeat ">
-<nav id="sideNav"></nav>
-<div id="landlord" style="left: 80%">
-    <!--    <div id="liveMessage" class="message" style="opacity:0"></div>-->
-    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
-    <div id="hiddenButton" class="hide-button">隐藏</div>
-</div>
-<iframe th:src="${goUrl}" width="100%" height="100%" id="mainFrame"
-        style="border: 0;display: none;" onload="stateChangeFirefox(this)">
-</iframe>
-<div id="LoadDiv" class="mask" style="align:center;width: 100%;height:100%;text-align: center">
-    <div id="loadDivInner" class="container animation-1"
-         style="text-align: center;align:center;margin-left: 50%;margin-top: 20%">
-        <div class="shape shape1"></div>
-        <div class="shape shape2"></div>
-        <div class="shape shape3"></div>
-        <div class="shape shape4"></div>
+<nav th:replace="common/commonSrc :: commonNavHead(~{})"></nav>
+
+<div class="container" style="position:relative;top: 100px">
+    <div class="row">
+        <div class="col-md-12 column">
+            <img class="indexTitle img-responsive center-block" src="images/title.png" alt="龙之暮">
+        </div>
+    </div>
+    <div class="row">
+
     </div>
 </div>
 
-<!--隐藏域-->
-<div style="display: none">
-    <p th:text="${actionId}" id="actionId">actionId</p>
-    <p th:text="${loadSideNav}" id="loadSideNav">isIframe</p>
-    <p id="live2dStats">0</p>
-    <p id="live2dHiddenStats">0</p>
-</div>
 
+<div th:replace="common/commonSrc :: commonNavFoot(~{})"></div>
 </body>
-<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/dist/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/custom/js/keyButtonCancled.js}"></script>
-<script type="text/javascript" th:src="@{/custom/js/commons.js}"></script>
-<script type="text/javascript">
-    const message_Path = '/live2d/';
-</script>
-<script type="text/javascript" th:src="@{/live2d/js/live2d.js}"></script>
-<script type="text/javascript" th:src="@{/live2d/js/message.js}"></script>
-<script type="text/javascript">
-    //检测父页面是否已经开启live2D，若已经开启则不在开启
-    let live2dStats = $("#live2dStats", parent.document);
-    if (live2dStats.text() === '0') {
-        loadlive2d("live2d", "/live2d/model/tia/13.json");
-        live2dStats.text('1');
-    }
-    //检测父页面是否已经隐藏live2D，若已经隐藏则子页面执行隐藏代码
-    let live2dHiddenStats = $("#live2dHiddenStats", parent.document);
-    if (live2dHiddenStats.text() === '1') {
-        hiddenLive();
-    }
 
-    //隐藏live2D组件
-    function hiddenLive() {
-        $('#landlord').css('display', 'none');
-        $("#live2dHiddenStats").text('1');
-        $("#live2dHiddenStats", parent.document).text('1');
 
-        $("#hiddenButton").css('visibility', 'hidden');
-        $("#hiddenButton", parent.document).css('visibility', 'hidden');
-        let childIframe = $("#mainFrame");
-        const childButton = childIframe.contents().find("#hiddenButton");
-        if (typeof childButton === 'undefined' || childButton === null || childButton === "") {
-
-        } else {
-            console.log(childButton);
-            childButton.css('visibility', 'hidden');
-            childButton.css('visibility', 'hidden');
-            (childIframe.contents().find("#live2dHiddenStats")).text('1');
-        }
-    }
-</script>
-<script type="text/javascript" th:src="@{/custom/js/indexNav.js}"></script>
+<div th:replace="common/commonSrc :: commonFoot(~{})"></div>
 </html>
