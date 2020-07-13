@@ -28,6 +28,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.*;
 
 @RestController
@@ -97,22 +99,30 @@ public class AuthServerController {
     @RequestMapping(value = "/yggdrasil/authserver/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONResponse authenticate(@RequestBody AuthenticateRequest request, HttpServletResponse response) {
         try {
+            String username = request.getUsername();
             // 检查请求是否携带有 ClientToken，未携带则进行添加
             if (!StringUtils.hasText(request.getClientToken())) {
                 request.setClientToken(MCUUIDUtil.getRandomNonWhipUUID());
             }
 
             // 开始密码爆破防御
-            int count = cacheService.getBruteTimeCount(request.getUsername());
+            int count = cacheService.getBruteTimeCount(username);
             // 如果尝试次数大于等于三次，则直接抛出异常，防止继续尝试
             if (count >= 5) {
                 throw new YggdrasilException("ForbiddenOperationException", "短时间登录次数过多，请稍后重试。");
             }
             // 防爆不存在问题，增加计数
-            cacheService.increaseBruteTimeCount(request.getUsername());
+            cacheService.increaseBruteTimeCount(username);
 
             // 根据客户端提供的信息获取用户
-            YggUser yggUser = yggUserService.getUserByUsername(request.getUsername());
+            YggUser yggUser;
+            if (username.contains("@")) {
+                //如果有@，则是邮箱登录
+                yggUser = yggUserService.getUserByUsername(username);
+            } else {
+                //否则使用角色名登录
+                yggUser = yggUserService.getUserByPlayerName(username);
+            }
             // 未找到用户则抛出异常
             if (yggUser == null) {
                 throw new YggdrasilException("ForbiddenOperationException", "用户不存在");
@@ -144,7 +154,7 @@ public class AuthServerController {
 
 
             // 登录成功，移除密码防爆
-            cacheService.clearBruteTimeCount(request.getUsername());
+            cacheService.clearBruteTimeCount(username);
             // 储存登录缓存
             this.yggTokenService.createToken(yggUser, authenticateResponse.getAccessToken(), authenticateResponse.getClientToken());
 
