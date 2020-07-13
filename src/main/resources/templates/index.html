@@ -8,26 +8,179 @@
             margin: 0;
             padding: 0;
             font-family: sans-serif;
-            background-size: cover;
+            z-index: 2;
+        }
+
+        #bg {
             background: url(/images/bgIndex.jpg) no-repeat fixed center 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-size: cover;
             -webkit-background-size: cover;
             -o-background-size: cover;
             -moz-background-size: cover;
             -ms-background-size: cover;
+            box-sizing: border-box;
+            padding: 1px;
+            z-index: 1;
         }
 
+        #bg:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: inherit;
+            filter: blur(6px);
+            z-index: 2;
+        }
+
+        .container {
+            z-index: 999;
+        }
+
+        @-webkit-keyframes blur {
+            0% {
+                -webkit-filter: blur(0px); /* Chrome, Opera */
+                -moz-filter: blur(0px);
+                -ms-filter: blur(0px);
+                filter: blur(0px);
+            }
+            17% {
+                -webkit-filter: blur(1px);
+                -moz-filter: blur(1px);
+                -ms-filter: blur(1px);
+                filter: blur(1px);
+            }
+            33% {
+                -webkit-filter: blur(2px);
+                -moz-filter: blur(2px);
+                -ms-filter: blur(2px);
+                filter: blur(2px);
+            }
+            50% {
+                -webkit-filter: blur(3px);
+                -moz-filter: blur(3px);
+                -ms-filter: blur(3px);
+                filter: blur(3px);
+            }
+            66% {
+                -webkit-filter: blur(4px);
+                -moz-filter: blur(4px);
+                -ms-filter: blur(4px);
+                filter: blur(4px);
+            }
+            83% {
+                -webkit-filter: blur(5px);
+                -moz-filter: blur(5px);
+                -ms-filter: blur(5px);
+                filter: blur(5px);
+            }
+            100% {
+                -webkit-filter: blur(6px);
+                -moz-filter: blur(6px);
+                -ms-filter: blur(6px);
+                filter: blur(6px);
+            }
+        }
+
+        #bg:after {
+            -webkit-animation-name: blur; /*动画名称*/
+            -webkit-animation-duration: 1s; /*动画持续时间*/
+            -webkit-animation-iteration-count: 1; /*动画次数*/
+            -webkit-animation-delay: 0s; /*延迟时间*/
+        }
+
+        .indexButton {
+            cursor: pointer;
+            width: 500px;
+            padding-top: 5px;
+        }
+
+        .buttonText {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Unifont, serif;
+            font-size: 20px;
+            color: white;
+        }
+
+        .buttonDiv:hover .indexTitle {
+            content: url('/images/indexButton/button_hover.png');
+        }
+
+        @keyframes turn {
+            0% {
+                transform: scale(1.05) rotate(-10deg);
+            }
+            50% {
+                transform: scale(1) rotate(-10deg);
+            }
+            100% {
+                transform: scale(1.05) rotate(-10deg);
+            }
+        }
+
+        .indexTitle2 {
+            width: 400px;
+            position: absolute;
+            top: 55%;
+            left: 58%;
+            transform: rotate(-8deg);
+            animation: turn 0.5s linear infinite;
+        }
     </style>
 </head>
 <body>
 
 <nav th:replace="common/commonSrc :: commonNavHead(~{})"></nav>
-
+<div id="bg"></div>
 <div class="container" style="position:relative;top: 100px">
     <div class="row">
         <div class="col-md-12 column">
             <img class="indexTitle img-responsive center-block" src="images/title.png" alt="龙之暮">
+            <img class="indexTitle2 img-responsive center-block" src="images/titleText.png" alt="龙之暮">
         </div>
     </div>
+    <div class="row" style="position:relative;top: 140px">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 column buttonDiv" style="position:relative;">
+                <img class="indexTitle img-responsive center-block indexButton"
+                     src="/images/indexButton/button.png" alt="龙之暮"
+                     onclick="toLink('https://dragonstwilight.oss-cn-beijing.aliyuncs.com/Client/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE%282.2.4%29.zip')">
+                <span class="buttonText"
+                      onclick="toLink('https://dragonstwilight.oss-cn-beijing.aliyuncs.com/Client/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE%282.2.4%29.zip')">下载客户端</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 column buttonDiv">
+                <img class="indexTitle img-responsive center-block indexButton"
+                     src="/images/indexButton/button.png" alt="龙之暮" onclick="toLink(getRootPath()+'register')">
+                <span class="buttonText" onclick="toLink(getRootPath()+'register')">注册/找回密码</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 column buttonDiv">
+                <img class="indexTitle img-responsive center-block indexButton"
+                     src="/images/indexButton/button.png" alt="龙之暮" onclick="toLink('https://map.goblincwl.cn/',true)">
+                <span class="buttonText" onclick="toLink('https://map.goblincwl.cn/',true);">地皮地图</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 column buttonDiv">
+                <img class="indexTitle img-responsive center-block indexButton"
+                     src="/images/indexButton/button.png" alt="龙之暮" onclick="toLink('https://littleskin.cn/',true)">
+                <span class="buttonText" onclick="toLink('https://littleskin.cn/',true)">皮肤源(LittleSkin)</span>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
 
     </div>
@@ -38,5 +191,19 @@
 </body>
 
 
-<div th:replace="common/commonSrc :: commonFoot(~{})"></div>
+<div th:replace="common/commonSrc :: commonFoot(~{::script})">
+    <script type="text/javascript">
+        function downloadClient() {
+
+        }
+
+        function toLink(url, isTarget) {
+            if (isTarget) {
+                window.open(url);
+            } else {
+                window.location.href = url;
+            }
+        }
+    </script>
+</div>
 </html>

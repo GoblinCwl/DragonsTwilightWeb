@@ -35,21 +35,17 @@ import java.util.Map;
 @RequestMapping("/")
 public class WebController {
 
-    private final WebNavIframeService webNavIframeService;
-    private final WebOptionsService webOptionsService;
     private final YggUserService yggUserService;
     private final YggPasswordLinkService yggPasswordLinkService;
     private final Logger LOG = LoggerFactory.getLogger(WebController.class);
 
-    public WebController(WebNavIframeService webNavIframeService, WebOptionsService webOptionsService, YggUserService yggUserService, YggPasswordLinkService yggPasswordLinkService) {
-        this.webNavIframeService = webNavIframeService;
-        this.webOptionsService = webOptionsService;
+    public WebController(YggUserService yggUserService, YggPasswordLinkService yggPasswordLinkService) {
         this.yggUserService = yggUserService;
         this.yggPasswordLinkService = yggPasswordLinkService;
     }
 
     /**
-     * "/" 跳转
+     * 首页
      *
      * @return java.lang.String
      * @create 2020/6/14 1:24
@@ -68,8 +64,8 @@ public class WebController {
      * @create 2020/7/11 15:41
      * @author ☪wl
      */
-    @GetMapping("/registerPage")
-    public String registerPage(Model model) {
+    @GetMapping("/register")
+    public String register(Model model) {
         model.addAttribute("activeLi", "liRegisterPage");
         return "register";
     }
@@ -85,8 +81,8 @@ public class WebController {
      * @author ☪wl
      */
     @ResponseBody
-    @PostMapping("/register")
-    public String register(HttpServletRequest request, String email, String password, String playerName) {
+    @PostMapping("/doRegister")
+    public String doRegister(HttpServletRequest request, String email, String password, String playerName) {
         String resultMsg = null;
         try {
             YggUser yggUser = this.yggUserService.register(email, password, playerName, CommonUtils.getIP(request));
