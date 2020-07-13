@@ -11,8 +11,12 @@
             z-index: 2;
         }
 
+        .container {
+            z-index: 999;
+        }
+
         #bg {
-            background: url(/images/bgIndex.jpg) no-repeat fixed center 0;
+            background: url(/images/background/index.jpg) no-repeat fixed center 0;
             width: 100%;
             height: 100%;
             position: absolute;
@@ -36,10 +40,6 @@
             background: inherit;
             filter: blur(6px);
             z-index: 2;
-        }
-
-        .container {
-            z-index: 999;
         }
 
         @-webkit-keyframes blur {
@@ -115,6 +115,16 @@
             content: url('/images/indexButton/button_hover.png');
         }
 
+        .smallButton {
+            cursor: pointer;
+            height: 52px;
+            padding-top: 5px;
+        }
+
+        .smallButton:hover {
+            content: url('/images/indexButton/qq_.png');
+        }
+
         @keyframes turn {
             0% {
                 transform: scale(1.05) rotate(-10deg);
@@ -144,8 +154,8 @@
 <div class="container" style="position:relative;top: 100px">
     <div class="row">
         <div class="col-md-12 column">
-            <img class="indexTitle img-responsive center-block" src="images/title.png" alt="龙之暮">
-            <img class="indexTitle2 img-responsive center-block" src="images/titleText.png" alt="龙之暮">
+            <img class="indexTitle img-responsive center-block" src="/images/title/title.png" alt="龙之暮">
+            <img class="indexTitle2 img-responsive center-block" src="/images/title/titleText.png" alt="龙之暮">
         </div>
     </div>
     <div class="row" style="position:relative;top: 140px">
@@ -153,9 +163,9 @@
             <div class="col-md-6 col-md-offset-3 column buttonDiv" style="position:relative;">
                 <img class="indexTitle img-responsive center-block indexButton"
                      src="/images/indexButton/button.png" alt="龙之暮"
-                     onclick="toLink('https://dragonstwilight.oss-cn-beijing.aliyuncs.com/Client/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE%282.2.4%29.zip')">
+                     onclick="toLink(getRootPath()+'download')">
                 <span class="buttonText"
-                      onclick="toLink('https://dragonstwilight.oss-cn-beijing.aliyuncs.com/Client/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE%282.2.4%29.zip')">下载客户端</span>
+                      onclick="toLink(getRootPath()+'download')">下载客户端</span>
             </div>
         </div>
         <div class="row">
@@ -168,8 +178,10 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3 column buttonDiv">
                 <img class="indexTitle img-responsive center-block indexButton"
-                     src="/images/indexButton/button.png" alt="龙之暮" onclick="toLink('https://map.goblincwl.cn/',true)">
-                <span class="buttonText" onclick="toLink('https://map.goblincwl.cn/',true);">地皮地图</span>
+                     src="/images/indexButton/button.png" alt="龙之暮"
+                     onclick="toLink(getRootPath()+'iframe/map')">
+                <span class="buttonText"
+                      onclick="toLink(getRootPath()+'iframe/map')">地皮地图</span>
             </div>
         </div>
         <div class="row">
@@ -177,6 +189,12 @@
                 <img class="indexTitle img-responsive center-block indexButton"
                      src="/images/indexButton/button.png" alt="龙之暮" onclick="toLink('https://littleskin.cn/',true)">
                 <span class="buttonText" onclick="toLink('https://littleskin.cn/',true)">皮肤源(LittleSkin)</span>
+            </div>
+            <div class="col-md-1 column">
+                <img class="smallButton img-responsive center-block"
+                     style="position:relative;left: -70px;top: 5px;"
+                     src="/images/indexButton/qq.png" alt="加入QQ群"
+                     onclick="toLink('//shang.qq.com/wpa/qunwpa?idkey=a873b4afed50e200d3d55200c20fccb23de13f362dbc6eb5e6da27ad171d034d&source_id=1_40001',true)">
             </div>
         </div>
     </div>
@@ -193,10 +211,6 @@
 
 <div th:replace="common/commonSrc :: commonFoot(~{::script})">
     <script type="text/javascript">
-        function downloadClient() {
-
-        }
-
         function toLink(url, isTarget) {
             if (isTarget) {
                 window.open(url);

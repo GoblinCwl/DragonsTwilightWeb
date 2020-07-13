@@ -15,6 +15,10 @@
             font-family: Unifont;
             src: url("/fonts/unifont.ttf");
         }
+
+        img {
+            -webkit-user-drag: none;
+        }
     </style>
     <!--可扩展块-->
     <th:block th:replace="${links}"/>
@@ -22,8 +26,7 @@
 </head>
 
 <!--顶部导航栏-->
-<nav th:fragment="commonNavHead(a)" class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-    <span id="activeLi" style="display: none" th:text="${activeLi}">index</span>
+<nav th:fragment="commonNavHead(a)" class="navbar navbar-fixed-top navbar-inverse" role="navigation" id="headNav">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="javascript:void(0)" onclick="window.location.href=getRootPath()">龙之暮</a>
@@ -31,51 +34,22 @@
 
         <ul class="nav navbar-nav">
             <li id="liIndex"><a href="javascript:void(0)" onclick="window.location.href=getRootPath()">首页</a></li>
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">下载
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="https://dragonstwilight.oss-cn-beijing.aliyuncs.com/Client/%5BDST%5D%E9%BE%99%E4%B9%8B%E6%9A%AE%282.2.4%29.zip">直接下载</a></li>
-<!--                    <li><a href="#">网盘下载(百度云)</a></li>-->
-<!--                    <li><a href="#">群文件下载</a></li>-->
-                </ul>
+            <li id="liMap"><a href="javascript:void(0)"
+                              onclick="window.location.href=getRootPath()+'iframe/map'">地图</a>
             </li>
-
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">其他
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="https://map.goblincwl.cn/" target="_blank">地皮地图</a></li>
-                    <li><a href="https://littleskin.cn/" target="_blank">皮肤源(LittleSkin)</a></li>
-                </ul>
-            </li>
             <li id="liRegisterPage"><a href="javascript:void(0)"
                                        onclick="window.location.href=getRootPath()+'register'">注册/找回密码</a></li>
         </ul>
-
-        <!--<form class="navbar-form navbar-right">
-
-            <div class="input-group">
-                <span class="input-group-addon">@</span>
-                <input list="lst" type="text" class="form-control" placeholder="Search" />
-                <datalist id="lst">
-                    <option value="IE"></option>
-                    <option value="Firefox"></option>
-                    <option value="chrome"></option>
-                    <option value="safari"></option>
-                </datalist>
-            </div>
-
-            <button class="btn btn-success" type="submit">search</button>
-        </form>-->
     </div>
 </nav>
 
 <!--尾部导航栏-->
 <div th:fragment="commonNavFoot(a)">
     <!--备案信息-->
-    <nav class="navbar navbar-default navbar-fixed-bottom navbar-inverse" style="min-height: 22px;">
+    <nav id="footNav" class="navbar navbar-default navbar-fixed-bottom navbar-inverse" style="min-height: 22px;">
         <div class="container">
             <div class="navbar-right">
                 <img id="serverStatusImg" alt="服务器状态" src="/images/serverStatus/serverOffline.png">
@@ -93,6 +67,8 @@
         <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
         <!--    <div id="hiddenButton" class="hide-button">隐藏</div>-->
     </div>
+    <!--隐藏传值-->
+    <span id="activeLi" style="display: none" th:text="${activeLi}">index</span>
 </div>
 
 <!--公共依赖尾-->
@@ -103,47 +79,56 @@
     <script type="text/javascript" th:src="@{/live2d/live2d.js}"></script>
     <script type="text/javascript" th:src="@{/live2d/message.js}"></script>
     <script>
+        //加载Live2d
         loadlive2d("live2d", "/live2d/model/13.json");
+        //记录mcsManagerApiUrl值
         $(function () {
-            //加载服务器状态
-            loadServerStatus();
-            //定时刷新服务器状态
-            setInterval(loadServerStatus, 10000);
+            $.get({
+                url: getRootPath() + "mcsMangerApiUrl",
+                success: function (data) {
+                    //显示服务器状态
+                    loadServerStatus(data).apply();
+                    //定时刷新服务器状态
+                    setInterval(loadServerStatus(data), 10000);
+                }
+            });
 
             //导航栏选中
             var acviteLi = $("#activeLi").text();
-            console.log(acviteLi)
             if (acviteLi != null && acviteLi !== "" && typeof acviteLi != "undefined") {
                 $("#" + acviteLi).addClass("active");
             }
         });
 
-        function loadServerStatus() {
-            $.get({
-                url: "https://mcsmanager.goblincwl.cn/api/status/DragonsTwilight",
-                success: function (data) {
-                    var $serverStatusImg = $("#serverStatusImg");
-                    var $serverStatusCount = $("#serverStatusCount");
-                    if (data != null) {
-                        data = JSON.parse(data);
-                        if (data.status === true) {
-                            //服务器开启
-                            $serverStatusImg.attr("src", "/images/serverStatus/serverOnline.png");
-                            $serverStatusCount.css("color", "greenyellow");
-                            var playerCount = data.current_players;
-                            if (typeof playerCount == "undefined") {
-                                $serverStatusCount.text("?");
+        //显示服务器状态
+        function loadServerStatus(mcsManagerApiUrl) {
+            return function () {
+                $.get({
+                    url: mcsManagerApiUrl,
+                    success: function (data) {
+                        var $serverStatusImg = $("#serverStatusImg");
+                        var $serverStatusCount = $("#serverStatusCount");
+                        if (data != null) {
+                            data = JSON.parse(data);
+                            if (data.status === true) {
+                                //服务器开启
+                                $serverStatusImg.attr("src", "/images/serverStatus/serverOnline.png");
+                                $serverStatusCount.css("color", "greenyellow");
+                                var playerCount = data.current_players;
+                                if (typeof playerCount == "undefined") {
+                                    $serverStatusCount.text("?");
+                                } else {
+                                    $serverStatusCount.text(playerCount);
+                                }
                             } else {
-                                $serverStatusCount.text(playerCount);
+                                $serverStatusImg.attr("src", "/images/serverStatus/serverOffline.png");
+                                $serverStatusCount.css("color", "red");
+                                $serverStatusCount.text("?");
                             }
-                        } else {
-                            $serverStatusImg.attr("src", "/images/serverStatus/serverOffline.png");
-                            $serverStatusCount.css("color", "red");
-                            $serverStatusCount.text("?");
                         }
                     }
-                }
-            });
+                });
+            };
         }
 
         //获取服务器原始地址

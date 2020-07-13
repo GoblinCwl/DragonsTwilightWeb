@@ -8,18 +8,101 @@
             margin: 0;
             padding: 0;
             font-family: sans-serif;
+        }
+
+        @-webkit-keyframes blur {
+            0% {
+                -webkit-filter: blur(0px); /* Chrome, Opera */
+                -moz-filter: blur(0px);
+                -ms-filter: blur(0px);
+                filter: blur(0px);
+            }
+            17% {
+                -webkit-filter: blur(1px);
+                -moz-filter: blur(1px);
+                -ms-filter: blur(1px);
+                filter: blur(1px);
+            }
+            33% {
+                -webkit-filter: blur(2px);
+                -moz-filter: blur(2px);
+                -ms-filter: blur(2px);
+                filter: blur(2px);
+            }
+            50% {
+                -webkit-filter: blur(3px);
+                -moz-filter: blur(3px);
+                -ms-filter: blur(3px);
+                filter: blur(3px);
+            }
+            66% {
+                -webkit-filter: blur(4px);
+                -moz-filter: blur(4px);
+                -ms-filter: blur(4px);
+                filter: blur(4px);
+            }
+            83% {
+                -webkit-filter: blur(5px);
+                -moz-filter: blur(5px);
+                -ms-filter: blur(5px);
+                filter: blur(5px);
+            }
+            100% {
+                -webkit-filter: blur(6px);
+                -moz-filter: blur(6px);
+                -ms-filter: blur(6px);
+                filter: blur(6px);
+            }
+        }
+
+        #bg {
+            background: url(/images/background/404.jpg) no-repeat fixed center 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
             background-size: cover;
-            /*background: url(/images/error.jpg) no-repeat fixed center 0;*/
             -webkit-background-size: cover;
             -o-background-size: cover;
             -moz-background-size: cover;
             -ms-background-size: cover;
+            box-sizing: border-box;
+            padding: 1px;
+            z-index: 1;
+        }
+
+        #bg:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: inherit;
+            filter: blur(6px);
+            z-index: 2;
+        }
+
+        .container {
+            z-index: 999;
+        }
+
+        #bg:after {
+            -webkit-animation-name: blur; /*动画名称*/
+            -webkit-animation-duration: 1s; /*动画持续时间*/
+            -webkit-animation-iteration-count: 1; /*动画次数*/
         }
     </style>
 </head>
 <body>
 <nav th:replace="common/commonSrc :: commonNavHead(~{})"></nav>
-
+<div id="bg"></div>
+<div class="container" style="position:relative;top: 100px">
+    <div class="row">
+        <div class="col-md-12 column">
+            <img class="img-responsive center-block" src="/images/title/404.png" alt="404">
+        </div>
+    </div>
+</div>
 <div th:replace="common/commonSrc :: commonNavFoot(~{})"></div>
 </body>
 <div th:replace="common/commonSrc :: commonFoot(~{})"></div>

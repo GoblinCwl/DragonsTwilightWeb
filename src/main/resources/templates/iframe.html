@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="zh">
+
+<head th:replace="common/commonSrc :: commonHead(~{::title},~{},~{::style})">
+    <title>Dragon's Twilight 龙之暮</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-y: hidden
+        }
+
+        #iframe {
+            position: relative;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="common/commonSrc :: commonNavHead(~{})"></nav>
+<div th:replace="common/commonSrc :: commonNavFoot(~{})"></div>
+
+<iframe id="iframe" width="100%" allowfullscreen th:src="${goUrl}"></iframe>
+</body>
+<div th:replace="common/commonSrc :: commonFoot(~{::script})">
+    <script type="text/javascript">
+        window.onerror = function () {
+            return true;
+        };
+        $(function () {
+            const iframe = $("#iframe");
+            //设置iframe-padding-top
+            const headNavHeight = $("#headNav").height();
+            iframe.css("padding-top", headNavHeight + "px");
+            //设置iframe高度
+            const h = $(window).height();
+            //底部导航栏高度
+            const headerH = $("#footNav").height();
+            iframe.height((h - headerH) + "px");
+        });
+    </script>
+</div>
+</html>

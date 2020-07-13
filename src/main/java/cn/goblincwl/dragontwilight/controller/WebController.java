@@ -3,26 +3,19 @@ package cn.goblincwl.dragontwilight.controller;
 import cn.goblincwl.dragontwilight.common.exception.DtWebException;
 import cn.goblincwl.dragontwilight.common.result.ResultGenerator;
 import cn.goblincwl.dragontwilight.common.utils.CommonUtils;
-import cn.goblincwl.dragontwilight.entity.primary.WebNavIframe;
-import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
+import cn.goblincwl.dragontwilight.service.WebOptionsService;
 import cn.goblincwl.dragontwilight.yggdrasil.entity.YggPasswordLink;
 import cn.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
 import cn.goblincwl.dragontwilight.yggdrasil.service.YggPasswordLinkService;
 import cn.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
-import com.alibaba.fastjson.JSONObject;
-import cn.goblincwl.dragontwilight.service.WebNavIframeService;
-import cn.goblincwl.dragontwilight.service.WebOptionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -35,13 +28,15 @@ import java.util.Map;
 @RequestMapping("/")
 public class WebController {
 
+    private final Logger LOG = LoggerFactory.getLogger(WebController.class);
     private final YggUserService yggUserService;
     private final YggPasswordLinkService yggPasswordLinkService;
-    private final Logger LOG = LoggerFactory.getLogger(WebController.class);
+    private final WebOptionsService webOptionsService;
 
-    public WebController(YggUserService yggUserService, YggPasswordLinkService yggPasswordLinkService) {
+    public WebController(YggUserService yggUserService, YggPasswordLinkService yggPasswordLinkService, WebOptionsService webOptionsService) {
         this.yggUserService = yggUserService;
         this.yggPasswordLinkService = yggPasswordLinkService;
+        this.webOptionsService = webOptionsService;
     }
 
     /**
@@ -52,7 +47,7 @@ public class WebController {
      * @author ☪wl
      */
     @GetMapping("/")
-    public String index(@RequestParam Map<String, Object> param, Model model) {
+    public String index(Model model) {
         model.addAttribute("activeLi", "liIndex");
         return "index";
     }
@@ -71,16 +66,22 @@ public class WebController {
     }
 
     /**
-     * 跳转：注册页面
+     * 下载客户端
      *
      * @return java.lang.String
-     * @create 2020/7/11 15:41
+     * @create 2020/7/13 22:10
      * @author ☪wl
      */
-    @GetMapping("/registerPage")
-    public String registerPage(Model model) {
-        model.addAttribute("activeLi", "liRegisterPage");
-        return "register";
+    @GetMapping("/download")
+    public String download() {
+        String clientDownloadUrl = this.webOptionsService.findByKey("clientDownloadUrl").getOptValue();
+        return "redirect:" + clientDownloadUrl;
+    }
+
+    @ResponseBody
+    @GetMapping("/mcsMangerApiUrl")
+    public String mcsMangerApiUrl() {
+        return this.webOptionsService.findByKey("mcsMangerApiUrl").getOptValue();
     }
 
     /**
@@ -157,7 +158,7 @@ public class WebController {
      */
     @GetMapping("/emailBackPassword/{uuid}")
     public ModelAndView emailBackPassword(@PathVariable("uuid") String uuid, ModelAndView modelAndView) {
-        modelAndView.setViewName("backPassword");
+        modelAndView.setViewName("newPassword");
         modelAndView.addObject("uuid", uuid);
         modelAndView.addObject("activeLi", "liRegisterPage");
         //查询UUID是否有效

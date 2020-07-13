@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -29,4 +30,10 @@ public class YggUser {
 
     @Column(name = "ip_addr")
     private String ipAddr;
+
+    @Column(name = "reg_date")
+    private Date regDate;
+
+    @Column(name = "is_admin")
+    private Integer isAdmin;
 }
