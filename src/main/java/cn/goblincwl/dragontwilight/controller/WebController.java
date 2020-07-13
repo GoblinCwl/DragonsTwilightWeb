@@ -71,6 +71,19 @@ public class WebController {
     }
 
     /**
+     * 跳转：注册页面
+     *
+     * @return java.lang.String
+     * @create 2020/7/11 15:41
+     * @author ☪wl
+     */
+    @GetMapping("/registerPage")
+    public String registerPage(Model model) {
+        model.addAttribute("activeLi", "liRegisterPage");
+        return "register";
+    }
+
+    /**
      * 注册
      *
      * @param email      用户名(邮箱)
