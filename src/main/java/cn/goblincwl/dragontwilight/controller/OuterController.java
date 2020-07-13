@@ -81,7 +81,7 @@ public class OuterController {
      */
     @ResponseBody
     @GetMapping(value = "/getImage")
-    public Object GetImage(@RequestParam String userName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void GetImage(@RequestParam String userName, HttpServletRequest request, HttpServletResponse response) throws IOException {
         InputStream inStream = null;
         OutputStream os = null;
 
@@ -89,24 +89,32 @@ public class OuterController {
         HttpURLConnection conn;
         try {
             try {
-                os = response.getOutputStream();
                 //通过用户名获取游戏ID
-                String playerName = this.yggUserService.getUserByPlayerName(userName).getPlayerName();
-                LOG.info("获取皮肤时名称：" + userName);
+                String playerName;
+                if (userName.contains("@")) {
+                    playerName = this.yggUserService.getUserByUsername(userName).getPlayerName();
+                } else {
+                    playerName = userName;
+                }
                 url = new URL("https://littleskin.cn/skin/" + playerName + ".png");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setConnectTimeout(5 * 1000);
                 //通过输入流获取图片数据
                 inStream = conn.getInputStream();
+                if (inStream == null) {
+                    throw new DtWebException("无匹配角色");
+                }
             } catch (Exception e) {
                 //请求littleSkin失败，返回默认史蒂夫皮肤
                 String root = ResourceUtils.getFile("classpath:static").getPath();
                 response.setContentType("image/png");
                 BufferedImage bufferedImage = ImageIO.read(new FileInputStream(new File(root + "/images/steve.png")));
                 if (bufferedImage != null) {
+                    os = response.getOutputStream();
                     ImageIO.write(bufferedImage, "png", os);
                 }
+                return;
             }
             //读取输入流数据
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -120,6 +128,7 @@ public class OuterController {
             response.setContentType("image/png"); //设置返回的文件类型
             response.setHeader("Cache-Control", "private, must-revalidate");
             response.setHeader("pragma", "no-cache");
+            os = response.getOutputStream();
             os.write(data);
             os.flush();
         } catch (Exception e) {
@@ -132,7 +141,6 @@ public class OuterController {
                 os.close();
             }
         }
-        return "success";
     }
 
 
