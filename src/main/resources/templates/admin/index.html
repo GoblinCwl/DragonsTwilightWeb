@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="zh">
+
+<head th:replace="common/commonSrc :: commonHead(~{::title},~{::link},~{::style})">
+    <title>仪表盘</title>
+    <link rel="stylesheet" href="/adminNav/style.css">
+    <link rel="stylesheet" href="/adminNav/font-awesome.css">
+    <style>
+        body {
+            background-image: url("/images/background/coarse_dirt.png");
+            background-position: left top;
+            background-size: auto;
+            background-repeat: repeat;
+            background-attachment: scroll;
+        }
+
+        .checkMenu {
+            background-color: #45699c;
+        }
+
+        .checkMenu a {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav th:replace="common/adminSrc :: navHead"></nav>
+
+<div class="container-fluid" style="z-index: 100">
+    <div class="row">
+
+        <div class="col-md-10 col-md-offset-1">
+            <h1 class="page-header" style="color: white">仪表盘</h1>
+
+
+        </div>
+    </div>
+</div>
+
+<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
+</body>
+<div th:replace="common/commonSrc :: commonFoot(~{::script})">
+    <script type="text/javascript">
+
+    </script>
+</div>
+<div th:replace="common/adminSrc :: adminFood"></div>
+</html>

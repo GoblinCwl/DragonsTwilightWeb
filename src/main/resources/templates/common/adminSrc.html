@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="https://www.thymeleaf.org/">
+<nav th:fragment="navHead()" class="menu-wrap" style="z-index: 150">
+    <div class="menu">
+        <ul>
+            <li id="dashboard">
+                <a href="javascript:void(0)" onclick="toLink(getRootPath()+'admin/index')">
+                    <i class="fa fa-home fa-lg"></i>
+                    <span class="nav-text">仪表盘</span>
+                </a>
+            </li>
+            <li id="webOption">
+                <a href="javascript:void(0)" onclick="toLink(getRootPath()+'admin/webOption')">
+                    <i class="fa fa-user fa-lg"></i>
+                    <span class="nav-text">WEB选项</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">
+                    <i class="fa fa-user fa-lg"></i>
+                    <span class="nav-text">用户管理</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div th:fragment="adminFood()">
+    <span style="display: none" id="activeNav" th:text="${activeNav}"></span>
+    <script type="text/javascript">
+        $(function () {
+            const activeNav = $("#activeNav").text();
+            if (activeNav != null && activeNav !== "" && typeof activeNav != "undefined") {
+                $("#" + activeNav).addClass("checkMenu");
+            }
+        })
+    </script>
+</div>
+</html>

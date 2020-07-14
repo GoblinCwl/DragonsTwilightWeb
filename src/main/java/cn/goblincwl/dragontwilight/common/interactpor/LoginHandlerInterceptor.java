@@ -24,7 +24,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         if (isLogin == null) {
             //放入错误消息
             request.setAttribute("msg", "请先登录");
-            request.getRequestDispatcher("/webManager/loginPage").forward(request, response);
+            request.getRequestDispatcher("/admin/login").forward(request, response);
             return false;
         } else {
             return true;
@@ -32,11 +32,11 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
     }
 }

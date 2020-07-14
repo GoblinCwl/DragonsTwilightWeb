@@ -21,6 +21,7 @@ public class WebOptions {
     private Integer id;
     private String optKey;
     private String optValue;
+    private String remarks;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -50,6 +51,15 @@ public class WebOptions {
 
     public void setOptValue(String optValue) {
         this.optValue = optValue;
+    }
+    @Basic
+    @Column(name = "remarks", nullable = false, length = 255)
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
 

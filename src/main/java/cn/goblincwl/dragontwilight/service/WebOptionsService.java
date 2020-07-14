@@ -2,6 +2,8 @@ package cn.goblincwl.dragontwilight.service;
 
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 
+import java.util.List;
+
 /**
  * @author ☪wl
  * @program dragons-twilight-web
@@ -10,4 +12,6 @@ import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
  */
 public interface WebOptionsService {
     WebOptions findByKey(String key);
+
+    List<WebOptions> findList(WebOptions webOptions);
 }

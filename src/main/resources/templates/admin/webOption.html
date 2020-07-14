@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="zh">
+
+<head th:replace="common/commonSrc :: commonHead(~{::title},~{::link},~{::style})">
+    <title>仪表盘</title>
+    <link rel="stylesheet" href="/adminNav/style.css">
+    <link rel="stylesheet" href="/adminNav/font-awesome.css">
+    <style>
+        body {
+            background-image: url("/images/background/coarse_dirt.png");
+            background-position: left top;
+            background-size: auto;
+            background-repeat: repeat;
+            background-attachment: scroll;
+        }
+
+        .checkMenu {
+            background-color: #45699c;
+        }
+
+        .checkMenu a {
+            color: white;
+        }
+
+        .table tr {
+            /*background-color: white;*/
+        }
+
+        table td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        table th {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="common/adminSrc :: navHead"></nav>
+
+<div class="container-fluid" style="position: relative;top: 60px">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="table-responsive">
+                <img src="/images/background/book.png" class="img-responsive">
+                <h2 class="sub-header "
+                    style="color: #000000;font-weight: bold;position: absolute;top:5%;left: 10%;font-family: Unifont,serif;font-size: 300%">
+                    网站设置</h2>
+                <table id="dataTable" class="table table-hover "
+                       style="position: absolute; top: 10%; left: 10%;width: 80%;border-top: 2px solid black;table-layout: fixed;">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">#</th>
+                        <th style="width: 5%">序号</th>
+                        <th style="width: 15%">键</th>
+                        <th style="width: 35%">值</th>
+                        <th style="width: 45%">备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="webOptions,webOptionsStat:${webOptionsList}">
+                        <td>
+                            <a href="#">修改</a>
+                            <span> | </span>
+                            <a href="#">删除</a>
+                        </td>
+                        <td th:text="${webOptions.id}"></td>
+                        <td th:text="${webOptions.optKey}"></td>
+                        <td th:text="${webOptions.optValue}"></td>
+                        <td th:text="${webOptions.remarks}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="height: 100px"></div>
+    </div>
+</div>
+
+<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
+</body>
+<div th:replace="common/commonSrc :: commonFoot(~{::script})">
+    <script type="text/javascript">
+        $(function () {
+
+        })
+    </script>
+</div>
+<div th:replace="common/adminSrc :: adminFood"></div>
+
+</html>

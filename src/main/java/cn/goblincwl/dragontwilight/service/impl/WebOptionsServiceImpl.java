@@ -4,9 +4,11 @@ import cn.goblincwl.dragontwilight.repository.primary.WebOptionsRepository;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,5 +37,10 @@ public class WebOptionsServiceImpl implements WebOptionsService {
         } else {
             throw new RuntimeException("密码获取失败!");
         }
+    }
+
+    @Override
+    public List<WebOptions> findList(WebOptions webOptions) {
+        return this.webOptionsRepository.findAll(Example.of(webOptions), Sort.by(Sort.Direction.ASC, "id"));
     }
 }

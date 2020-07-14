@@ -34,7 +34,8 @@
             padding-right: 12px;
             cursor: pointer;
         }
-        .navSlotButtonLi:hover .navSlotButton{
+
+        .navSlotButtonLi:hover .navSlotButton {
             transform: translate(0, -5px);
         }
 
@@ -46,7 +47,7 @@
 
         .navSlotPick {
             height: 70px;
-            margin-left: -5.5px;
+            margin-left: -5.8px;
             visibility: hidden
         }
     </style>
@@ -67,7 +68,8 @@
         </ul>
         <ul class="nav navbar-nav navSlot" style="left: 264px">
             <li class="navSlotButtonLi"><img class="navSlotButton" style="" data-toggle="popover" data-content="首页"
-                     src="/images/indexButton/navButton/index.png" onclick="toLink(getRootPath())" alt="首页"></li>
+                                             src="/images/indexButton/navButton/index.png"
+                                             onclick="toLink(getRootPath())" alt="首页"></li>
 
         </ul>
         <ul class="nav navbar-nav navSlot" style="left:335px;top: 0">
@@ -79,8 +81,7 @@
             <li><img alt="" class="navSlotPick" id="dd5" src="/images/indexButton/slotPick.png"></li>
             <li><img alt="" class="navSlotPick" id="dd6" src="/images/indexButton/slotPick.png"></li>
             <li><img alt="" class="navSlotPick" id="dd7" src="/images/indexButton/slotPick.png"></li>
-            <li><img alt="" class="navSlotPick" id="dd8"
-                     src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="adminPick" src="/images/indexButton/slotPick.png"></li>
         </ul>
         <ul class="nav navbar-nav navSlot">
             <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="地图"
@@ -102,7 +103,8 @@
             <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
                                              src="/images/indexButton/navButton/iron_pickaxe.png"></li>
             <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="管理"
-                                             src="/images/indexButton/navButton/book_writable.png"></li>
+                                             src="/images/indexButton/navButton/book_writable.png"
+                                             onclick="toLink(getRootPath()+'admin/index')"></li>
         </ul>
         <!--<div class="navbar-right">
             <img id="serverStatusImg" alt="服务器状态" src="/images/serverStatus/serverOffline.png">
@@ -131,9 +133,6 @@
     <script type="text/javascript" th:src="@{/live2d/live2d.js}"></script>
     <script type="text/javascript" th:src="@{/live2d/message.js}"></script>
     <script>
-        //加载Live2d
-        loadlive2d("live2d", "/live2d/model/13.json");
-
         $(function () {
             //导航栏选中
             const activeSlot = $("#activeSlot").text();
