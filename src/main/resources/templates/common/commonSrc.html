@@ -34,8 +34,7 @@
             padding-right: 12px;
             cursor: pointer;
         }
-
-        .navSlotButton:hover {
+        .navSlotButtonLi:hover .navSlotButton{
             transform: translate(0, -5px);
         }
 
@@ -43,6 +42,12 @@
             background-color: #1b0c1b;
             color: #fff;
             border: #2c0863 1px solid;
+        }
+
+        .navSlotPick {
+            height: 70px;
+            margin-left: -5.5px;
+            visibility: hidden
         }
     </style>
     <!--可扩展块-->
@@ -61,49 +66,43 @@
             <li><img src="/images/indexButton/slotNav.png" alt="物品栏"></li>
         </ul>
         <ul class="nav navbar-nav navSlot" style="left: 264px">
-            <li><img class="navSlotButton" style="" data-toggle="popover" data-content="首页"
-                     src="/images/indexButton/navButton/index.png" onclick="toLink(getRootPath())"></li>
+            <li class="navSlotButtonLi"><img class="navSlotButton" style="" data-toggle="popover" data-content="首页"
+                     src="/images/indexButton/navButton/index.png" onclick="toLink(getRootPath())" alt="首页"></li>
 
         </ul>
         <ul class="nav navbar-nav navSlot" style="left:335px;top: 0">
-            <li><img class="navSlotPick" id="mapPick" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="registerPick" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd2" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd3" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd4" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd5" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd6" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd7" style="height: 70px;margin-left: -5.5px;visibility: hidden"
-                     src="/images/indexButton/slotPick.png"></li>
-            <li><img class="navSlotPick" id="dd8" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+            <li><img alt="" class="navSlotPick" id="mapPick" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="registerPick" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd2" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd3" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd4" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd5" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd6" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd7" src="/images/indexButton/slotPick.png"></li>
+            <li><img alt="" class="navSlotPick" id="dd8"
                      src="/images/indexButton/slotPick.png"></li>
         </ul>
         <ul class="nav navbar-nav navSlot">
-            <li><img class="navSlotButton" data-toggle="popover" data-content="地图"
-                     src="/images/indexButton/navButton/map.png" onclick="toLink(getRootPath()+'iframe/map')"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="账号"
-                     src="/images/indexButton/navButton/totem.png" onclick="toLink(getRootPath()+'register')"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
-                     src="/images/indexButton/navButton/diamond_sword.png"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
-                     src="/images/indexButton/navButton/compass_10.png"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
-                     src="/images/indexButton/navButton/acacia_boat.png"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
-                     src="/images/indexButton/navButton/apple.png"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
-                     src="/images/indexButton/navButton/iron_ingot.png"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
-                     src="/images/indexButton/navButton/iron_pickaxe.png"></li>
-            <li><img class="navSlotButton" data-toggle="popover" data-content="管理"
-                     src="/images/indexButton/navButton/book_writable.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="地图"
+                                             src="/images/indexButton/navButton/map.png"
+                                             onclick="toLink(getRootPath()+'iframe/map')"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="账号"
+                                             src="/images/indexButton/navButton/totem.png"
+                                             onclick="toLink(getRootPath()+'register')"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
+                                             src="/images/indexButton/navButton/diamond_sword.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
+                                             src="/images/indexButton/navButton/compass_10.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
+                                             src="/images/indexButton/navButton/acacia_boat.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
+                                             src="/images/indexButton/navButton/apple.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
+                                             src="/images/indexButton/navButton/iron_ingot.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="暂无"
+                                             src="/images/indexButton/navButton/iron_pickaxe.png"></li>
+            <li class="navSlotButtonLi"><img alt="" class="navSlotButton" data-toggle="popover" data-content="管理"
+                                             src="/images/indexButton/navButton/book_writable.png"></li>
         </ul>
         <!--<div class="navbar-right">
             <img id="serverStatusImg" alt="服务器状态" src="/images/serverStatus/serverOffline.png">
