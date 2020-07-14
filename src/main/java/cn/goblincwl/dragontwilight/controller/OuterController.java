@@ -79,7 +79,6 @@ public class OuterController {
      * @create 2020/6/15 22:16
      * @author ☪wl
      */
-    @ResponseBody
     @GetMapping(value = "/getImage")
     public String GetImage(@RequestParam String userName, HttpServletRequest request, HttpServletResponse response) throws IOException {
         InputStream inStream = null;
@@ -107,14 +106,7 @@ public class OuterController {
                 }
             } catch (Exception e) {
                 //请求littleSkin失败，返回默认史蒂夫皮肤
-                String root = ResourceUtils.getFile("classpath:static").getPath();
-                response.setContentType("image/png");
-                BufferedImage bufferedImage = ImageIO.read(new FileInputStream(new File(root + "/images/steve.png")));
-                if (bufferedImage != null) {
-                    os = response.getOutputStream();
-                    ImageIO.write(bufferedImage, "png", os);
-                }
-                return "redirect:" + CommonUtils.getServerUrl(request) + "images/steve.png";
+                return "redirect:" + CommonUtils.getServerUrl(request) + "/images/steve.png";
             }
             //读取输入流数据
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
