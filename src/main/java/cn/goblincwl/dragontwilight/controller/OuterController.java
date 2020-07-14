@@ -81,7 +81,7 @@ public class OuterController {
      */
     @ResponseBody
     @GetMapping(value = "/getImage")
-    public void GetImage(@RequestParam String userName, HttpServletResponse response) throws IOException {
+    public String GetImage(@RequestParam String userName, HttpServletRequest request, HttpServletResponse response) throws IOException {
         InputStream inStream = null;
         OutputStream os = null;
 
@@ -114,7 +114,7 @@ public class OuterController {
                     os = response.getOutputStream();
                     ImageIO.write(bufferedImage, "png", os);
                 }
-                return;
+                return "redirect:" + CommonUtils.getServerUrl(request) + "images/steve.png";
             }
             //读取输入流数据
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -141,6 +141,7 @@ public class OuterController {
                 os.close();
             }
         }
+        return null;
     }
 
 
