@@ -48,7 +48,7 @@ public class WebController {
      */
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("activeLi", "liIndex");
+        model.addAttribute("activeSlot", "indexPick");
         return "index";
     }
 
@@ -61,7 +61,7 @@ public class WebController {
      */
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("activeLi", "liRegisterPage");
+        model.addAttribute("activeSlot", "registerPick");
         return "register";
     }
 
@@ -160,7 +160,7 @@ public class WebController {
     public ModelAndView emailBackPassword(@PathVariable("uuid") String uuid, ModelAndView modelAndView) {
         modelAndView.setViewName("newPassword");
         modelAndView.addObject("uuid", uuid);
-        modelAndView.addObject("activeLi", "liRegisterPage");
+        modelAndView.addObject("activeSlot", "registerPick");
         //查询UUID是否有效
         YggPasswordLink yggPasswordLink = new YggPasswordLink();
         yggPasswordLink.setUUID(uuid);

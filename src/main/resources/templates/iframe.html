@@ -17,10 +17,11 @@
     </style>
 </head>
 <body>
-<nav th:replace="common/commonSrc :: commonNavHead(~{})"></nav>
-<div th:replace="common/commonSrc :: commonNavFoot(~{})"></div>
 
 <iframe id="iframe" width="100%" allowfullscreen th:src="${goUrl}"></iframe>
+<span id="title" style="display: none" th:text="${title}"></span>
+
+<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
 </body>
 <div th:replace="common/commonSrc :: commonFoot(~{::script})">
     <script type="text/javascript">
@@ -28,6 +29,8 @@
             return true;
         };
         $(function () {
+            document.title = $("#title").text();
+
             const iframe = $("#iframe");
             //设置iframe-padding-top
             const headNavHeight = $("#headNav").height();
@@ -35,8 +38,7 @@
             //设置iframe高度
             const h = $(window).height();
             //底部导航栏高度
-            const headerH = $("#footNav").height();
-            iframe.height((h - headerH) + "px");
+            iframe.height(h + "px");
         });
     </script>
 </div>

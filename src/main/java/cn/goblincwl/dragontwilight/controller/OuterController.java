@@ -81,7 +81,7 @@ public class OuterController {
      */
     @ResponseBody
     @GetMapping(value = "/getImage")
-    public void GetImage(@RequestParam String userName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void GetImage(@RequestParam String userName, HttpServletResponse response) throws IOException {
         InputStream inStream = null;
         OutputStream os = null;
 

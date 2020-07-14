@@ -19,57 +19,110 @@
         img {
             -webkit-user-drag: none;
         }
+
+        .navSlot {
+            display: inline-block;
+            float: none;
+            position: absolute;
+            top: 15px;
+            left: 333px
+        }
+
+        .navSlotButton {
+            height: 40px;
+            padding-left: 12px;
+            padding-right: 12px;
+            cursor: pointer;
+        }
+
+        .navSlotButton:hover {
+            transform: translate(0, -5px);
+        }
+
+        .popover {
+            background-color: #1b0c1b;
+            color: #fff;
+            border: #2c0863 1px solid;
+        }
     </style>
     <!--可扩展块-->
     <th:block th:replace="${links}"/>
     <th:block th:replace="${styles}"/>
 </head>
 
-<!--顶部导航栏-->
-<nav th:fragment="commonNavHead(a)" class="navbar navbar-fixed-top navbar-inverse" role="navigation" id="headNav">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="javascript:void(0)" onclick="window.location.href=getRootPath()">龙之暮</a>
-        </div>
-
-        <ul class="nav navbar-nav">
-            <li id="liIndex"><a href="javascript:void(0)" onclick="window.location.href=getRootPath()">首页</a></li>
-            <li id="liMap"><a href="javascript:void(0)"
-                              onclick="window.location.href=getRootPath()+'iframe/map'">地图</a>
-            </li>
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-            <li id="liRegisterPage"><a href="javascript:void(0)"
-                                       onclick="window.location.href=getRootPath()+'register'">注册/找回密码</a></li>
-        </ul>
-    </div>
-</nav>
-
 <!--尾部导航栏-->
-<div th:fragment="commonNavFoot(a)">
-    <!--备案信息-->
-    <nav id="footNav" class="navbar navbar-default navbar-fixed-bottom navbar-inverse" style="min-height: 22px;">
-        <div class="container">
-            <div class="navbar-right">
-                <img id="serverStatusImg" alt="服务器状态" src="/images/serverStatus/serverOffline.png">
-                <span id="serverStatusCount"
-                      style="color:red;font-family: Unifont,serif;font-size: 14px;font-weight: bold">?</span>
-            </div>
-            <!--<div class="navbar-right">
-                <a href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19013886号</a>
-            </div>-->
-        </div>
-    </nav>
+<!--备案信息-->
+<nav th:fragment="commonNavFoot(a)" id="footNav" class="navbar navbar-fixed-bottom navbar-transparent"
+     role="navigation"
+     style="min-height: 22px; text-align: center;">
+    <div class="container" style="position: relative">
+        <ul class="nav navbar-nav" style="display: inline-block;float: none;">
+            <li><img id="slotIndex" src="/images/indexButton/slotMaster.png" alt="首页"></li>
+            <li><img src="/images/indexButton/slotNav.png" alt="物品栏"></li>
+        </ul>
+        <ul class="nav navbar-nav navSlot" style="left: 264px">
+            <li><img class="navSlotButton" style="" data-toggle="popover" data-content="首页"
+                     src="/images/indexButton/navButton/index.png" onclick="toLink(getRootPath())"></li>
+
+        </ul>
+        <ul class="nav navbar-nav navSlot" style="left:335px;top: 0">
+            <li><img class="navSlotPick" id="mapPick" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="registerPick" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd2" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd3" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd4" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd5" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd6" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd7" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+            <li><img class="navSlotPick" id="dd8" style="height: 70px;margin-left: -5.5px;visibility: hidden"
+                     src="/images/indexButton/slotPick.png"></li>
+        </ul>
+        <ul class="nav navbar-nav navSlot">
+            <li><img class="navSlotButton" data-toggle="popover" data-content="地图"
+                     src="/images/indexButton/navButton/map.png" onclick="toLink(getRootPath()+'iframe/map')"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="账号"
+                     src="/images/indexButton/navButton/totem.png" onclick="toLink(getRootPath()+'register')"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
+                     src="/images/indexButton/navButton/diamond_sword.png"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
+                     src="/images/indexButton/navButton/compass_10.png"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
+                     src="/images/indexButton/navButton/acacia_boat.png"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
+                     src="/images/indexButton/navButton/apple.png"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
+                     src="/images/indexButton/navButton/iron_ingot.png"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="暂无"
+                     src="/images/indexButton/navButton/iron_pickaxe.png"></li>
+            <li><img class="navSlotButton" data-toggle="popover" data-content="管理"
+                     src="/images/indexButton/navButton/book_writable.png"></li>
+        </ul>
+        <!--<div class="navbar-right">
+            <img id="serverStatusImg" alt="服务器状态" src="/images/serverStatus/serverOffline.png">
+            <span id="serverStatusCount"
+                  style="color:red;font-family: Unifont,serif;font-size: 14px;font-weight: bold">?</span>
+        </div>-->
+        <!--<div class="navbar-right">
+            <a href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19013886号</a>
+        </div>-->
+    </div>
+    <!--隐藏传值-->
+    <span id="activeSlot" style="display: none" th:text="${activeSlot}">index</span>
     <!--左下角小埋-->
     <div id="landlord">
         <!--    <div id="liveMessage" class="message" style="opacity:0"></div>-->
         <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
         <!--    <div id="hiddenButton" class="hide-button">隐藏</div>-->
     </div>
-    <!--隐藏传值-->
-    <span id="activeLi" style="display: none" th:text="${activeLi}">index</span>
-</div>
+</nav>
 
 <!--公共依赖尾-->
 <div th:fragment="commonFoot(scripts)">
@@ -81,54 +134,33 @@
     <script>
         //加载Live2d
         loadlive2d("live2d", "/live2d/model/13.json");
-        //记录mcsManagerApiUrl值
+
         $(function () {
-            $.get({
-                url: getRootPath() + "mcsMangerApiUrl",
-                success: function (data) {
-                    //显示服务器状态
-                    loadServerStatus(data).apply();
-                    //定时刷新服务器状态
-                    setInterval(loadServerStatus(data), 10000);
+            //导航栏选中
+            const activeSlot = $("#activeSlot").text();
+            if (activeSlot != null && activeSlot !== "" && typeof activeSlot != "undefined") {
+                if (activeSlot === "indexPick") {
+                    $("#slotIndex").attr("src", "/images/indexButton/slotPick.png");
+                } else {
+                    $("#" + activeSlot).css("visibility", "visible");
                 }
+            }
+
+            //物品栏悬浮
+            $(".navSlotButton").popover({
+                placement: 'top',
+                trigger: 'hover'
             });
 
-            //导航栏选中
-            var acviteLi = $("#activeLi").text();
-            if (acviteLi != null && acviteLi !== "" && typeof acviteLi != "undefined") {
-                $("#" + acviteLi).addClass("active");
-            }
         });
 
-        //显示服务器状态
-        function loadServerStatus(mcsManagerApiUrl) {
-            return function () {
-                $.get({
-                    url: mcsManagerApiUrl,
-                    success: function (data) {
-                        var $serverStatusImg = $("#serverStatusImg");
-                        var $serverStatusCount = $("#serverStatusCount");
-                        if (data != null) {
-                            data = JSON.parse(data);
-                            if (data.status === true) {
-                                //服务器开启
-                                $serverStatusImg.attr("src", "/images/serverStatus/serverOnline.png");
-                                $serverStatusCount.css("color", "greenyellow");
-                                var playerCount = data.current_players;
-                                if (typeof playerCount == "undefined") {
-                                    $serverStatusCount.text("?");
-                                } else {
-                                    $serverStatusCount.text(playerCount);
-                                }
-                            } else {
-                                $serverStatusImg.attr("src", "/images/serverStatus/serverOffline.png");
-                                $serverStatusCount.css("color", "red");
-                                $serverStatusCount.text("?");
-                            }
-                        }
-                    }
-                });
-            };
+        //跳转
+        function toLink(url, isTarget) {
+            if (isTarget) {
+                window.open(url);
+            } else {
+                window.location.href = url;
+            }
         }
 
         //获取服务器原始地址

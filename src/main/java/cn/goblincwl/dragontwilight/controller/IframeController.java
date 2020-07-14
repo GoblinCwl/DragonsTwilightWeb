@@ -61,8 +61,8 @@ public class IframeController {
      */
     @GetMapping("/map")
     public String map(Model model) {
-        model.addAttribute("activeLi", "liRegisterPage");
-        model.addAttribute("activeLi", "liMap");
+        model.addAttribute("activeSlot", "mapPick");
+        model.addAttribute("title", "地皮地图");
         model.addAttribute("goUrl", "https://map.goblincwl.cn/");
         return "iframe";
     }

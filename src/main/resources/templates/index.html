@@ -145,20 +145,33 @@
             transform: rotate(-8deg);
             animation: turn 0.5s linear infinite;
         }
+
+        .footSpan {
+            cursor: pointer;
+            color: #4980ff;
+            font-weight: bold;
+        }
+
+        .footSpan:hover {
+            color: #4ec878;
+        }
+
+        .footSpan:visited {
+            color: #4980ff;
+        }
     </style>
 </head>
 <body>
 
-<nav th:replace="common/commonSrc :: commonNavHead(~{})"></nav>
 <div id="bg"></div>
-<div class="container" style="position:relative;top: 100px">
+<div class="container" style="position:relative;top: 75px">
     <div class="row">
         <div class="col-md-12 column">
             <img class="indexTitle img-responsive center-block" src="/images/title/title.png" alt="龙之暮">
             <img class="indexTitle2 img-responsive center-block" src="/images/title/titleText.png" alt="龙之暮">
         </div>
     </div>
-    <div class="row" style="position:relative;top: 140px">
+    <div class="row" style="position:relative;top: 100px">
         <div class="row">
             <div class="col-md-6 col-md-offset-3 column buttonDiv" style="position:relative;">
                 <img class="indexTitle img-responsive center-block indexButton"
@@ -197,6 +210,13 @@
                      onclick="toLink('//shang.qq.com/wpa/qunwpa?idkey=a873b4afed50e200d3d55200c20fccb23de13f362dbc6eb5e6da27ad171d034d&source_id=1_40001',true)">
             </div>
         </div>
+        <div class="row center-block">
+            <div class="col-md-6 col-md-offset-3" style="text-align: center">
+                <a class="footSpan" onclick="toLink(getRootPath())">@Dragon's Twilight 龙之暮</a>
+                <span class="footSpan"> | </span>
+                <a class="footSpan" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19013886号</a>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -205,19 +225,13 @@
 </div>
 
 
-<div th:replace="common/commonSrc :: commonNavFoot(~{})"></div>
+<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
 </body>
 
 
 <div th:replace="common/commonSrc :: commonFoot(~{::script})">
     <script type="text/javascript">
-        function toLink(url, isTarget) {
-            if (isTarget) {
-                window.open(url);
-            } else {
-                window.location.href = url;
-            }
-        }
+
     </script>
 </div>
 </html>
