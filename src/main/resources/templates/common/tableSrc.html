@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="https://www.thymeleaf.org/">
+<div th:fragment="hoverTable()">
+    <style rel="stylesheet">
+        body {
+            background-image: url("/images/background/dirt_dark.png");
+            background-position: left top;
+            background-size: auto;
+            background-repeat: repeat;
+            background-attachment: scroll;
+        }
+
+        table td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        table th {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        #dataTable table {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            border-top: 2px solid black;
+            table-layout: fixed;
+        }
+    </style>
+    <h2 class="sub-header" th:text="${tableTitle}"
+        style="color: #000000;font-weight: bold;position: absolute;top:5%;left: 10%;font-family: Unifont,serif;font-size: 300%"></h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>操作</th>
+            <th th:each="head,stat:${heads}"
+                th:text="${head.headName}"
+                th:width="${head.width}+'%'">
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="data,index:${datas}">
+            <td class="optTd">
+                <a href="javascript:void(0)" th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
+                   data-target="#modifyModel">修改</a>
+                <span> | </span>
+                <a href="javascript:void(0)" th:onclick="tableDelete([[${data[0]}]])" data-toggle="modal"
+                   data-target="#modifyModel">删除</a>
+            </td>
+            <td th:each="oneRow,inIndex:${data}" th:text="${oneRow}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

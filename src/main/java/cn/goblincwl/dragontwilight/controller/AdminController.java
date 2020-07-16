@@ -1,5 +1,6 @@
 package cn.goblincwl.dragontwilight.controller;
 
+import cn.goblincwl.dragontwilight.common.entity.TableHead;
 import cn.goblincwl.dragontwilight.common.exception.DtWebException;
 import cn.goblincwl.dragontwilight.common.result.ResultGenerator;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
@@ -12,6 +13,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +102,74 @@ public class AdminController {
         List<WebOptions> webOptionsList = this.webOptionsService.findList(new WebOptions());
         model.addAttribute("webOptionsList", webOptionsList);
         return "admin/webOption";
+    }
+
+    /**
+     * 根据选项ID获取选项
+     *
+     * @param optionId 选项ID
+     * @return java.lang.String
+     * @create 2020/7/15 9:53
+     * @author ☪wl
+     */
+    @ResponseBody
+    @GetMapping("/getWebOption")
+    public String getWebOption(Integer optionId) {
+        WebOptions resultWeb;
+        try {
+            WebOptions webOptions = new WebOptions();
+            webOptions.setId(optionId);
+            resultWeb = this.webOptionsService.findOne(webOptions);
+        } catch (Exception e) {
+            return ResultGenerator.autoReturnFailResult("查询异常", LOG, e);
+        }
+        return ResultGenerator.genSuccessResult(resultWeb).toString();
+    }
+
+    /**
+     * 获取网站设置表格数据
+     *
+     * @return java.lang.String
+     * @create 2020/7/15 11:34
+     * @author ☪wl
+     */
+    @GetMapping("/getWebOptionList")
+    public String getWebOptionList(Model model) {
+        //表头集合
+        List<TableHead> arrayList = new ArrayList<>();
+        arrayList.add(new TableHead("ID", 5));
+        arrayList.add(new TableHead("键", 15));
+        arrayList.add(new TableHead("值", 35));
+        arrayList.add(new TableHead("备注", 35));
+        model.addAttribute("heads", arrayList);
+
+        //数据集合
+        List<List<Object>> valueList = new ArrayList<>();
+        List<WebOptions> list = this.webOptionsService.findList(new WebOptions());
+        for (WebOptions webOptions : list) {
+            List<Object> dataList = new ArrayList<>();
+            dataList.add(webOptions.getId());
+            dataList.add(webOptions.getOptKey());
+            dataList.add(webOptions.getOptValue());
+            dataList.add(webOptions.getRemarks());
+            valueList.add(dataList);
+        }
+        model.addAttribute("datas", valueList);
+
+        model.addAttribute("tableTitle", "WebOptions设置");
+        return "common/tableSrc::hoverTable";
+    }
+
+    @ResponseBody
+    @PostMapping("/saveWebOption")
+    public String saveWebOption(WebOptions webOptions) {
+        String resultMsg;
+        try {
+            resultMsg = this.webOptionsService.save(webOptions);
+        } catch (Exception e) {
+            return ResultGenerator.autoReturnFailResult("保存失败!", LOG, e);
+        }
+        return ResultGenerator.genSuccessResult(resultMsg).toString();
     }
 
 }

@@ -17,6 +17,7 @@
     </style>
 </head>
 <body>
+<div th:replace="common/commonSrc :: commonContent"></div>
 
 <iframe id="iframe" width="100%" allowfullscreen th:src="${goUrl}"></iframe>
 <span id="title" style="display: none" th:text="${title}"></span>

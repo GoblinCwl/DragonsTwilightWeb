@@ -14,4 +14,8 @@ public interface WebOptionsService {
     WebOptions findByKey(String key);
 
     List<WebOptions> findList(WebOptions webOptions);
+
+    WebOptions findOne(WebOptions optionId);
+
+    String save(WebOptions webOptions);
 }

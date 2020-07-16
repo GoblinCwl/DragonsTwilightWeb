@@ -1,5 +1,6 @@
 package cn.goblincwl.dragontwilight.service.impl;
 
+import cn.goblincwl.dragontwilight.common.exception.DtWebException;
 import cn.goblincwl.dragontwilight.repository.primary.WebOptionsRepository;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
@@ -35,12 +36,24 @@ public class WebOptionsServiceImpl implements WebOptionsService {
         if (optional.isPresent()) {
             return optional.get();
         } else {
-            throw new RuntimeException("密码获取失败!");
+            throw new DtWebException("密码获取失败!");
         }
     }
 
     @Override
     public List<WebOptions> findList(WebOptions webOptions) {
         return this.webOptionsRepository.findAll(Example.of(webOptions), Sort.by(Sort.Direction.ASC, "id"));
+    }
+
+    @Override
+    public WebOptions findOne(WebOptions webOptions) {
+        Optional<WebOptions> option = this.webOptionsRepository.findOne(Example.of(webOptions));
+        return option.orElse(null);
+    }
+
+    @Override
+    public String save(WebOptions webOptions) {
+        this.webOptionsRepository.save(webOptions);
+        return "保存成功";
     }
 }

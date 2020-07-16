@@ -6,14 +6,6 @@
     <link rel="stylesheet" href="/adminNav/style.css">
     <link rel="stylesheet" href="/adminNav/font-awesome.css">
     <style>
-        body {
-            background-image: url("/images/background/coarse_dirt.png");
-            background-position: left top;
-            background-size: auto;
-            background-repeat: repeat;
-            background-attachment: scroll;
-        }
-
         .checkMenu {
             background-color: #45699c;
         }
@@ -21,65 +13,19 @@
         .checkMenu a {
             color: white;
         }
-
-        .table tr {
-            /*background-color: white;*/
-        }
-
-        table td {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        table th {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-
-        body::-webkit-scrollbar {
-            display: none;
-        }
     </style>
 </head>
 <body>
+<div th:replace="common/commonSrc :: commonContent"></div>
+
 <nav th:replace="common/adminSrc :: navHead"></nav>
 
-<div class="container-fluid" style="position: relative;top: 60px">
+<div class="container-fluid" style="position: relative;top: 50px">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="table-responsive">
                 <img src="/images/background/book.png" class="img-responsive" style="width: 100%" alt="">
-                <h2 class="sub-header "
-                    style="color: #000000;font-weight: bold;position: absolute;top:5%;left: 10%;font-family: Unifont,serif;font-size: 300%">
-                    网站设置</h2>
-                <table id="dataTable" class="table table-hover "
-                       style="position: absolute; top: 10%; left: 10%;width: 80%;border-top: 2px solid black;table-layout: fixed;">
-                    <thead>
-                    <tr>
-                        <th style="width: 10%">#</th>
-                        <th style="width: 5%">序号</th>
-                        <th style="width: 15%">键</th>
-                        <th style="width: 35%">值</th>
-                        <th style="width: 45%">备注</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="webOptions,webOptionsStat:${webOptionsList}">
-                        <td>
-                            <a href="#">修改</a>
-                            <span> | </span>
-                            <a href="#">删除</a>
-                        </td>
-                        <td th:text="${webOptions.id}"></td>
-                        <td th:text="${webOptions.optKey}"></td>
-                        <td th:text="${webOptions.optValue}"></td>
-                        <td th:text="${webOptions.remarks}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div id="dataTable"></div>
             </div>
         </div>
     </div>
@@ -88,13 +34,129 @@
     </div>
 </div>
 
+<div class="modal fade" id="modifyModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    修改设置#1
+                </h4>
+            </div>
+            <form id="form_data" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="optionKey" class="col-sm-2 control-label">键</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" class="form-control" id="optionId" placeholder="设置项的唯一键">
+                            <input type="text" class="form-control" id="optionKey" placeholder="设置项的唯一键">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionValue" class="col-sm-2 control-label">值</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="optionValue" placeholder="设置项的值">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionRemarks" class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="optionRemarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" onclick="tableSubmit()" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 <nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
+
+
+
 </body>
 <div th:replace="common/commonSrc :: commonFoot(~{::script})">
     <script type="text/javascript">
         $(function () {
+            tableInit();
+        });
 
-        })
+        function tableInit() {
+            $.ajax({
+                url: getRootPath() + '/admin/getWebOptionList',
+                type: 'GET',
+                success: function (data) {
+                    $("#dataTable").html(data);
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+            });
+        }
+
+        //回显模态框表单
+        function tableModify(optionId) {
+            $.ajax({
+                type: 'GET',
+                url: getRootPath() + 'admin/getWebOption',
+                data: {
+                    "optionId": optionId
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+                success: function (data) {
+                    data = JSON.parse(data).data;
+                    $("#optionId").val(data.id);
+                    $("#optionKey").val(data.optKey);
+                    $("#optionValue").val(data.optValue);
+                    $("#optionRemarks").val(data.remarks);
+                    $("#myModalLabel").text('修改设置#' + data.id);
+                }
+            });
+        }
+
+        //提交保存
+        function tableSubmit() {
+            $.ajax({
+                type: 'POST',
+                url: getRootPath() + 'admin/saveWebOption',
+                data: {
+                    "id": $("#optionId").val(),
+                    "optKey": $("#optionKey").val(),
+                    "optValue": $("#optionValue").val(),
+                    "remarks": $("#optionRemarks").val()
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.code === "1") {
+                        $("#modifyModel").modal('hide');
+                        tableInit();
+                    }
+                }
+            });
+        }
     </script>
 </div>
 <div th:replace="common/adminSrc :: adminFood"></div>

@@ -56,7 +56,6 @@ public class ResultGenerator {
      * @return cn.goblincwl.dragontwilight.common.result.Result
      * @create 2020/6/16 22:54
      * @author ☪wl
-     * @document ShowDoc:
      */
     public static String autoReturnFailResult(String defaultMsg, Logger log, Exception e) {
         String resultMsg = (e instanceof DtWebException) ? e.getMessage() : defaultMsg;
