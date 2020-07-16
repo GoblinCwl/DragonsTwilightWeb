@@ -5,6 +5,7 @@ import cn.goblincwl.dragontwilight.repository.primary.WebOptionsRepository;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,11 @@ public class WebOptionsServiceImpl implements WebOptionsService {
 
     @Override
     public List<WebOptions> findList(WebOptions webOptions) {
-        return this.webOptionsRepository.findAll(Example.of(webOptions), Sort.by(Sort.Direction.ASC, "id"));
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("optKey", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("optValue", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("remarks", ExampleMatcher.GenericPropertyMatchers.contains());
+        return this.webOptionsRepository.findAll(Example.of(webOptions, exampleMatcher), Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override
@@ -56,4 +61,11 @@ public class WebOptionsServiceImpl implements WebOptionsService {
         this.webOptionsRepository.save(webOptions);
         return "保存成功";
     }
+
+    @Override
+    public String delete(WebOptions webOptions) {
+        this.webOptionsRepository.delete(webOptions);
+        return "删除成功";
+    }
+
 }

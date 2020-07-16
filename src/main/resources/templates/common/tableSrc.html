@@ -30,9 +30,56 @@
             border-top: 2px solid black;
             table-layout: fixed;
         }
+
+        .tableHead {
+            position: absolute;
+            width: 80%;
+            top: 5%;
+            left: 10%;
+        }
+
+        .tableHead h2 {
+            color: #000000;
+            font-weight: bold;
+            font-family: Unifont, serif;
+            font-size: 300%
+        }
+
+        .tableHead .input-group {
+            padding-top: 2%;
+            /*font-family: Unifont, serif;*/
+        }
     </style>
-    <h2 class="sub-header" th:text="${tableTitle}"
-        style="color: #000000;font-weight: bold;position: absolute;top:5%;left: 10%;font-family: Unifont,serif;font-size: 300%"></h2>
+    <div class="tableHead row">
+        <h2 class="sub-header col-md-4" th:text="${tableTitle}"></h2>
+        <div class="input-group col-md-6 input-group-lg pull-right"><!--保持内联，消除边框，类似于form-inline-->
+            <div class="input-group-btn"><!--不换行，与相邻元素内联，包含dropdown-->
+                <button id="selectBtn" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span th:text="${queryText==null?'请选择 V':queryText+' V'}">请选择 V</span>
+                </button>
+                <input type="hidden" id="selectKey" th:value="${queryKey}">
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="selectA" href="javascript:void(0);"
+                           onclick="$('#selectBtn').text('请选择 V');$('#selectKey').val('')">
+                            请选择 V
+                        </a>
+                    </li>
+                    <li th:each="select,index:${selects}">
+                        <a class="selectA" href="javascript:void(0);" th:text="${select.value}+' V'"
+                           th:onclick="$('#selectBtn').text([[${select.value}]]+' V');$('#selectKey').val([[${select.key}]])">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <input th:value="${queryValue}" class="form-control" id="selectValue" type="text" placeholder="请输入关键词"/>
+            <span class="input-group-btn"><!--不换行，与相邻元素内联-->
+		      <button class="btn btn-primary" onclick="tableInit()">搜索</button>
+		      <button class="btn btn-warning" onclick="tableInit(true)">重置</button>
+		      <button class="btn btn-success" onclick="tableAdd()">添加</button>
+		</span>
+        </div>
+    </div>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -46,15 +93,17 @@
         <tbody>
         <tr th:each="data,index:${datas}">
             <td class="optTd">
-                <a href="javascript:void(0)" th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
+                <a href="javascript:void(0);" th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
                    data-target="#modifyModel">修改</a>
                 <span> | </span>
-                <a href="javascript:void(0)" th:onclick="tableDelete([[${data[0]}]])" data-toggle="modal"
-                   data-target="#modifyModel">删除</a>
+                <a href="javascript:void(0);" th:onclick="tableDelete([[${data[0]}]])">删除</a>
             </td>
             <td th:each="oneRow,inIndex:${data}" th:text="${oneRow}"></td>
         </tr>
         </tbody>
     </table>
 </div>
+<script type="text/javascript" th:fragment="tableJs">
+
+</script>
 </html>

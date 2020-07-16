@@ -1,6 +1,7 @@
 package cn.goblincwl.dragontwilight.common.exception;
 
 import lombok.Getter;
+import org.springframework.validation.BindingResult;
 
 /**
  * @author ☪wl
@@ -21,5 +22,19 @@ public class DtWebException extends RuntimeException {
 
     public DtWebException(String message) {
         this.message = message;
+    }
+
+    /**
+     * 用于参数校验异常处理
+     *
+     * @param bindingResult 参数校验返回对象
+     * @return void
+     * @create 2020/7/16 23:05
+     * @author ☪wl
+     */
+    public static void ValidException(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new DtWebException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
     }
 }

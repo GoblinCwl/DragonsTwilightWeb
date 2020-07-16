@@ -52,6 +52,12 @@
                 data: {
                     password: password.val()
                 },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.code === "1") {

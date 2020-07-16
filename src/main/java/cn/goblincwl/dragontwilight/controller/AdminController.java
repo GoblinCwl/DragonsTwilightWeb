@@ -5,18 +5,19 @@ import cn.goblincwl.dragontwilight.common.exception.DtWebException;
 import cn.goblincwl.dragontwilight.common.result.ResultGenerator;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
+import java.util.*;
 
 /**
  * @author ☪wl
@@ -133,8 +134,8 @@ public class AdminController {
      * @create 2020/7/15 11:34
      * @author ☪wl
      */
-    @GetMapping("/getWebOptionList")
-    public String getWebOptionList(Model model) {
+    @PostMapping("/getWebOptionList")
+    public String getWebOptionList(WebOptions webOptions, Model model, String queryKey, String queryValue) {
         //表头集合
         List<TableHead> arrayList = new ArrayList<>();
         arrayList.add(new TableHead("ID", 5));
@@ -145,29 +146,72 @@ public class AdminController {
 
         //数据集合
         List<List<Object>> valueList = new ArrayList<>();
-        List<WebOptions> list = this.webOptionsService.findList(new WebOptions());
-        for (WebOptions webOptions : list) {
+        List<WebOptions> list = this.webOptionsService.findList(webOptions);
+        for (WebOptions nowWebOptions : list) {
             List<Object> dataList = new ArrayList<>();
-            dataList.add(webOptions.getId());
-            dataList.add(webOptions.getOptKey());
-            dataList.add(webOptions.getOptValue());
-            dataList.add(webOptions.getRemarks());
+            dataList.add(nowWebOptions.getId());
+            dataList.add(nowWebOptions.getOptKey());
+            dataList.add(nowWebOptions.getOptValue());
+            dataList.add(nowWebOptions.getRemarks());
             valueList.add(dataList);
         }
         model.addAttribute("datas", valueList);
+
+        //可查询集合
+        Map<String, String> selects = new LinkedHashMap<>();
+        selects.put("optKey", "键");
+        selects.put("optValue", "值");
+        selects.put("remarks", "备注");
+        model.addAttribute("selects", selects);
+
+        //查询参数回显
+        model.addAttribute("queryKey", queryKey);
+        model.addAttribute("queryValue", queryValue);
+        model.addAttribute("queryText", selects.get(queryKey));
 
         model.addAttribute("tableTitle", "WebOptions设置");
         return "common/tableSrc::hoverTable";
     }
 
+    /**
+     * 保存/修改 WebOptions
+     *
+     * @param webOptions 数据对象
+     * @return java.lang.String
+     * @create 2020/7/16 23:06
+     * @author ☪wl
+     */
     @ResponseBody
     @PostMapping("/saveWebOption")
-    public String saveWebOption(WebOptions webOptions) {
+    public String saveWebOption(@Valid WebOptions webOptions, BindingResult bindingResult) {
         String resultMsg;
         try {
+            DtWebException.ValidException(bindingResult);
             resultMsg = this.webOptionsService.save(webOptions);
         } catch (Exception e) {
             return ResultGenerator.autoReturnFailResult("保存失败!", LOG, e);
+        }
+        return ResultGenerator.genSuccessResult(resultMsg).toString();
+    }
+
+    /**
+     * 删除 WebOptions
+     *
+     * @param id 唯一主键
+     * @return java.lang.String
+     * @create 2020/7/16 23:13
+     * @author ☪wl
+     */
+    @ResponseBody
+    @PostMapping("/removeWebOptions")
+    public String removeWebOptions(@RequestParam Integer id) {
+        String resultMsg;
+        try {
+            WebOptions webOptions = new WebOptions();
+            webOptions.setId(id);
+            resultMsg = this.webOptionsService.delete(webOptions);
+        } catch (Exception e) {
+            return ResultGenerator.autoReturnFailResult("删除失败", LOG, e);
         }
         return ResultGenerator.genSuccessResult(resultMsg).toString();
     }

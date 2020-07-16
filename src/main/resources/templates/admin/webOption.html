@@ -5,14 +5,9 @@
     <title>仪表盘</title>
     <link rel="stylesheet" href="/adminNav/style.css">
     <link rel="stylesheet" href="/adminNav/font-awesome.css">
+    <link rel="stylesheet" href="/alert/message.css">
     <style>
-        .checkMenu {
-            background-color: #45699c;
-        }
 
-        .checkMenu a {
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -38,12 +33,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    修改设置#1
-                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modifyModelLabel">修改设置#1</h4>
             </div>
             <form id="form_data" class="form-horizontal">
                 <div class="modal-body">
@@ -70,8 +61,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                     </button>
-                    <button type="button" onclick="tableSubmit()" class="btn btn-primary">
-                        提交更改
+                    <button type="button" onclick="tableSubmit()" class="btn btn-success">
+                        保存
                     </button>
                 </div>
             </form>
@@ -79,21 +70,58 @@
     </div><!-- /.modal -->
 </div>
 
-<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel1">删除确认#1</h4>
+            </div>
+            <div class="modal-body">
+                <span style="color: red">确定要删除所选数据吗?</span>
+                <input id="deleteId" type="hidden">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" onclick="tableDelete($('#deleteId').val(),true)" class="btn btn-danger">
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
+<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
 
 
 </body>
 <div th:replace="common/commonSrc :: commonFoot(~{::script})">
+    <script type="text/javascript" th:src="@{/alert/message.js}"></script>
     <script type="text/javascript">
         $(function () {
             tableInit();
         });
 
-        function tableInit() {
+        //初始化表格
+        function tableInit(isReload) {
+            const paramJson = {};
+
+            if (!isReload){
+                const dataKey = $("#selectKey").val();
+                const dataValue = $("#selectValue").val();
+                if (dataValue != null || dataKey !== "" || typeof dataKey != "undefined") {
+                    paramJson[dataKey] = dataValue;
+                    paramJson['queryKey'] = dataKey;
+                    paramJson['queryValue'] = dataValue;
+                }
+            }
+
             $.ajax({
                 url: getRootPath() + '/admin/getWebOptionList',
-                type: 'GET',
+                type: 'POST',
+                datatype: "JSON",
+                data: paramJson,
                 success: function (data) {
                     $("#dataTable").html(data);
                 },
@@ -106,7 +134,17 @@
             });
         }
 
-        //回显模态框表单
+        //添加按钮打开
+        function tableAdd() {
+            $("#optionId").val('');
+            $("#optionKey").val('');
+            $("#optionValue").val('');
+            $("#optionRemarks").val('');
+            $("#modifyModelLabel").text('新增Web选项');
+            $("#modifyModel").modal('show');
+        }
+
+        //修改回显模态框表单
         function tableModify(optionId) {
             $.ajax({
                 type: 'GET',
@@ -126,7 +164,7 @@
                     $("#optionKey").val(data.optKey);
                     $("#optionValue").val(data.optValue);
                     $("#optionRemarks").val(data.remarks);
-                    $("#myModalLabel").text('修改设置#' + data.id);
+                    $("#modifyModelLabel").text('修改设置#' + data.id);
                 }
             });
         }
@@ -153,9 +191,54 @@
                     if (data.code === "1") {
                         $("#modifyModel").modal('hide');
                         tableInit();
+                        $.message({
+                            message: data.message
+                        });
+                    } else {
+                        $.message({
+                            message: data.message,
+                            type: 'error'
+                        });
                     }
                 }
             });
+        }
+
+        //删除
+        function tableDelete(optionId, action) {
+            if (action) {
+                $.ajax({
+                    type: 'POST',
+                    url: getRootPath() + 'admin/removeWebOptions',
+                    data: {
+                        "id": optionId
+                    },
+                    beforeSend: function () {
+                        showModal(true);
+                    },
+                    complete: function () {
+                        showModal();
+                    },
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.code === "1") {
+                            $("#deleteModal").modal('hide');
+                            tableInit();
+                            $.message({
+                                message: data.message
+                            });
+                        } else {
+                            $.message({
+                                message: data.message,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
+            } else {
+                $("#deleteId").val(optionId);
+                $("#deleteModal").modal('show');
+            }
         }
     </script>
 </div>

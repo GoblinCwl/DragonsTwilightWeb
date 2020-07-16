@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * @author ☪wl
@@ -18,48 +19,25 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "web_options", schema = "mc_base")
 public class WebOptions {
-    private Integer id;
-    private String optKey;
-    private String optValue;
-    private String remarks;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
+    private Integer id;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @NotEmpty(message = "key不能为空")
+    @Basic
+    @Column(name = "opt_key", nullable = false)
+    private String optKey;
+
+    @NotEmpty(message = "value不能为空")
+    @Basic
+    @Column(name = "opt_value")
+    private String optValue;
 
     @Basic
-    @Column(name = "opt_key", nullable = false, length = 255)
-    public String getOptKey() {
-        return optKey;
-    }
+    @Column(name = "remarks", nullable = false)
+    private String remarks;
 
-    public void setOptKey(String optKey) {
-        this.optKey = optKey;
-    }
-
-    @Basic
-    @Column(name = "opt_value", nullable = true, length = 255)
-    public String getOptValue() {
-        return optValue;
-    }
-
-    public void setOptValue(String optValue) {
-        this.optValue = optValue;
-    }
-    @Basic
-    @Column(name = "remarks", nullable = false, length = 255)
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
 }
 
