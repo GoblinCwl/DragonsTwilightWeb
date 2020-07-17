@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author ☪wl
@@ -79,6 +80,8 @@ public class YggUserServiceImpl implements YggUserService {
                 .password(password)
                 .UUID(MCUUIDUtil.getRandomNonWhipUUID())
                 .ipAddr(ipAddr)
+                .regDate(new Date())
+                .isAdmin(0)
                 .build();
 
         return this.yggUserRepository.save(yggUser);

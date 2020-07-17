@@ -15,8 +15,6 @@ public interface WebOptionsService {
 
     List<WebOptions> findList(WebOptions webOptions);
 
-    WebOptions findOne(WebOptions optionId);
-
     String save(WebOptions webOptions);
 
     String delete(WebOptions webOptions);

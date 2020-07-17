@@ -51,12 +51,6 @@ public class WebOptionsServiceImpl implements WebOptionsService {
     }
 
     @Override
-    public WebOptions findOne(WebOptions webOptions) {
-        Optional<WebOptions> option = this.webOptionsRepository.findOne(Example.of(webOptions));
-        return option.orElse(null);
-    }
-
-    @Override
     public String save(WebOptions webOptions) {
         this.webOptionsRepository.save(webOptions);
         return "保存成功";

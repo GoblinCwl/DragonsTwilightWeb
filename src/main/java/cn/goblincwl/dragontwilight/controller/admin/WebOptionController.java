@@ -1,102 +1,49 @@
-package cn.goblincwl.dragontwilight.controller;
+package cn.goblincwl.dragontwilight.controller.admin;
 
 import cn.goblincwl.dragontwilight.common.entity.TableHead;
 import cn.goblincwl.dragontwilight.common.exception.DtWebException;
 import cn.goblincwl.dragontwilight.common.result.ResultGenerator;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ☪wl
  * @program dragons-twilight-web
- * @description WEB管理 Controller
+ * @description WebOption Controller
  * @create 2020-05-25 23:11
  */
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/admin/webOption")
+public class WebOptionController {
 
-    private final Logger LOG = LoggerFactory.getLogger(AdminController.class);
+    private final Logger LOG = LoggerFactory.getLogger(WebOptionController.class);
     private final WebOptionsService webOptionsService;
 
-    public AdminController(WebOptionsService webOptionsService) {
+    public WebOptionController(WebOptionsService webOptionsService) {
         this.webOptionsService = webOptionsService;
     }
 
     /**
-     * 跳转登陆页面
-     *
-     * @return java.lang.String
-     * @create 2020/6/17 22:12
-     * @author ☪wl
-     */
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        model.addAttribute("activeSlot", "adminPick");
-        return "admin/login";
-    }
-
-    /**
-     * 用户登录
-     *
-     * @param password 密码
-     * @return java.lang.String
-     * @create 2020/6/17 22:11
-     * @author ☪wl
-     */
-    @ResponseBody
-    @PostMapping("/doLogin")
-    public String doLogin(@RequestParam String password, HttpSession session) {
-        String resultStr;
-        try {
-            WebOptions webOptions = this.webOptionsService.findByKey("adminPassword");
-            if (password.equals(webOptions.getOptValue())) {
-                resultStr = "登陆成功";
-                session.setAttribute("isLogin", "true");
-            } else {
-                throw new DtWebException("密码错误,password");
-            }
-        } catch (Exception e) {
-            return ResultGenerator.autoReturnFailResult("登陆异常，请联系管理员", LOG, e);
-        }
-        return ResultGenerator.genSuccessResult(resultStr).toString();
-    }
-
-    /**
      * 跳转管理面板首页（仪表盘）
      *
      * @return java.lang.String
      * @create 2020/6/17 22:13
      * @author ☪wl
      */
-    @GetMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("activeSlot", "adminPick");
-        model.addAttribute("activeNav", "dashboard");
-        return "admin/index";
-    }
-
-    /**
-     * 跳转管理面板首页（仪表盘）
-     *
-     * @return java.lang.String
-     * @create 2020/6/17 22:13
-     * @author ☪wl
-     */
-    @GetMapping("/webOption")
+    @GetMapping
     public String webOption(Model model) {
         model.addAttribute("activeSlot", "adminPick");
         model.addAttribute("activeNav", "webOption");
@@ -108,23 +55,21 @@ public class AdminController {
     /**
      * 根据选项ID获取选项
      *
-     * @param optionId 选项ID
+     * @param webOptions 数据对象
      * @return java.lang.String
      * @create 2020/7/15 9:53
      * @author ☪wl
      */
     @ResponseBody
-    @GetMapping("/getWebOption")
-    public String getWebOption(Integer optionId) {
-        WebOptions resultWeb;
+    @GetMapping("/findList")
+    public String findList(WebOptions webOptions) {
+        List<WebOptions> resultList;
         try {
-            WebOptions webOptions = new WebOptions();
-            webOptions.setId(optionId);
-            resultWeb = this.webOptionsService.findOne(webOptions);
+            resultList = this.webOptionsService.findList(webOptions);
         } catch (Exception e) {
             return ResultGenerator.autoReturnFailResult("查询异常", LOG, e);
         }
-        return ResultGenerator.genSuccessResult(resultWeb).toString();
+        return ResultGenerator.genSuccessResult(resultList).toString();
     }
 
     /**
@@ -134,8 +79,8 @@ public class AdminController {
      * @create 2020/7/15 11:34
      * @author ☪wl
      */
-    @PostMapping("/getWebOptionList")
-    public String getWebOptionList(WebOptions webOptions, Model model, String queryKey, String queryValue) {
+    @PostMapping("/findListHtml")
+    public String findListHtml(WebOptions webOptions, Model model, String queryKey, String queryValue) {
         //表头集合
         List<TableHead> arrayList = new ArrayList<>();
         arrayList.add(new TableHead("ID", 5));
@@ -182,8 +127,8 @@ public class AdminController {
      * @author ☪wl
      */
     @ResponseBody
-    @PostMapping("/saveWebOption")
-    public String saveWebOption(@Valid WebOptions webOptions, BindingResult bindingResult) {
+    @PostMapping("/save")
+    public String save(@Valid WebOptions webOptions, BindingResult bindingResult) {
         String resultMsg;
         try {
             DtWebException.ValidException(bindingResult);
@@ -203,8 +148,8 @@ public class AdminController {
      * @author ☪wl
      */
     @ResponseBody
-    @PostMapping("/removeWebOptions")
-    public String removeWebOptions(@RequestParam Integer id) {
+    @PostMapping("/remove")
+    public String remove(@RequestParam Integer id) {
         String resultMsg;
         try {
             WebOptions webOptions = new WebOptions();

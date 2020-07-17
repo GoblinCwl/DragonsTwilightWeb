@@ -15,6 +15,7 @@
 
 <nav th:replace="common/adminSrc :: navHead"></nav>
 
+<!--数据表格-->
 <div class="container-fluid" style="position: relative;top: 50px">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -29,6 +30,7 @@
     </div>
 </div>
 
+<!--修改模态框-->
 <div class="modal fade" id="modifyModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -66,30 +68,31 @@
                     </button>
                 </div>
             </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
+        </div>
+    </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--信息提示模态框-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel1">删除确认#1</h4>
+                <h4 id="confirmTitle" class="modal-title">提示标题</h4>
             </div>
             <div class="modal-body">
-                <span style="color: red">确定要删除所选数据吗?</span>
-                <input id="deleteId" type="hidden">
+                <span id="confirmMessage" style="color: #000000">带颜色的提示信息</span>
+                <input id="confirmId" type="hidden">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button type="button" onclick="tableDelete($('#deleteId').val(),true)" class="btn btn-danger">
+                <button id="confirmButton" type="button" class="btn btn-danger">
                     确定
                 </button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
+        </div>
+    </div>
 </div>
 
 <nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
@@ -99,6 +102,12 @@
 <div th:replace="common/commonSrc :: commonFoot(~{::script})">
     <script type="text/javascript" th:src="@{/alert/message.js}"></script>
     <script type="text/javascript">
+
+        const findListHtml = getRootPath() + '/admin/webOption/findListHtml';//模板查询
+        const findList = getRootPath() + '/admin/webOption/findList';//列表查询
+        const save = getRootPath() + '/admin/webOption/save';//保存
+        const remove = getRootPath() + '/admin/webOption/remove';//删除
+
         $(function () {
             tableInit();
         });
@@ -107,7 +116,7 @@
         function tableInit(isReload) {
             const paramJson = {};
 
-            if (!isReload){
+            if (!isReload) {
                 const dataKey = $("#selectKey").val();
                 const dataValue = $("#selectValue").val();
                 if (dataValue != null || dataKey !== "" || typeof dataKey != "undefined") {
@@ -118,7 +127,7 @@
             }
 
             $.ajax({
-                url: getRootPath() + '/admin/getWebOptionList',
+                url: findListHtml,
                 type: 'POST',
                 datatype: "JSON",
                 data: paramJson,
@@ -134,7 +143,7 @@
             });
         }
 
-        //添加按钮打开
+        //添加按钮
         function tableAdd() {
             $("#optionId").val('');
             $("#optionKey").val('');
@@ -144,13 +153,13 @@
             $("#modifyModel").modal('show');
         }
 
-        //修改回显模态框表单
+        //修改回显
         function tableModify(optionId) {
             $.ajax({
                 type: 'GET',
-                url: getRootPath() + 'admin/getWebOption',
+                url: findList,
                 data: {
-                    "optionId": optionId
+                    "id": optionId
                 },
                 beforeSend: function () {
                     showModal(true);
@@ -159,21 +168,29 @@
                     showModal();
                 },
                 success: function (data) {
-                    data = JSON.parse(data).data;
-                    $("#optionId").val(data.id);
-                    $("#optionKey").val(data.optKey);
-                    $("#optionValue").val(data.optValue);
-                    $("#optionRemarks").val(data.remarks);
-                    $("#modifyModelLabel").text('修改设置#' + data.id);
+                    data = JSON.parse(data);
+                    if (data.code === "1") {
+                        data = data.data[0];
+                        $("#optionId").val(data.id);
+                        $("#optionKey").val(data.optKey);
+                        $("#optionValue").val(data.optValue);
+                        $("#optionRemarks").val(data.remarks);
+                        $("#modifyModelLabel").text('修改设置#' + data.id);
+                    } else {
+                        $.message({
+                            message: data.message,
+                            type: 'error'
+                        });
+                    }
                 }
             });
         }
 
-        //提交保存
+        //保存
         function tableSubmit() {
             $.ajax({
                 type: 'POST',
-                url: getRootPath() + 'admin/saveWebOption',
+                url: save,
                 data: {
                     "id": $("#optionId").val(),
                     "optKey": $("#optionKey").val(),
@@ -209,7 +226,7 @@
             if (action) {
                 $.ajax({
                     type: 'POST',
-                    url: getRootPath() + 'admin/removeWebOptions',
+                    url: remove,
                     data: {
                         "id": optionId
                     },
@@ -222,7 +239,7 @@
                     success: function (data) {
                         data = JSON.parse(data);
                         if (data.code === "1") {
-                            $("#deleteModal").modal('hide');
+                            $("#confirmModal").modal('hide');
                             tableInit();
                             $.message({
                                 message: data.message
@@ -236,8 +253,13 @@
                     }
                 });
             } else {
-                $("#deleteId").val(optionId);
-                $("#deleteModal").modal('show');
+                $("#confirmTitle").text('删除确认');
+                let $confirmMessage = $("#confirmMessage");
+                $confirmMessage.text('确定要删除所选数据吗？');
+                $confirmMessage.css('color', 'red');
+                $("#confirmId").val(optionId);
+                $("#confirmButton").attr("onclick","tableDelete($('#confirmId').val(), true)");
+                $("#confirmModal").modal('show');
             }
         }
     </script>

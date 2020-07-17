@@ -49,6 +49,10 @@
             padding-top: 2%;
             /*font-family: Unifont, serif;*/
         }
+
+        .optTd a{
+            cursor: pointer;
+        }
     </style>
     <div class="tableHead row">
         <h2 class="sub-header col-md-4" th:text="${tableTitle}"></h2>
@@ -93,17 +97,14 @@
         <tbody>
         <tr th:each="data,index:${datas}">
             <td class="optTd">
-                <a href="javascript:void(0);" th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
+                <a  th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
                    data-target="#modifyModel">修改</a>
                 <span> | </span>
-                <a href="javascript:void(0);" th:onclick="tableDelete([[${data[0]}]])">删除</a>
+                <a  th:onclick="tableDelete([[${data[0]}]])">删除</a>
             </td>
             <td th:each="oneRow,inIndex:${data}" th:text="${oneRow}"></td>
         </tr>
         </tbody>
     </table>
 </div>
-<script type="text/javascript" th:fragment="tableJs">
-
-</script>
 </html>
