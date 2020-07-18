@@ -44,7 +44,7 @@ public class UserManagerController {
     public String redirect(Model model) {
         model.addAttribute("activeSlot", "adminPick");
         model.addAttribute("activeNav", "userManager");
-        return "userManager";
+        return "/admin/userManager";
     }
 
     @ResponseBody
