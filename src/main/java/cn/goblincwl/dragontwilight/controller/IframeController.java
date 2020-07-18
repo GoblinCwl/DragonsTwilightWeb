@@ -1,20 +1,12 @@
 package cn.goblincwl.dragontwilight.controller;
 
-import cn.goblincwl.dragontwilight.common.exception.DtWebException;
-import cn.goblincwl.dragontwilight.common.result.ResultGenerator;
-import cn.goblincwl.dragontwilight.common.utils.CommonUtils;
-import cn.goblincwl.dragontwilight.yggdrasil.entity.YggPasswordLink;
-import cn.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
-import cn.goblincwl.dragontwilight.yggdrasil.service.YggPasswordLinkService;
-import cn.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
+import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
+import cn.goblincwl.dragontwilight.service.WebOptionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -27,13 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/iframe")
 public class IframeController {
 
-    private final YggUserService yggUserService;
-    private final YggPasswordLinkService yggPasswordLinkService;
     private final Logger LOG = LoggerFactory.getLogger(IframeController.class);
+    private final WebOptionsService webOptionsService;
 
-    public IframeController(YggUserService yggUserService, YggPasswordLinkService yggPasswordLinkService) {
-        this.yggUserService = yggUserService;
-        this.yggPasswordLinkService = yggPasswordLinkService;
+    public IframeController(WebOptionsService webOptionsService) {
+        this.webOptionsService = webOptionsService;
     }
 
     /**
@@ -63,7 +53,8 @@ public class IframeController {
     public String map(Model model) {
         model.addAttribute("activeSlot", "mapPick");
         model.addAttribute("title", "地皮地图");
-        model.addAttribute("goUrl", "https://map.goblincwl.cn/");
+        WebOptions dynMapUrl = this.webOptionsService.findByKey("dynMapUrl");
+        model.addAttribute("goUrl", dynMapUrl.getOptValue());
         return "iframe";
     }
 
