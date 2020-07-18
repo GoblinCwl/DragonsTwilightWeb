@@ -39,8 +39,8 @@ public class UserManagerController {
 
     @GetMapping
     public String redirect(Model model) {
-        model.addAttribute("activeSlot", "adminPick");
         model.addAttribute("activeNav", "userManager");
+        model.addAttribute("activeSlot", "adminPick");
         return "/admin/userManager";
     }
 
