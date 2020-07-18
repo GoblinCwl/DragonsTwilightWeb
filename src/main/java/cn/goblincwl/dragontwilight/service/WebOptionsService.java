@@ -18,4 +18,6 @@ public interface WebOptionsService {
     String save(WebOptions webOptions);
 
     String delete(WebOptions webOptions);
+
+    WebOptions findOne(WebOptions webOptions);
 }

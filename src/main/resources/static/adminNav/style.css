@@ -17,7 +17,7 @@ body {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 80px;
+    width: 55px;
     transition: width 0.2s linear;
     -webkit-transition: width 0.2s linear;
     transform: translateZ(0) scale(1, 1);

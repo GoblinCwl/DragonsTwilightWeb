@@ -62,4 +62,9 @@ public class WebOptionsServiceImpl implements WebOptionsService {
         return "删除成功";
     }
 
+    @Override
+    public WebOptions findOne(WebOptions webOptions) {
+        return this.webOptionsRepository.findOne(Example.of(webOptions)).orElse(null);
+    }
+
 }

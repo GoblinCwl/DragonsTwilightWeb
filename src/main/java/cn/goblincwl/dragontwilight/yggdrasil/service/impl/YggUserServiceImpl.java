@@ -8,12 +8,13 @@ import cn.goblincwl.dragontwilight.yggdrasil.repository.YggUserRepository;
 import cn.goblincwl.dragontwilight.yggdrasil.service.YggPasswordLinkService;
 import cn.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
 import cn.goblincwl.dragontwilight.yggdrasil.utils.MCUUIDUtil;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author ☪wl
@@ -34,11 +35,6 @@ public class YggUserServiceImpl implements YggUserService {
     }
 
     @Override
-    public YggUser getUserByUsername(String username) {
-        return this.yggUserRepository.findByUsername(username);
-    }
-
-    @Override
     public MCUser getMCUserByYggUser(YggUser yggUser) {
         if (yggUser == null) {
             return null;
@@ -48,16 +44,6 @@ public class YggUserServiceImpl implements YggUserService {
                 .id(yggUser.getUUID())
                 .properties(new ArrayList<>())
                 .build();
-    }
-
-    @Override
-    public YggUser getUserByProfileUUID(String selectedProfile) {
-        return this.yggUserRepository.findByUUID(selectedProfile);
-    }
-
-    @Override
-    public YggUser getUserByPlayerName(String playerName) {
-        return this.yggUserRepository.findByPlayerName(playerName);
     }
 
     @Override
@@ -110,6 +96,18 @@ public class YggUserServiceImpl implements YggUserService {
             inYggUser.setPassword(yggUser.getPassword());
             yggUserRepository.save(inYggUser);
         });
+    }
+
+    @Override
+    public List<YggUser> findList(YggUser yggUser) {
+        return this.yggUserRepository.findAll(Example.of(yggUser),
+                Sort.by(Sort.Direction.ASC, "playerName"));
+    }
+
+    @Override
+    public Page<YggUser> findPage(YggUser yggUser, Pageable pageable) {
+        return this.yggUserRepository.findAll(Example.of(yggUser),
+                pageable);
     }
 
 }

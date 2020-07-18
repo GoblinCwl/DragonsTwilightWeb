@@ -47,8 +47,6 @@ public class WebOptionController {
     public String webOption(Model model) {
         model.addAttribute("activeSlot", "adminPick");
         model.addAttribute("activeNav", "webOption");
-        List<WebOptions> webOptionsList = this.webOptionsService.findList(new WebOptions());
-        model.addAttribute("webOptionsList", webOptionsList);
         return "admin/webOption";
     }
 
@@ -61,7 +59,7 @@ public class WebOptionController {
      * @author ☪wl
      */
     @ResponseBody
-    @GetMapping("/findList")
+    @RequestMapping("/findList")
     public String findList(WebOptions webOptions) {
         List<WebOptions> resultList;
         try {
@@ -70,6 +68,18 @@ public class WebOptionController {
             return ResultGenerator.autoReturnFailResult("查询异常", LOG, e);
         }
         return ResultGenerator.genSuccessResult(resultList).toString();
+    }
+
+    @ResponseBody
+    @RequestMapping("/findOne")
+    public String findOne(WebOptions webOptions) {
+        WebOptions resultWebOptions;
+        try {
+            resultWebOptions = this.webOptionsService.findOne(webOptions);
+        } catch (Exception e) {
+            return ResultGenerator.autoReturnFailResult("查询失败", LOG, e);
+        }
+        return ResultGenerator.genSuccessResult(resultWebOptions).toString();
     }
 
     /**
@@ -83,10 +93,10 @@ public class WebOptionController {
     public String findListHtml(WebOptions webOptions, Model model, String queryKey, String queryValue) {
         //表头集合
         List<TableHead> arrayList = new ArrayList<>();
-        arrayList.add(new TableHead("ID", 5));
-        arrayList.add(new TableHead("键", 15));
-        arrayList.add(new TableHead("值", 35));
-        arrayList.add(new TableHead("备注", 35));
+        arrayList.add(new TableHead("ID", 1));
+        arrayList.add(new TableHead("键", 3));
+        arrayList.add(new TableHead("值", 6));
+        arrayList.add(new TableHead("备注", 6));
         model.addAttribute("heads", arrayList);
 
         //数据集合

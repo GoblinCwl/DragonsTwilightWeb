@@ -50,7 +50,7 @@
             /*font-family: Unifont, serif;*/
         }
 
-        .optTd a{
+        .optTd a {
             cursor: pointer;
         }
     </style>
@@ -59,19 +59,20 @@
         <div class="input-group col-md-6 input-group-lg pull-right"><!--保持内联，消除边框，类似于form-inline-->
             <div class="input-group-btn"><!--不换行，与相邻元素内联，包含dropdown-->
                 <button id="selectBtn" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span th:text="${queryText==null?'请选择 V':queryText+' V'}">请选择 V</span>
+                    <span id="selectBtnSpan" th:text="${queryText==null?'请选择':queryText}">请选择</span>
+                    &nbsp;<span class="caret"></span>
                 </button>
                 <input type="hidden" id="selectKey" th:value="${queryKey}">
                 <ul class="dropdown-menu">
                     <li>
                         <a class="selectA" href="javascript:void(0);"
-                           onclick="$('#selectBtn').text('请选择 V');$('#selectKey').val('')">
-                            请选择 V
+                           onclick="$('#selectBtnSpan').text('请选择');$('#selectKey').val('')">
+                            请选择
                         </a>
                     </li>
                     <li th:each="select,index:${selects}">
-                        <a class="selectA" href="javascript:void(0);" th:text="${select.value}+' V'"
-                           th:onclick="$('#selectBtn').text([[${select.value}]]+' V');$('#selectKey').val([[${select.key}]])">
+                        <a class="selectA" href="javascript:void(0);" th:text="${select.value}"
+                           th:onclick="$('#selectBtnSpan').text([[${select.value}]]);$('#selectKey').val([[${select.key}]])">
                         </a>
                     </li>
                 </ul>
@@ -87,20 +88,19 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>操作</th>
-            <th th:each="head,stat:${heads}"
-                th:text="${head.headName}"
-                th:width="${head.width}+'%'">
+            <th class="col-md-2">操作</th>
+            <th th:class="col-md-+${head.width}" th:each="head,stat:${heads}"
+                th:text="${head.headName}">
             </th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="data,index:${datas}">
             <td class="optTd">
-                <a  th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
+                <a th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
                    data-target="#modifyModel">修改</a>
                 <span> | </span>
-                <a  th:onclick="tableDelete([[${data[0]}]])">删除</a>
+                <a th:onclick="tableDelete([[${data[0]}]])">删除</a>
             </td>
             <td th:each="oneRow,inIndex:${data}" th:text="${oneRow}"></td>
         </tr>

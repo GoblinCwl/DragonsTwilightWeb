@@ -2,6 +2,11 @@ package cn.goblincwl.dragontwilight.yggdrasil.service;
 
 import cn.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
 import cn.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 
 /**
@@ -11,13 +16,7 @@ import cn.goblincwl.dragontwilight.yggdrasil.mcdatamodels.mcuser.MCUser;
  * @create 2020-07-03 22:23
  */
 public interface YggUserService {
-    YggUser getUserByUsername(String username);
-
     MCUser getMCUserByYggUser(YggUser yggUser);
-
-    YggUser getUserByProfileUUID(String selectedProfile);
-
-    YggUser getUserByPlayerName(String playerName);
 
     YggUser register(String email, String password, String playerName, String ipAddr);
 
@@ -26,4 +25,8 @@ public interface YggUserService {
     void update(YggUser yggUser);
 
     void changePassword(YggUser yggUser, String linkUUID);
+
+    List<YggUser> findList(YggUser yggUser);
+
+    Page<YggUser> findPage(YggUser yggUser, Pageable pageable);
 }

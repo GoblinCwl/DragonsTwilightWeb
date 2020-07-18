@@ -99,8 +99,9 @@ public class SessionServerController {
             if (sessionContainer == null) {
                 throw new YggdrasilException("ForbiddenOperationException", "无效的ServerID");
             }
-
-            yggUser = this.yggUserService.getUserByProfileUUID(sessionContainer.getSelectedProfile());
+            YggUser yggUserQuery = new YggUser();
+            yggUserQuery.setUUID(sessionContainer.getSelectedProfile());
+            yggUser = this.yggUserService.findOne(yggUserQuery);
 
             if (yggUser == null) {
                 throw new YggdrasilException("ForbiddenOperationException", "无效的用户");
@@ -134,7 +135,9 @@ public class SessionServerController {
 
         YggUser yggUser;
         try {
-            yggUser = this.yggUserService.getUserByProfileUUID(uuid);
+            YggUser yggUserQuery = new YggUser();
+            yggUserQuery.setUUID(uuid);
+            yggUser = this.yggUserService.findOne(yggUserQuery);
 
             if (yggUser == null) {
                 throw new YggdrasilException("ForbiddenOperationException", "无效的玩家");
@@ -164,7 +167,9 @@ public class SessionServerController {
     public List<MCProfile> listProfile(@RequestBody List<String> mcProfileNames) {
         List<MCProfile> resultList = new ArrayList<>();
         for (String playerName : mcProfileNames) {
-            YggUser yggUser = this.yggUserService.getUserByPlayerName(playerName);
+            YggUser yggUserQuery = new YggUser();
+            yggUserQuery.setPlayerName(playerName);
+            YggUser yggUser = this.yggUserService.findOne(yggUserQuery);
             if (yggUser != null) {
                 resultList.add(MCProfile.builder()
                         .id(yggUser.getUUID())

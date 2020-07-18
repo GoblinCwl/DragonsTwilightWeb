@@ -194,7 +194,9 @@ public class CoolQController {
         //玩家名称
         String playerName = getPlayerName(sendQq);
         //获取角色名对应UUID
-        YggUser yggUser = this.yggUserService.getUserByPlayerName(playerName);
+        YggUser yggUserQuery = new YggUser();
+        yggUserQuery.setPlayerName(playerName);
+        YggUser yggUser = this.yggUserService.findOne(yggUserQuery);
         if (yggUser == null) {
             throw new DtWebException("@" + playerName + "，签到失败！\n数据异常，请联系管理员。");
         }

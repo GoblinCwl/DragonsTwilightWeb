@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="zh">
+
+<head th:replace="common/commonSrc :: commonHead(~{::title},~{::link},~{::style})">
+    <title>仪表盘</title>
+    <link rel="stylesheet" href="/adminNav/style.css">
+    <link rel="stylesheet" href="/adminNav/font-awesome.css">
+    <link rel="stylesheet" href="/alert/message.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div th:replace="common/commonSrc :: commonContent"></div>
+
+<nav th:replace="common/adminSrc :: navHead"></nav>
+
+<!--数据表格-->
+<div class="container-fluid" style="position: relative;top: 50px">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="table-responsive">
+                <img src="/images/background/book.png" class="img-responsive" style="width: 100%" alt="">
+                <div id="dataTable"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="height: 100px"></div>
+    </div>
+</div>
+
+<!--修改模态框-->
+<div class="modal fade" id="modifyModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modifyModelLabel">修改设置#1</h4>
+            </div>
+            <form id="form_data" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="optionKey" class="col-sm-2 control-label">键</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" class="form-control" id="optionId" placeholder="设置项的唯一键">
+                            <input type="text" class="form-control" id="optionKey" placeholder="设置项的唯一键">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionValue" class="col-sm-2 control-label">值</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="optionValue" placeholder="设置项的值">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="optionRemarks" class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="optionRemarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" onclick="tableSubmit()" class="btn btn-success">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--信息提示模态框-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="confirmTitle" class="modal-title">提示标题</h4>
+            </div>
+            <div class="modal-body">
+                <span id="confirmMessage" style="color: #000000">带颜色的提示信息</span>
+                <input id="confirmId" type="hidden">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button id="confirmButton" type="button" class="btn btn-danger">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav th:replace="common/commonSrc :: commonNavFoot(~{})"></nav>
+
+
+</body>
+<div th:replace="common/commonSrc :: commonFoot(~{::script})">
+    <script type="text/javascript" th:src="@{/alert/message.js}"></script>
+    <script type="text/javascript">
+
+        const findListHtml = getRootPath() + '/admin/userManager/findListHtml';//模板查询
+        const findList = getRootPath() + '/admin/webOption/findList';//列表查询
+        const findOne = getRootPath() + '/admin/webOption/findOne';//列表查询
+        const save = getRootPath() + '/admin/webOption/save';//保存
+        const remove = getRootPath() + '/admin/webOption/remove';//删除
+
+        $(function () {
+            tableInit();
+        });
+
+        //初始化表格
+        function tableInit(isReload) {
+            const paramJson = {};
+
+            if (!isReload) {
+                const dataKey = $("#selectKey").val();
+                const dataValue = $("#selectValue").val();
+                if (dataValue != null || dataKey !== "" || typeof dataKey != "undefined") {
+                    paramJson[dataKey] = dataValue;
+                    paramJson['queryKey'] = dataKey;
+                    paramJson['queryValue'] = dataValue;
+                }
+            }
+
+            $.ajax({
+                url: findListHtml,
+                type: 'POST',
+                datatype: "JSON",
+                data: paramJson,
+                success: function (data) {
+                    $("#dataTable").html(data);
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+            });
+        }
+
+        //添加按钮
+        function tableAdd() {
+            $("#optionId").val('');
+            $("#optionKey").val('');
+            $("#optionValue").val('');
+            $("#optionRemarks").val('');
+            $("#modifyModelLabel").text('新增Web选项');
+            $("#modifyModel").modal('show');
+        }
+
+        //修改回显
+        function tableModify(optionId) {
+            $.ajax({
+                type: 'GET',
+                url: findOne,
+                data: {
+                    "id": optionId
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.code === "1") {
+                        data = data.data;
+                        $("#optionId").val(data.id);
+                        $("#optionKey").val(data.optKey);
+                        $("#optionValue").val(data.optValue);
+                        $("#optionRemarks").val(data.remarks);
+                        $("#modifyModelLabel").text('修改设置#' + data.id);
+                    } else {
+                        $.message({
+                            message: data.message,
+                            type: 'error'
+                        });
+                    }
+                }
+            });
+        }
+
+        //保存
+        function tableSubmit() {
+            $.ajax({
+                type: 'POST',
+                url: save,
+                data: {
+                    "id": $("#optionId").val(),
+                    "optKey": $("#optionKey").val(),
+                    "optValue": $("#optionValue").val(),
+                    "remarks": $("#optionRemarks").val()
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.code === "1") {
+                        $("#modifyModel").modal('hide');
+                        tableInit();
+                        $.message({
+                            message: data.message
+                        });
+                    } else {
+                        $.message({
+                            message: data.message,
+                            type: 'error'
+                        });
+                    }
+                }
+            });
+        }
+
+        //删除
+        function tableDelete(optionId, action) {
+            if (action) {
+                $.ajax({
+                    type: 'POST',
+                    url: remove,
+                    data: {
+                        "id": optionId
+                    },
+                    beforeSend: function () {
+                        showModal(true);
+                    },
+                    complete: function () {
+                        showModal();
+                    },
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.code === "1") {
+                            $("#confirmModal").modal('hide');
+                            tableInit();
+                            $.message({
+                                message: data.message
+                            });
+                        } else {
+                            $.message({
+                                message: data.message,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
+            } else {
+                $("#confirmTitle").text('删除确认');
+                let $confirmMessage = $("#confirmMessage");
+                $confirmMessage.text('确定要删除所选数据吗？');
+                $confirmMessage.css('color', 'red');
+                $("#confirmId").val(optionId);
+                $("#confirmButton").attr("onclick","tableDelete($('#confirmId').val(), true)");
+                $("#confirmModal").modal('show');
+            }
+        }
+    </script>
+</div>
+<div th:replace="common/adminSrc :: adminFood"></div>
+
+</html>

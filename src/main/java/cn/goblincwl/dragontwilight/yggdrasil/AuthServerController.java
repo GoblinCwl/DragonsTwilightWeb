@@ -116,13 +116,15 @@ public class AuthServerController {
 
             // 根据客户端提供的信息获取用户
             YggUser yggUser;
+            YggUser yggUserQuery = new YggUser();
             if (username.contains("@")) {
                 //如果有@，则是邮箱登录
-                yggUser = yggUserService.getUserByUsername(username);
+                yggUserQuery.setUsername(username);
             } else {
                 //否则使用角色名登录
-                yggUser = yggUserService.getUserByPlayerName(username);
+                yggUserQuery.setPlayerName(username);
             }
+            yggUser = yggUserService.findOne(yggUserQuery);
             // 未找到用户则抛出异常
             if (yggUser == null) {
                 throw new YggdrasilException("ForbiddenOperationException", "用户不存在");
@@ -332,7 +334,9 @@ public class AuthServerController {
             cacheService.increaseBruteTimeCount(request.getUsername());
 
             // 通过用户名获取用户
-            YggUser yggUser = this.yggUserService.getUserByUsername(request.getUsername());
+            YggUser yggUserQuery = new YggUser();
+            yggUserQuery.setUsername(request.getUsername());
+            YggUser yggUser = this.yggUserService.findOne(yggUserQuery);
 
             // 如果没有获取到用户
             if (yggUser == null) {

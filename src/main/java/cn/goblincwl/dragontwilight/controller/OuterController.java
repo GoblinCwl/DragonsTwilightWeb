@@ -5,6 +5,7 @@ import cn.goblincwl.dragontwilight.common.result.ResultGenerator;
 import cn.goblincwl.dragontwilight.common.utils.CommonUtils;
 import cn.goblincwl.dragontwilight.entity.primary.MinecraftQqPlayer;
 import cn.goblincwl.dragontwilight.service.MinecraftQqPlayerService;
+import cn.goblincwl.dragontwilight.yggdrasil.entity.YggUser;
 import cn.goblincwl.dragontwilight.yggdrasil.service.YggUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -91,7 +93,13 @@ public class OuterController {
                 //通过用户名获取游戏ID
                 String playerName;
                 if (userName.contains("@")) {
-                    playerName = this.yggUserService.getUserByUsername(userName).getPlayerName();
+                    YggUser yggUserQuery = new YggUser();
+                    yggUserQuery.setUsername(userName);
+                    YggUser yggUser = this.yggUserService.findOne(this.yggUserService.findOne(yggUserQuery));
+                    if (yggUser == null) {
+                        throw new DtWebException("无匹配角色");
+                    }
+                    playerName = yggUser.getPlayerName();
                 } else {
                     playerName = userName;
                 }
