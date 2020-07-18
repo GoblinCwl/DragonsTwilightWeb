@@ -81,4 +81,10 @@ public class AdminController {
         model.addAttribute("activeNav", "dashboard");
         return "admin/index";
     }
+
+    @ResponseBody
+    @GetMapping("/dashboardData")
+    public String dashboardData(){
+        return null;
+    }
 }
