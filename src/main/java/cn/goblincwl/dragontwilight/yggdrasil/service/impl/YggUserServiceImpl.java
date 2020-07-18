@@ -100,13 +100,21 @@ public class YggUserServiceImpl implements YggUserService {
 
     @Override
     public List<YggUser> findList(YggUser yggUser) {
-        return this.yggUserRepository.findAll(Example.of(yggUser),
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("UUID", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("playerName", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.contains());
+        return this.yggUserRepository.findAll(Example.of(yggUser, exampleMatcher),
                 Sort.by(Sort.Direction.ASC, "playerName"));
     }
 
     @Override
     public Page<YggUser> findPage(YggUser yggUser, Pageable pageable) {
-        return this.yggUserRepository.findAll(Example.of(yggUser),
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("UUID", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("playerName", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.contains());
+        return this.yggUserRepository.findAll(Example.of(yggUser, exampleMatcher),
                 pageable);
     }
 
