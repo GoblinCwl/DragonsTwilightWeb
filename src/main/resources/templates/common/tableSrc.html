@@ -53,6 +53,18 @@
         .optTd a {
             cursor: pointer;
         }
+
+        .pageControl img {
+            cursor: pointer;
+        }
+
+        .pageControl .nextPageBtn:hover {
+            content: url("/images/indexButton/nextPage_hover.png");
+        }
+
+        .pageControl .prePageBtn:hover {
+            content: url("/images/indexButton/prePage_hover.png");
+        }
     </style>
     <div class="tableHead row">
         <h2 class="sub-header col-md-4" th:text="${tableTitle}"></h2>
@@ -79,16 +91,16 @@
             </div>
             <input th:value="${queryValue}" class="form-control" id="selectValue" type="text" placeholder="请输入关键词"/>
             <span class="input-group-btn"><!--不换行，与相邻元素内联-->
-		      <button class="btn btn-primary" onclick="tableInit()">搜索</button>
-		      <button class="btn btn-warning" onclick="tableInit(true)">重置</button>
-		      <button class="btn btn-success" onclick="tableAdd()">添加</button>
+		      <button class="btn btn-primary" onclick="$('#pageNo').val(1);tableInit(findListHtml)">搜索</button>
+		      <button class="btn btn-warning" onclick="tableInit(findListHtml,true)">重置</button>
+		      <button th:if="${hasAdd}" class="btn btn-success" onclick="tableAdd()">添加</button>
 		</span>
         </div>
     </div>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th class="col-md-2">操作</th>
+            <th th:class="col-md-+${optionWidth}">操作</th>
             <th th:class="col-md-+${head.width}" th:each="head,stat:${heads}"
                 th:text="${head.headName}">
             </th>
@@ -97,14 +109,66 @@
         <tbody>
         <tr th:each="data,index:${datas}">
             <td class="optTd">
-                <a th:onclick="tableModify([[${data[0]}]])" data-toggle="modal"
-                   data-target="#modifyModel">修改</a>
-                <span> | </span>
-                <a th:onclick="tableDelete([[${data[0]}]])">删除</a>
+                <a th:each="option,index:${options}">
+                    <a th:text="${option.key}" th:onclick="doOptions([[${option.value}]],[[${data[0]}]])"></a>
+                    <span th:if="${index.index<options.size()-1}"> | </span>
+                </a>
             </td>
             <td th:each="oneRow,inIndex:${data}" th:text="${oneRow}"></td>
         </tr>
         </tbody>
     </table>
+    <input type="hidden" id="pageNo" th:value="${pageNo}"/>
+    <input type="hidden" id="pageSize" th:value="${pageSize}"/>
+    <div class="pageControl" style="width: 100%;position:absolute;top: 90%;left: 12%">
+        <div class="col-md-4">
+            <img th:if="${!isFirst}" class="prePageBtn" src="/images/indexButton/prePage.png"
+                 th:onclick="$('#pageNo').val([[${pageNo-1}]]);tableInit(findListHtml)" alt="上一页">
+        </div>
+        <h3 class="col-md-2" style="font-family: Unifont,serif" th:text="'['+${pageNo}+' / '+${pageCounts}+']'"></h3>
+        <div class="col-md-5 pull-right">
+            <img th:if="${!isLast}" class="nextPageBtn" src="/images/indexButton/nextPage.png"
+                 th:onclick="$('#pageNo').val([[${pageNo+1}]]);tableInit(findListHtml)" alt="下一页">
+        </div>
+    </div>
+</div>
+<div th:fragment="hoverTableFoot()">
+    <script type="text/javascript">
+        //初始化表格
+        function tableInit(findListHtml, isReload) {
+            const paramJson = {};
+            let pageNo;
+            let pageSize;
+            if (!isReload) {
+                const dataKey = $("#selectKey").val();
+                const dataValue = $("#selectValue").val();
+                if (dataValue != null || dataKey !== "" || typeof dataKey != "undefined") {
+                    paramJson[dataKey] = dataValue;
+                    paramJson['queryKey'] = dataKey;
+                    paramJson['queryValue'] = dataValue;
+                }
+                pageNo = $("#pageNo").val();
+                pageSize = $("#pageSize").val();
+            }
+            paramJson['pageNo'] = pageNo == null ? 1 : pageNo;
+            paramJson['pageSize'] = pageSize == null ? 32 : pageSize;
+
+            $.ajax({
+                url: findListHtml,
+                type: 'POST',
+                datatype: "JSON",
+                data: paramJson,
+                success: function (data) {
+                    $("#dataTable").html(data);
+                },
+                beforeSend: function () {
+                    showModal(true);
+                },
+                complete: function () {
+                    showModal();
+                },
+            });
+        }
+    </script>
 </div>
 </html>

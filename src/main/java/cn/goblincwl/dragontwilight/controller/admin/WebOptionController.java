@@ -7,6 +7,9 @@ import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ☪wl
@@ -90,7 +90,7 @@ public class WebOptionController {
      * @author ☪wl
      */
     @PostMapping("/findListHtml")
-    public String findListHtml(WebOptions webOptions, Model model, String queryKey, String queryValue) {
+    public String findListHtml(WebOptions webOptions, Model model, String queryKey, String queryValue, Integer pageNo, Integer pageSize) {
         //表头集合
         List<TableHead> arrayList = new ArrayList<>();
         arrayList.add(new TableHead("ID", 1));
@@ -101,7 +101,8 @@ public class WebOptionController {
 
         //数据集合
         List<List<Object>> valueList = new ArrayList<>();
-        List<WebOptions> list = this.webOptionsService.findList(webOptions);
+        Page<WebOptions> page = this.webOptionsService.findPage(webOptions, PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Direction.ASC, "id")));
+        List<WebOptions> list = page.getContent();
         for (WebOptions nowWebOptions : list) {
             List<Object> dataList = new ArrayList<>();
             dataList.add(nowWebOptions.getId());
@@ -111,6 +112,14 @@ public class WebOptionController {
             valueList.add(dataList);
         }
         model.addAttribute("datas", valueList);
+
+        //操作集合
+        Map<String, Object> options = new HashMap<>();
+        options.put("修改", "modify");
+        options.put("删除", "delete");
+        model.addAttribute("options", options);
+        //操作列宽度
+        model.addAttribute("optionWidth", 2);
 
         //可查询集合
         Map<String, String> selects = new LinkedHashMap<>();
@@ -123,8 +132,15 @@ public class WebOptionController {
         model.addAttribute("queryKey", queryKey);
         model.addAttribute("queryValue", queryValue);
         model.addAttribute("queryText", selects.get(queryKey));
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageCounts", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
 
-        model.addAttribute("tableTitle", "WebOptions设置");
+        model.addAttribute("tableTitle", "网站设置");
+
+        model.addAttribute("hasAdd", true);
         return "common/tableSrc::hoverTable";
     }
 

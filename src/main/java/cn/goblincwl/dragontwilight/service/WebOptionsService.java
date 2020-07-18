@@ -1,6 +1,9 @@
 package cn.goblincwl.dragontwilight.service;
 
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -20,4 +23,6 @@ public interface WebOptionsService {
     String delete(WebOptions webOptions);
 
     WebOptions findOne(WebOptions webOptions);
+
+    Page<WebOptions> findPage(WebOptions webOptions, Pageable pageable);
 }

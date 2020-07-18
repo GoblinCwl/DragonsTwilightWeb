@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ☪wl
@@ -72,7 +69,7 @@ public class UserManagerController {
     }
 
     @PostMapping("/findListHtml")
-    public String findListHtml(Model model, YggUser yggUser, String queryKey, String queryValue) {
+    public String findListHtml(Model model, YggUser yggUser, String queryKey, String queryValue, Integer pageNo, Integer pageSize) {
         //表头集合
         List<TableHead> arrayList = new ArrayList<>();
         arrayList.add(new TableHead("UUID", 4));
@@ -83,7 +80,7 @@ public class UserManagerController {
 
         //数据集合
         List<List<Object>> valueList = new ArrayList<>();
-        Page<YggUser> page = this.yggUserService.findPage(yggUser, PageRequest.of(0, 32, Sort.by(Sort.Direction.ASC, "playerName")));
+        Page<YggUser> page = this.yggUserService.findPage(yggUser, PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Direction.ASC, "playerName")));
         List<YggUser> list = page.getContent();
         for (YggUser nowYggUser : list) {
             List<Object> dataList = new ArrayList<>();
@@ -94,6 +91,13 @@ public class UserManagerController {
             valueList.add(dataList);
         }
         model.addAttribute("datas", valueList);
+
+        //操作集合
+        Map<String, Object> options = new HashMap<>();
+        options.put("封禁", "ban");
+        model.addAttribute("options", options);
+        //操作列宽度
+        model.addAttribute("optionWidth", 1);
 
         //可查询集合
         Map<String, String> selects = new LinkedHashMap<>();
@@ -106,8 +110,15 @@ public class UserManagerController {
         model.addAttribute("queryKey", queryKey);
         model.addAttribute("queryValue", queryValue);
         model.addAttribute("queryText", selects.get(queryKey));
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageCounts", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
 
         model.addAttribute("tableTitle", "用户管理");
+
+        model.addAttribute("hasAdd", false);
 
         return "common/tableSrc::hoverTable";
     }

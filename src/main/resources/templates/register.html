@@ -119,6 +119,9 @@
                         $.message({
                             message: '注册成功，快去登陆游戏吧！'
                         });
+                        let $loginForm = $("#login_form");
+                        $loginForm.css("background","url('/images/background/middleGui.png') no-repeat")
+                        $loginForm.css("background-size","100% 100%")
                     } else {
                         let returnMessage = res.message;
                         let dhIndex = returnMessage.indexOf(",");
@@ -174,6 +177,9 @@
                         $.message({
                             message: '已发送邮件找回密码邮件，请及时查收。'
                         });
+                        let $loginForm = $("#login_form");
+                        $loginForm.css("background","url('/images/background/middleGui.png') no-repeat")
+                        $loginForm.css("background-size","100% 100%")
                     } else {
                         let returnMessage = res.message;
                         let dhIndex = returnMessage.indexOf(",");

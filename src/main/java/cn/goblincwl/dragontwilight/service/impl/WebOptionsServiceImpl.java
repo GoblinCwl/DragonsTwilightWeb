@@ -4,9 +4,7 @@ import cn.goblincwl.dragontwilight.common.exception.DtWebException;
 import cn.goblincwl.dragontwilight.repository.primary.WebOptionsRepository;
 import cn.goblincwl.dragontwilight.entity.primary.WebOptions;
 import cn.goblincwl.dragontwilight.service.WebOptionsService;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +63,15 @@ public class WebOptionsServiceImpl implements WebOptionsService {
     @Override
     public WebOptions findOne(WebOptions webOptions) {
         return this.webOptionsRepository.findOne(Example.of(webOptions)).orElse(null);
+    }
+
+    @Override
+    public Page<WebOptions> findPage(WebOptions webOptions, Pageable pageable) {
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("optKey", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("optValue", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("remarks", ExampleMatcher.GenericPropertyMatchers.contains());
+        return this.webOptionsRepository.findAll(Example.of(webOptions, exampleMatcher), pageable);
     }
 
 }
