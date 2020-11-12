@@ -47,8 +47,15 @@ public class WebController {
      * @author ☪wl
      */
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
         model.addAttribute("activeSlot", "indexPick");
+        //判断操作系统
+        String userAgent = request.getHeader("user-agent");
+        if (userAgent.contains("Android")) {
+            return "indexDeny";
+        } else if (userAgent.contains("iPhone") || userAgent.contains("iPad")) {
+            return "indexDeny";
+        }
         return "index";
     }
 
