@@ -18,15 +18,15 @@ import java.util.Objects;
 /**
  * Created by QinHe on 2018-07-24.
  */
-@Configuration
+/*@Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactorySlave",
         transactionManagerRef = "transactionManagerSlave",
-        basePackages = {"cn.goblincwl.dragontwilight.repository.slave"}) //设置Repository所在位置
+        basePackages = {"cn.goblincwl.dragontwilight.repository.slave"})*/ //设置Repository所在位置
 public class SlaveConfig {
 
-    @Resource(name = "slaveDruidDataSource")
+    /*@Resource(name = "slaveDruidDataSource")
     private DataSource slaveDruidDataSource;
 
     private final JpaProperties jpaProperties;
@@ -55,6 +55,6 @@ public class SlaveConfig {
     @Bean(name = "transactionManagerSlave")
     public PlatformTransactionManager transactionManagerSlave(EntityManagerFactoryBuilder builder) {
         return new JpaTransactionManager(Objects.requireNonNull(entityManagerFactorySlave(builder).getObject()));
-    }
+    }*/
 
 }

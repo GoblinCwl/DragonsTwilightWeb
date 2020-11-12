@@ -26,7 +26,6 @@ public class DragontwilightApplication {
 
     @Bean
     public TomcatServletWebServerFactory servletContainer() {
-
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override
             protected void postProcessContext(Context context) {
@@ -39,7 +38,6 @@ public class DragontwilightApplication {
             }
         };
         tomcat.addAdditionalTomcatConnectors(connector());
-
         return tomcat;
     }
 

@@ -29,11 +29,11 @@ public class DataSourceConfig {
     /**
      * 从DataSource 配置
      */
-    @ConfigurationProperties(prefix = "spring.datasource.druid.slave")
+    /*@ConfigurationProperties(prefix = "spring.datasource.druid.slave")
     @Bean(name = "slaveDruidDataSource")
     public DataSource slaveDruidDataSource(Environment environment) {
         return DruidDataSourceBuilder.create().build(environment, "spring.datasource.druid.slave.");
-    }
+    }*/
 
 
 }

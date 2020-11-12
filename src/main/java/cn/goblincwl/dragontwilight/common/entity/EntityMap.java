@@ -1,8 +1,6 @@
 package cn.goblincwl.dragontwilight.common.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,23 +10,16 @@ import java.util.Map;
  * @description 自定义充当实体类的Map
  * @create 2020-06-14 18:11
  */
-public class EntityMap<K, V> extends HashMap<K, V> {
+public class EntityMap extends HashMap<String, Object> implements Serializable {
+
+    private static final long serialVersionUID = -7395909900748895806L;
 
     public EntityMap() {
     }
 
-    public EntityMap(Map<K, V> map) {
-        for (Entry<K, V> kvEntry : map.entrySet()) {
+    public EntityMap(Map<String, Object> map) {
+        for (Entry<String, Object> kvEntry : map.entrySet()) {
             this.put(kvEntry.getKey(), kvEntry.getValue());
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder toString = new StringBuilder();
-        for (Entry<K, V> kvEntry : this.entrySet()) {
-            toString.append(kvEntry.getKey()).append("=").append(kvEntry.getValue()).append("\n");
-        }
-        return toString.toString();
     }
 }
